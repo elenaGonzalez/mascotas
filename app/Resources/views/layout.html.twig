@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title class="h1">{% block title %}Inicio{% endblock %}</title>
+        {% block stylesheets %} <LINK href="{{asset ('bundles/mascotasmascotas/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+            <LINK href="{{asset ('bundles/mascotasmascotas/css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css"></a>
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block header%}
+            <div class="hero-unit">Sistema Mascotas</div>
+        {% endblock %}
+        
+        {% block titulo%}<h1 align="center"></h1>{%endblock%}    
+        {% block body%}
+  <div class="container-fluid">
+<div class="span10<">
+    <h1 align="center"></h1>
+     </div>
+      <script src="{{asset ('bundles/mascotasmascotas/js/jquery-1.10.1.min.js') }}"></script>
+      <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+      </div>
+    </body>
+</html>
+

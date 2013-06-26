@@ -1,0 +1,22 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="text-center">
+    <h3>Crear una Nueva Publicacion</h3>
+
+    <form action="{{ path('publicacion_create') }}" method="post" {{ form_enctype(form) }}>
+        {{ form_widget(form) }}
+        <p>
+            <button type="submit" class="btn-primary">publicar</button>
+        </p>
+    </form>
+
+        <ul class="record_actions">
+    <li>
+        <a href="{{ path('publicacion') }}">
+            Volver a la Lista
+        </a>
+    </li>
+</ul>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+<div class="text-center">
+    <h3>Publicaciones</h3>
+
+    <table class="records_list table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Usuario</th>
+                <th>Tipo</th>
+                <th>Fecha de publicacion</th>
+                <th>Lugar</th>
+                <th>Foto</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td class="text-center"><a href="{{ path('publicacion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td class="text-center">{{ entity.usuario }}</td>
+                <td class="text-center">{{ entity.tipo }}</td>
+                <td class="text-center">{% if entity.fechapublicacion %}{{ entity.fechapublicacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td class="text-center">{{ entity.lugar }}</td>
+                <td class="text-center">{{ entity.foto }}</td>
+                <td class="text-center">
+                <ul>
+                    <li>
+                        <a href="{{ path('publicacion_show', { 'id': entity.id }) }}">ver</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">editar</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('publicacion_new') }}">
+                Crear una Nueva Publicacion
+            </a>
+        </li>
+    </ul>
+</div>
+    {% endblock %}

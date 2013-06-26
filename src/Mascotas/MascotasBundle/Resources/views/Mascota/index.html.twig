@@ -1,0 +1,51 @@
+{% extends '::base.html.twig' %}
+{% block titulo %}<h3 class="text-center">Lista de Mascotas</h3>{%endblock%}
+{% block body %}
+<div class="text-center">
+    <table class="records_list table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Raza</th>
+                <th>Edad</th>
+                <th>Foto</th>
+                <th>Descripcion</th>
+                <th>Usuario</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('mascota_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.nombre }}</td>
+                <td>{{ entity.raza }}</td>
+                <td>{{ entity.edad }}</td>
+                <td>{{ entity.foto }}</td>
+                <td>{{ entity.descripcion }}</td>
+                <td>{{ entity.usuario }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('mascota_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('mascota_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('mascota_new') }}">
+                Agregar una nueva Mascota
+            </a>
+        </li>
+    </ul>
+    </div>
+    {% endblock %}

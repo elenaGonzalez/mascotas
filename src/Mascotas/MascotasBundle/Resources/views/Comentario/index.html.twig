@@ -1,0 +1,45 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Lista de Comentarios</h1>
+
+    <table class="table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Usuario</th>
+                <th>Publicacion</th>
+                <th>Comentario</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td><a href="{{ path('comentario_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.usuario }}</td>
+                <td>{{ entity.publicacion }}</td>
+                <td>{{ entity.comentario }}</td>
+                <td>
+                <ul>
+                    <li>
+                        <a href="{{ path('comentario_show', { 'id': entity.id }) }}">show</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('comentario_edit', { 'id': entity.id }) }}">edit</a>
+                    </li>
+                </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+        <ul>
+        <li>
+            <a href="{{ path('comentario_new') }}">
+                Crear un Nuevo Comentario
+            </a>
+        </li>
+    </ul>
+    {% endblock %}

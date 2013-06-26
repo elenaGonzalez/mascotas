@@ -1,0 +1,23 @@
+mascotas_mascotas:
+    resource: "@MascotasMascotasBundle/Controller/"
+    type:     annotation
+    prefix:   /mascotas
+  
+_publicacion:
+    pattern:  /mascotas/publicacion
+    defaults: { _PublicacionController: MascotasMascotasBundle:publicacion}
+
+_publicacionNew:
+    pattern:  /mascotas/publicacion/new
+    defaults: { _PublicacionController: MascotasMascotasBundle:publicacion:new }
+    
+registro:
+    pattern:  /registro
+    defaults: { _UsuarioController: 'MascotasMascotasBundle:Usuario:new' }
+    
+_mascotaNew:
+    pattern:  /mascotas/mascota/new
+    defaults: { _MascotaController: MascotasMascotasBundle:mascota:new }
+    
+ 
+ 

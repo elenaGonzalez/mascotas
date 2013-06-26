@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <title class="h1">{% block title %}Inicio{% endblock %}</title>
+        {% block stylesheets %} <LINK href="{{asset ('bundles/mascotasmascotas/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+            <LINK href="{{asset ('bundles/mascotasmascotas/css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css"></a>
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block header%}
+         <div class="badge-warning">
+            <div class="header-logo text-center"><img src="{{
+     asset('bundles/mascotasmascotas/img/perrogato.jpg')
+  }}" size="10%"/><h1 class="text-center bar">Sistema Mascotas</h1></div></div>
+        {% endblock %}
+ {% block menu%}   
+  <div class="container-fluid">
+      <div class="row-fluid">          
+    <div class="span2">
+      <ul class="nav nav-list">
+        <li class="nav-header">
+          Menu
+        </li>
+        <li class="active">
+             <a href="#">Inicio</a>
+        </li>
+        <li>
+            <a href="{{ path('_publicacion')}}">Ver las Publicaciones</a>
+        </li>
+        <li>
+            <a href="{{ path('_publicacionNew')}}">Realizar una Publicacion</a>
+        </li>
+        <li>
+            <a href="{{ path('_mascotaNew')}}">Agregar a tu mascota</a>
+        </li>
+        <li>
+            <a href="#"></a>
+        </li>
+       </ul>
+     </div>
+  {% endblock %}
+     {% block titulo%}{%endblock%}
+     {% block body%}
+     <div class="span10">
+    </div>
+      <script src="{{asset ('bundles/mascotasmascotas/js/jquery-1.10.1.min.js') }}"></script>
+      <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+      </div>
+      </div>
+    </body>
+</html>
