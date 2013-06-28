@@ -1,9 +1,9 @@
 {% extends "::base.html.twig" %}
-   {% block titulo%} <h1 class="text-center">Agregar una Mascota</h1>{%endblock%}
+   {% block titulo%}<h1 align="center">Agregar una Mascota</h1>{%endblock%}
    {% block body %}
-   <div class="text-center">
-    <form action="{{ path('mascota_create') }}" method="post" {{ form_enctype(form) }} style="color: blue">
-        {{ form_widget(form) }}
+   <div align="center" style="central">
+    <form action="{{ path('mascota_create') }}" method="post" class="text-center" {{ form_enctype(form) }} style="color: blue">
+        <div align="center">{{ form_widget(form) }}</div>
         <p>
             <button type="submit" class="btn-primary">agregar</button>
         </p>

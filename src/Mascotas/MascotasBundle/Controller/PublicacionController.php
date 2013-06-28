@@ -73,7 +73,7 @@ class PublicacionController extends Controller
     {
         $entity = new Publicacion();
         $form   = $this->createForm(new PublicacionType(), $entity);
-
+        
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
@@ -162,11 +162,12 @@ class PublicacionController extends Controller
 
         return array(
             'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            //'edit_form'   => $editForm->createView(),
+            //'delete_form' => $deleteForm->createView(),
         );
     }
-
+    
+    
     /**
      * Deletes a Publicacion entity.
      *

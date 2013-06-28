@@ -1,7 +1,7 @@
 <?php
 
 namespace Mascotas\MascotasBundle\Entity;
-
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +26,9 @@ class Publicacion
      *
      * @ORM\Column(name="usuario", type="string", length=255)
      */
+     /**
+     * @Assert\NotBlank()
+     */
     private $usuario;
 
    
@@ -33,6 +36,9 @@ class Publicacion
      * @var string
      *
      * @ORM\Column(name="tipo", type="string", length=255)
+     */
+     /**
+     * @Assert\NotBlank()
      */
     private $tipo;
 
@@ -48,7 +54,7 @@ class Publicacion
      *
      * @ORM\Column(name="lugar", type="string", length=255)
      */
-    private $lugar;
+    private $aviso;
 
     /**
      * @var string
@@ -56,7 +62,13 @@ class Publicacion
      * @ORM\Column(name="foto", type="string", length=255)
      */
     private $foto;
-
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="contacto", type="string", length=255)
+     */
+    private $contacto;
 
     /**
      * Get id
@@ -140,24 +152,24 @@ class Publicacion
     /**
      * Set lugar
      *
-     * @param string $lugar
+     * @param string $aviso
      * @return Publicacion
      */
-    public function setLugar($lugar)
+    public function setAviso($aviso)
     {
-        $this->lugar = $lugar;
+        $this->aviso = $aviso;
 
         return $this;
     }
 
     /**
-     * Get lugar
+     * Get aviso
      *
      * @return string 
      */
-    public function getLugar()
+    public function getAviso()
     {
-        return $this->lugar;
+        return $this->aviso;
     }
 
     /**
@@ -181,5 +193,28 @@ class Publicacion
     public function getFoto()
     {
         return $this->foto;
+    }
+    
+     /**
+     * Set foto
+     *
+     * @param string $contacto
+     * @return Publicacion
+     */
+    public function setContacto($contacto)
+    {
+        $this->contacto = $contacto;
+
+        return $this;
+    }
+
+    /**
+     * Get contacto
+     *
+     * @return string 
+     */
+    public function getContacto()
+    {
+        return $this->contacto;
     }
 }

@@ -560,16 +560,34 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
                 // _publicacionNew
                 if ($pathinfo === '/mascotas/publicacion/new') {
-                    return array (  '_PublicacionController' => 'MascotasMascotasBundle:publicacion:new',  '_route' => '_publicacionNew',);
+                    return array (  '_PublicacionController' => 'MascotasMascotasBundle:Publicacion:new',  '_route' => '_publicacionNew',);
                 }
 
             }
 
+            // comentarioNew
+            if ($pathinfo === '/mascotas/comentario/new') {
+                return array (  '_PublicacionController' => 'MascotasMascotasBundle:Comentario:new',  '_route' => 'comentarioNew',);
+            }
+
+            // registro
+            if ($pathinfo === '/mascotas/usuario/new') {
+                return array (  '_UsuarioController' => 'MascotasMascotasBundle:Usuario:new',  '_route' => 'registro',);
+            }
+
         }
 
-        // registro
-        if ($pathinfo === '/registro') {
-            return array (  '_UsuarioController' => 'MascotasMascotasBundle:Usuario:new',  '_route' => 'registro',);
+        if (0 === strpos($pathinfo, '/login')) {
+            // login
+            if ($pathinfo === '/login') {
+                return array (  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\SeguridadController::loginAction',  '_route' => 'login',);
+            }
+
+            // login_check
+            if ($pathinfo === '/login_check') {
+                return array('_route' => 'login_check');
+            }
+
         }
 
         // _mascotaNew

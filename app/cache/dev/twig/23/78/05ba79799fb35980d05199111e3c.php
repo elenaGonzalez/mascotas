@@ -30,15 +30,16 @@ class __TwigTemplate_237805ba79799fb35980d05199111e3c extends Twig_Template
         // line 4
         echo "<div class=\"text-center\">
     <h3>Crear una Nueva Publicacion</h3>
-
+    <h5 class=\"text-info\"><br>Si Perdiste a tu mascota, en el campo \"tipo\" coloca:Perdido.</br>
+        <br>Si has encotrado una mascota en el campo \"tipo\" coloca: Encontrado.</br></h5>
     <form action=\"";
-        // line 7
+        // line 8
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion_create"), "html", null, true);
         echo "\" method=\"post\" ";
         echo $this->env->getExtension('form')->renderer->searchAndRenderBlock((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), 'enctype');
         echo ">
         ";
-        // line 8
+        // line 9
         echo $this->env->getExtension('form')->renderer->searchAndRenderBlock((isset($context["form"]) ? $context["form"] : $this->getContext($context, "form")), 'widget');
         echo "
         <p>
@@ -49,7 +50,7 @@ class __TwigTemplate_237805ba79799fb35980d05199111e3c extends Twig_Template
         <ul class=\"record_actions\">
     <li>
         <a href=\"";
-        // line 16
+        // line 17
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion"), "html", null, true);
         echo "\">
             Volver a la Lista
@@ -72,6 +73,6 @@ class __TwigTemplate_237805ba79799fb35980d05199111e3c extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  53 => 16,  42 => 8,  36 => 7,  31 => 4,  28 => 3,);
+        return array (  54 => 17,  43 => 9,  37 => 8,  31 => 4,  28 => 3,);
     }
 }

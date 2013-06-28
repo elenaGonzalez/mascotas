@@ -57,13 +57,6 @@ class Mascota
     private $descripcion;
 
     /**
-     * @ORM\OneToMany(targetEntity="Usuario", mappedBy="mascota")
-     */
-   
-    private $usuario;
-
-
-    /**
      * Get id
      *
      * @return integer 
@@ -186,28 +179,5 @@ class Mascota
     public function getDescripcion()
     {
         return $this->descripcion;
-    }
-
-    /**
-     * Set usuario
-     *
-     * @param string $usuario
-     * @return Mascota
-     */
-    public function setUsuario($usuario)
-    {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return string 
-     */
-    public function getUsuario()
-    {
-        return $this->usuario;
     }
 }

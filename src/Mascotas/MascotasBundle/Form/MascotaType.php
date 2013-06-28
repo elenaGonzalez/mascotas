@@ -11,12 +11,11 @@ class MascotaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nombre')
+          ->add('nombre')
             ->add('raza')
             ->add('edad')
             ->add('foto')
             ->add('descripcion')
-            ->add('usuario')
         ;
     }
 

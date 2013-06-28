@@ -12,10 +12,14 @@ class PublicacionType extends AbstractType
     {
         $builder
             ->add('usuario')
-            ->add('tipo')
+            //->add('tipo','textarea')
+            ->add('tipo','choice', array(
+    'choices' => array('e' => 'Encontrado', 'p' => 'Perdido')
+))
             ->add('fechapublicacion')
-            ->add('lugar')
+            ->add('aviso','textarea')
             ->add('foto')
+            ->add('contacto','textarea')
         ;
     }
 

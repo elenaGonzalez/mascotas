@@ -3,7 +3,8 @@
 {% block body %}
 <div class="text-center">
     <h3>Crear una Nueva Publicacion</h3>
-
+    <h5 class="text-info"><br>Si Perdiste a tu mascota, en el campo "tipo" coloca:Perdido.</br>
+        <br>Si has encotrado una mascota en el campo "tipo" coloca: Encontrado.</br></h5>
     <form action="{{ path('publicacion_create') }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
         <p>

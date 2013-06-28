@@ -1,33 +1,39 @@
 {% extends '::base.html.twig' %}
 
-{% block body -%}
+{% block body %}
+<div class="text-center" style="align:center">
     <h1>Publicacion</h1>
-
-    <table class="record_properties">
+    <br>Estas son las Ultimas Publicaciones</br>
+    <br>Ayudanos a encotrar a estas mascotas con sus duenos</br>
+    <table class="record_properties table-striped table-bordered text-center colspan12">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ entity.id }}</td>
+                <th class="text-center">Id</th>
+                <td class="text-center">{{ entity.id }}</td>
             </tr>
             <tr>
-                <th>Usuario</th>
-                <td>{{ entity.usuario }}</td>
+                <th class="text-center">Usuario</th>
+                <td class="text-center">{{ entity.usuario }}</td>
             </tr>
             <tr>
-                <th>Tipo</th>
-                <td>{{ entity.tipo }}</td>
+                <th class="text-center">Tipo</th>
+                <td class="text-center">{{ entity.tipo }}</td>
             </tr>
             <tr>
-                <th>Fechapublicacion</th>
-                <td>{{ entity.fechapublicacion|date('Y-m-d H:i:s') }}</td>
+                <th class="text-center">Fechapublicacion</th>
+                <td class="text-center">{{ entity.fechapublicacion|date('Y-m-d H:i:s') }}</td>
             </tr>
             <tr>
-                <th>Lugar</th>
-                <td>{{ entity.lugar }}</td>
+                <th class="text-center">Aviso</th>
+                <td class="text-center">{{ entity.aviso }}</td>
             </tr>
             <tr>
-                <th>Foto</th>
-                <td>{{ entity.foto }}</td>
+                <th class="text-center">Foto</th>
+                <td class="text-center">{{ entity.foto }}</td>
+            </tr>
+            <tr>
+                <th class="text-center">Contacto</th>
+                <td class="text-center">{{ entity.contacto }}</td>
             </tr>
         </tbody>
     </table>
@@ -35,20 +41,21 @@
         <ul class="record_actions">
     <li>
         <a href="{{ path('publicacion') }}">
-            Back to the list
+            vover a la Lista
         </a>
     </li>
     <li>
         <a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">
-            Edit
+            Editar
         </a>
     </li>
     <li>
         <form action="{{ path('publicacion_delete', { 'id': entity.id }) }}" method="post">
             <input type="hidden" name="_method" value="DELETE" />
             {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
+            <button type="submit">Borrar</button>
         </form>
     </li>
 </ul>
+</div>
 {% endblock %}

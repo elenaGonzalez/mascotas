@@ -87,6 +87,7 @@
   'MascotasMascotasBundle:Publicacion:index.html.twig' => 'C:\\xampp18\\htdocs\\Mascotas\\src\\Mascotas\\MascotasBundle/Resources/views/Publicacion/index.html.twig',
   'MascotasMascotasBundle:Publicacion:new.html.twig' => 'C:\\xampp18\\htdocs\\Mascotas\\src\\Mascotas\\MascotasBundle/Resources/views/Publicacion/new.html.twig',
   'MascotasMascotasBundle:Publicacion:show.html.twig' => 'C:\\xampp18\\htdocs\\Mascotas\\src\\Mascotas\\MascotasBundle/Resources/views/Publicacion/show.html.twig',
+  'MascotasMascotasBundle:Seguridad:login.html.twig' => 'C:\\xampp18\\htdocs\\Mascotas\\src\\Mascotas\\MascotasBundle/Resources/views/Seguridad/login.html.twig',
   'MascotasMascotasBundle:Usuario:edit.html.twig' => 'C:\\xampp18\\htdocs\\Mascotas\\src\\Mascotas\\MascotasBundle/Resources/views/Usuario/edit.html.twig',
   'MascotasMascotasBundle:Usuario:index.html.twig' => 'C:\\xampp18\\htdocs\\Mascotas\\src\\Mascotas\\MascotasBundle/Resources/views/Usuario/index.html.twig',
   'MascotasMascotasBundle:Usuario:new.html.twig' => 'C:\\xampp18\\htdocs\\Mascotas\\src\\Mascotas\\MascotasBundle/Resources/views/Usuario/new.html.twig',

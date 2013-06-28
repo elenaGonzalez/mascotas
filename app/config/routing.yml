@@ -9,15 +9,23 @@ _publicacion:
 
 _publicacionNew:
     pattern:  /mascotas/publicacion/new
-    defaults: { _PublicacionController: MascotasMascotasBundle:publicacion:new }
-    
+    defaults: { _PublicacionController: MascotasMascotasBundle:Publicacion:new }
+  
+comentarioNew:
+    pattern:  /mascotas/comentario/new
+    defaults: { _PublicacionController: MascotasMascotasBundle:Comentario:new }
+
 registro:
-    pattern:  /registro
+    pattern:  /mascotas/usuario/new
     defaults: { _UsuarioController: 'MascotasMascotasBundle:Usuario:new' }
-    
+
+login:
+   pattern: /login
+   defaults: { _controller:MascotasMascotasBundle:Seguridad:login }
+   
+login_check:
+  pattern: /login_check
+   
 _mascotaNew:
     pattern:  /mascotas/mascota/new
     defaults: { _MascotaController: MascotasMascotasBundle:mascota:new }
-    
- 
- 

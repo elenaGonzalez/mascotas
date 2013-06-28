@@ -14,10 +14,10 @@ class UsuarioType extends AbstractType
             ->add('nombre')
             ->add('apellido')
             ->add('tel')
-            ->add('email')
+            ->add('email','email')
             ->add('usuario')
-            ->add('password')
-            ->add('mascota')
+            ->add('password','password')
+            //->add('mascota')
         ;
     }
 

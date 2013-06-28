@@ -1,6 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
+<div class="text-center">
     <h1>Publicacion edit</h1>
 
     <form action="{{ path('publicacion_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
@@ -25,4 +26,5 @@
         </form>
     </li>
 </ul>
+</div>
 {% endblock %}
