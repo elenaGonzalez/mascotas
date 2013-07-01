@@ -2,6 +2,7 @@
 
 namespace Mascotas\MascotasBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -69,7 +70,24 @@ class Publicacion
      * @ORM\Column(name="contacto", type="string", length=255)
      */
     private $contacto;
+    
+     /**
+     *
+     * @ORM\OneToMany(targetEntity="Comentario", mappedBy="publicacion")
+     */
+    private $comentarios;
 
+    public function __construct() {
+        $this-> comentarios = new ArrayCollection();
+    }
+    
+    
+    protected $miscomentarios = array();
+
+    public function addMiscomentarios(Comment $miscomentarios)
+    {
+        $this->comentarios[] = $miscommentarios;
+    }
     /**
      * Get id
      *
@@ -216,5 +234,14 @@ class Publicacion
     public function getContacto()
     {
         return $this->contacto;
+    }
+    
+    public function __toString() {
+        return $this->getAviso();
+    }
+    
+     public function getMiscomentarios()
+    {
+        return $this->comments;
     }
 }

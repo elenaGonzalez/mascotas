@@ -1,6 +1,8 @@
 {% extends '::base.html.twig' %}
 
 {% block body -%}
+<div class="text-center">
+   <title class="h1">{% block title %}Comentar{% endblock %}</title>
     <h1>Comentario</h1>
 
     <form action="{{ path('comentario_create') }}" method="post" {{ form_enctype(form) }}>
@@ -9,7 +11,7 @@
             <button type="submit" class="btn-primary">Crear</button>
         </p>
     </form>
-
+   {% if is_granted('ROLE_ADMIN') %}
         <ul class="record_actions">
     <li>
         <a href="{{ path('comentario') }}">
@@ -17,4 +19,6 @@
         </a>
     </li>
 </ul>
+    {% endif %}
+</div>
 {% endblock %}

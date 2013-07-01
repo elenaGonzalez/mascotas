@@ -1,13 +1,15 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
+ <title class="h1">{% block title %}Publicaciones{% endblock %}</title>
 <div class="text-center" style="margin: auto">
-    <h3>Publicaciones</h3>
-    <br>Estas son las Ultimas Publicaciones</br>
-    <br>Ayudanos a encotrar a estas mascotas con sus duenos</br>
-    <table class="records_list table-striped span12">
+    <h1 class="text-info">Publicaciones</h1>
+    <h4>Estas son las Publicaciones</h4>
+    <h4>Ayudanos a que estas mascotas puedan volver a sus hogares.</h4>
+    <p><br></br></p>
+    <table class="container records_list table-striped" style="alignment:central">
         <thead>
-            <tr>
+            <tr class="text-center">
                 <th class="text-center">Id</th>
                 <th class="text-center">Usuario</th>
                 <th class="text-center">Tipo</th>
@@ -16,6 +18,7 @@
                 <th class="text-center">Foto</th>
                 <th class="text-center">Contacto</th>
                 <th class="text-center">Acciones</th>
+                <th class="text-center">Mis comentarios</th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +44,9 @@
                  {% endif%}
                     <li class="text-center">
                          <a href="{{ path('comentarioNew', { 'id': entity.id }) }}">comentar</a>
+                    </li>
+                    <li class="text-center">
+                         <a href="{{ path('miscomentarios', { 'id': entity.id }) }}">mis comentarios</a>
                     </li>
                  </ul>
                 </td>

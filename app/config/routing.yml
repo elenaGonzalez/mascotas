@@ -2,7 +2,6 @@ mascotas_mascotas:
     resource: "@MascotasMascotasBundle/Controller/"
     type:     annotation
     prefix:   /mascotas
-  
 _publicacion:
     pattern:  /mascotas/publicacion
     defaults: { _PublicacionController: MascotasMascotasBundle:publicacion}
@@ -17,7 +16,7 @@ comentarioNew:
 
 registro:
     pattern:  /mascotas/usuario/new
-    defaults: { _UsuarioController: 'MascotasMascotasBundle:Usuario:new' }
+    defaults: { _UsuarioController: MascotasMascotasBundle:Usuario:new }
 
 login:
    pattern: /login
@@ -26,6 +25,9 @@ login:
 login_check:
   pattern: /login_check
    
+logout:
+    pattern:   /logout
+
 _mascotaNew:
     pattern:  /mascotas/mascota/new
     defaults: { _MascotaController: MascotasMascotasBundle:mascota:new }

@@ -12,7 +12,6 @@ class PublicacionType extends AbstractType
     {
         $builder
             ->add('usuario')
-            //->add('tipo','textarea')
             ->add('tipo','choice', array(
     'choices' => array('e' => 'Encontrado', 'p' => 'Perdido')
 ))

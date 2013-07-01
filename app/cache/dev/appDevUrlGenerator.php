@@ -75,6 +75,7 @@ class appDevUrlGenerator extends Symfony\Component\Routing\Generator\UrlGenerato
         'registro' => array (  0 =>   array (  ),  1 =>   array (    '_UsuarioController' => 'MascotasMascotasBundle:Usuario:new',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/mascotas/usuario/new',    ),  ),  4 =>   array (  ),),
         'login' => array (  0 =>   array (  ),  1 =>   array (    '_controller' => 'Mascotas\\MascotasBundle\\Controller\\SeguridadController::loginAction',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/login',    ),  ),  4 =>   array (  ),),
         'login_check' => array (  0 =>   array (  ),  1 =>   array (  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/login_check',    ),  ),  4 =>   array (  ),),
+        'logout' => array (  0 =>   array (  ),  1 =>   array (  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/logout',    ),  ),  4 =>   array (  ),),
         '_mascotaNew' => array (  0 =>   array (  ),  1 =>   array (    '_MascotaController' => 'MascotasMascotasBundle:mascota:new',  ),  2 =>   array (  ),  3 =>   array (    0 =>     array (      0 => 'text',      1 => '/mascotas/mascota/new',    ),  ),  4 =>   array (  ),),
     );
 

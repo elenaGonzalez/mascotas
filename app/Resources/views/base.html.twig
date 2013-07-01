@@ -2,6 +2,7 @@
     <html lang="es">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title class="h1">{% block title %}Inicio{% endblock %}</title>
         {% block stylesheets %} <LINK href="{{asset ('bundles/mascotasmascotas/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
             <LINK href="{{asset ('bundles/mascotasmascotas/css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css"></a>
@@ -22,7 +23,7 @@
            <div class="container-fluid">
            <div class="row-fluid">
                <ul>
-                  <div class="span2"><a class="brand"><href="#">Sistema Mascotas</a></div>
+                  <div class="span2"><a class="brand"><href="#"><i class="icon-home icon-white"></i>Sistema Mascotas</a></div>
                   <div class="span2"><li class="brand"><a href="{{ path('_publicacion')}}">Ver las Publicaciones</a></li></div>
                   <div class="span2"><li class="brand"> 
                          <a href="{{ path('_publicacionNew')  }}">Realizar una Publicacion</li></div>
@@ -31,7 +32,7 @@
                    </li></div>
                   <div class="span2"><li class="brand">
                     {% if is_granted('ROLE_USER') %} 
-                        Registrarse
+                        <a href="{{ path('logout')}}">Salir</a>
                     {% else%}
                          <a href="{{ path('registro')}}">Registrarse</a>
                     {% endif%}</a></li></div>
@@ -49,9 +50,12 @@
      {% block body%}
      <div class="span10 text-center">
     </div>
+      {% block script %}
       <script src="{{asset ('bundles/mascotasmascotas/js/jquery-1.10.1.min.js') }}"></script>
       <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.min.js') }}"></script>
+      <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.js') }}"></script>
         {% endblock %}
+      {% endblock %}
       </div>
       </div>
     </body>

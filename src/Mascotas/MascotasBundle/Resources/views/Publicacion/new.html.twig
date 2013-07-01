@@ -1,6 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
+<title class="h1">{% block title %}Nueva Publicacion{% endblock %}</title>
 <div class="text-center">
     <h3>Crear una Nueva Publicacion</h3>
     <h5 class="text-info"><br>Si Perdiste a tu mascota, en el campo "tipo" coloca:Perdido.</br>
@@ -11,7 +12,7 @@
             <button type="submit" class="btn-primary">publicar</button>
         </p>
     </form>
-
+         {% if is_granted('ROLE_ADMIN') %}
         <ul class="record_actions">
     <li>
         <a href="{{ path('publicacion') }}">
@@ -19,5 +20,6 @@
         </a>
     </li>
 </ul>
+     {% endif%}
 </div>
 {% endblock %}

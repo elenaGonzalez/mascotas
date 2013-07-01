@@ -3,6 +3,8 @@
 namespace Mascotas\MascotasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 
 /**
  * Usuario
@@ -10,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Mascotas\MascotasBundle\Entity\UsuarioRepository")
  */
-class Usuario
-{
+class Usuario implements UserInterface, \Serializable, EquatableInterface {
+
     /**
      * @var integer
      *
@@ -72,14 +74,17 @@ class Usuario
      */
     private $mascota;
 
+    /**
+     * @ORM\Column(name="salt", type="string", length=32)
+     */
+    private $salt;
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -89,8 +94,7 @@ class Usuario
      * @param string $nombre
      * @return Usuario
      */
-    public function setNombre($nombre)
-    {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
 
         return $this;
@@ -101,8 +105,7 @@ class Usuario
      *
      * @return string 
      */
-    public function getNombre()
-    {
+    public function getNombre() {
         return $this->nombre;
     }
 
@@ -112,8 +115,7 @@ class Usuario
      * @param string $apellido
      * @return Usuario
      */
-    public function setApellido($apellido)
-    {
+    public function setApellido($apellido) {
         $this->apellido = $apellido;
 
         return $this;
@@ -124,8 +126,7 @@ class Usuario
      *
      * @return string 
      */
-    public function getApellido()
-    {
+    public function getApellido() {
         return $this->apellido;
     }
 
@@ -135,8 +136,7 @@ class Usuario
      * @param string $tel
      * @return Usuario
      */
-    public function setTel($tel)
-    {
+    public function setTel($tel) {
         $this->tel = $tel;
 
         return $this;
@@ -147,8 +147,7 @@ class Usuario
      *
      * @return string 
      */
-    public function getTel()
-    {
+    public function getTel() {
         return $this->tel;
     }
 
@@ -158,8 +157,7 @@ class Usuario
      * @param string $email
      * @return Usuario
      */
-    public function setEmail($email)
-    {
+    public function setEmail($email) {
         $this->email = $email;
 
         return $this;
@@ -170,8 +168,7 @@ class Usuario
      *
      * @return string 
      */
-    public function getEmail()
-    {
+    public function getEmail() {
         return $this->email;
     }
 
@@ -181,8 +178,7 @@ class Usuario
      * @param string $usuario
      * @return Usuario
      */
-    public function setUsuario($usuario)
-    {
+    public function setUsuario($usuario) {
         $this->usuario = $usuario;
 
         return $this;
@@ -193,8 +189,7 @@ class Usuario
      *
      * @return string 
      */
-    public function getUsuario()
-    {
+    public function getUsuario() {
         return $this->usuario;
     }
 
@@ -204,8 +199,7 @@ class Usuario
      * @param string $password
      * @return Usuario
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = $password;
 
         return $this;
@@ -216,8 +210,7 @@ class Usuario
      *
      * @return string 
      */
-    public function getPassword()
-    {
+    public function getPassword() {
         return $this->password;
     }
 
@@ -227,21 +220,69 @@ class Usuario
      * @param \Mascotas\MascotasBundle\Entity\Mascota $mascota
      *  @return Usuario
      */
-    
-    public function setMascota(\Mascota\MascotaBundle\Entity\Mascota $mascota = null)
-    {
+    public function setMascota(\Mascota\MascotaBundle\Entity\Mascota $mascota = null) {
         $this->mascota = $mascota;
 
         return $this;
     }
-    
+
     /**
      * Get mascota
      *
      * @return \Mascotas\MascotasBundle\Entity\Mascota 
      */
-    public function getMascota()
-    {
+    public function getMascota() {
         return $this->mascota;
     }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     * @return Usuario
+     */
+    public function setSalt($salt) {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string 
+     */
+    public function getSalt() {
+        //return $this->salt;
+        return '';
+    }
+
+    public function serialize() {
+        return serialize(array($this->id, ));
+    }
+
+    public function unserialize($serialized) {
+        list($this->id, ) = unserialize($serialized);
+    }
+
+    public function eraseCredentials() {
+        
+    }
+
+    public function getRoles() {
+        return array('ROLE_USER', );
+    }
+
+    public function getUsername() {
+        return $this->getUsuario();
+    }
+    
+    public function __construct() {
+        $this->setSalt(md5(uniqid(null, true)));
+    }
+
+    public function isEqualTo(UserInterface $user) {
+        return  $this->id === $user->getId();
+    }
+
 }
