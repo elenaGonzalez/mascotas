@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Mascotas\MascotasBundle\Entity\MascotaRepository")
  */
-class Mascota
-{
+class Mascota {
+
     /**
      * @var integer
      *
@@ -57,12 +57,16 @@ class Mascota
     private $descripcion;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="mascotas", cascade={"persist"})
+     */
+    private $usuario;
+
+    /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -72,8 +76,7 @@ class Mascota
      * @param string $nombre
      * @return Mascota
      */
-    public function setNombre($nombre)
-    {
+    public function setNombre($nombre) {
         $this->nombre = $nombre;
 
         return $this;
@@ -84,8 +87,7 @@ class Mascota
      *
      * @return string 
      */
-    public function getNombre()
-    {
+    public function getNombre() {
         return $this->nombre;
     }
 
@@ -95,8 +97,7 @@ class Mascota
      * @param string $raza
      * @return Mascota
      */
-    public function setRaza($raza)
-    {
+    public function setRaza($raza) {
         $this->raza = $raza;
 
         return $this;
@@ -107,8 +108,7 @@ class Mascota
      *
      * @return string 
      */
-    public function getRaza()
-    {
+    public function getRaza() {
         return $this->raza;
     }
 
@@ -118,8 +118,7 @@ class Mascota
      * @param string $edad
      * @return Mascota
      */
-    public function setEdad($edad)
-    {
+    public function setEdad($edad) {
         $this->edad = $edad;
 
         return $this;
@@ -130,8 +129,7 @@ class Mascota
      *
      * @return string 
      */
-    public function getEdad()
-    {
+    public function getEdad() {
         return $this->edad;
     }
 
@@ -141,8 +139,7 @@ class Mascota
      * @param string $foto
      * @return Mascota
      */
-    public function setFoto($foto)
-    {
+    public function setFoto($foto) {
         $this->foto = $foto;
 
         return $this;
@@ -153,8 +150,7 @@ class Mascota
      *
      * @return string 
      */
-    public function getFoto()
-    {
+    public function getFoto() {
         return $this->foto;
     }
 
@@ -164,8 +160,7 @@ class Mascota
      * @param string $descripcion
      * @return Mascota
      */
-    public function setDescripcion($descripcion)
-    {
+    public function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
 
         return $this;
@@ -176,8 +171,31 @@ class Mascota
      *
      * @return string 
      */
-    public function getDescripcion()
-    {
+    public function getDescripcion() {
         return $this->descripcion;
+    }
+
+
+    /**
+     * Set usuario
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Usuario $usuario
+     * @return Mascota
+     */
+    public function setUsuario(\Mascotas\MascotasBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Mascotas\MascotasBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }

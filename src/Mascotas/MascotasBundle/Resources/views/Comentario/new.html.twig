@@ -1,14 +1,11 @@
-{% extends '::base.html.twig' %}
-
-{% block body -%}
-<div class="text-center">
+<div class="span5"><p></p></div>
+<div class="span3 well container text-center">
+   <legend>Ingresa un comentario</legend>
    <title class="h1">{% block title %}Comentar{% endblock %}</title>
-    <h1>Comentario</h1>
-
-    <form action="{{ path('comentario_create') }}" method="post" {{ form_enctype(form) }}>
+    <form action="{{ path('comentario_create', { 'publicacion_id' : publicacion.id }) }}" method="post" {{ form_enctype(form) }}>
         {{ form_widget(form) }}
         <p>
-            <button type="submit" class="btn-primary">Crear</button>
+            <button type="submit" class="btn-primary">Comentar</button>
         </p>
     </form>
    {% if is_granted('ROLE_ADMIN') %}
@@ -20,5 +17,6 @@
     </li>
 </ul>
     {% endif %}
-</div>
-{% endblock %}
+  </div>
+
+

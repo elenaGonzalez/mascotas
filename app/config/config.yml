@@ -63,3 +63,13 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     spool:     { type: memory }
+
+translator: ~
+
+fos_user:
+    # tipo de ORM/ODB que utilizas (también puede ser 'mongodb', 'couchdb' y 'propel')
+    db_driver:     orm
+    # el nombre de tu firewall
+    firewall_name: secured_area
+    # el namespace de tu clase 'User' específica
+    user_class:    Mascotas\MascotasBundle\Entity\Usuario

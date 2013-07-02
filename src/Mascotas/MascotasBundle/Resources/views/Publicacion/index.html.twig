@@ -7,30 +7,20 @@
     <h4>Estas son las Publicaciones</h4>
     <h4>Ayudanos a que estas mascotas puedan volver a sus hogares.</h4>
     <p><br></br></p>
-    <table class="container records_list table-striped" style="alignment:central">
+    <table class="container table-bordered table-striped">
         <thead>
             <tr class="text-center">
                 <th class="text-center">Id</th>
-                <th class="text-center">Usuario</th>
-                <th class="text-center">Tipo</th>
-                <th class="text-center">Fecha de publicacion</th>
                 <th class="text-center">Aviso</th>
-                <th class="text-center">Foto</th>
-                <th class="text-center">Contacto</th>
                 <th class="text-center">Acciones</th>
-                <th class="text-center">Mis comentarios</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
             <tr style="central">
-                <td class="text-center"><a href="{{ path('publicacion_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                <td class="text-center">{{ entity.usuario }}</td>
-                <td class="text-center">{{ entity.tipo }}</td>
-                <td class="text-center">{% if entity.fechapublicacion %}{{ entity.fechapublicacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td class="text-center">{{ entity.id }}</td>
                 <td class="text-center">{{ entity.aviso }}</td>
-                <td class="text-center">{{ entity.foto }}</td>
-                <td class="text-center">{{ entity.contacto }}</td>
+                
                 <td class="text-center">
                 <ul>
                      {% if is_granted('ROLE_ADMIN') %}
@@ -41,15 +31,10 @@
                         <a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">editar</a>
                     </li>
                 </ul>
-                 {% endif%}
-                    <li class="text-center">
-                         <a href="{{ path('comentarioNew', { 'id': entity.id }) }}">comentar</a>
-                    </li>
-                    <li class="text-center">
-                         <a href="{{ path('miscomentarios', { 'id': entity.id }) }}">mis comentarios</a>
-                    </li>
-                 </ul>
-                </td>
+                 </td>
+                 {% endif %}
+                         <a href="{{ path('publicacion_show', { 'id': entity.id }) }}">ver Mas</a>
+                    </td>
             </tr>
         {% endfor %}
       </tbody>

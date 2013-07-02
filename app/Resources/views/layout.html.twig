@@ -2,6 +2,7 @@
     <html lang="es">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title class="h1">{% block title %}Inicio{% endblock %}</title>
         {% block stylesheets %} <LINK href="{{asset ('bundles/mascotasmascotas/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
             <LINK href="{{asset ('bundles/mascotasmascotas/css/bootstrap-responsive.min.css') }}" rel="stylesheet" type="text/css"></a>
@@ -9,20 +10,55 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block header%}
-            <div class="hero-unit">Sistema Mascotas</div>
+  {% block header%}
+         <div class="hero-unit badge-warning">
+            <div class="header-logo text-center"><img src="{{
+     asset('bundles/mascotasmascotas/img/perrogato.jpg')
+  }}"/><h1 class="text-center bar">Sistema Mascotas</h1></div></div>
+  
+  <div class="row-fluid">
+  <div class="span12">
+      <div class="navbar navbar-fixed-top navbar-inner">
+        <div class="navbar-inner">
+           <div class="container-fluid">
+           <div class="row-fluid">
+               <ul>
+                  <div class="span2"><a class="brand"><href="#"><i class="icon-home icon-white"></i>Sistema Mascotas</a></div>
+                  <div class="span2"><li class="brand"><a href="{{ path('_publicacion')}}">Ver las Publicaciones</a></li></div>
+                  <div class="span2"><li class="brand"> 
+                         <a href="{{ path('_publicacionNew')  }}">Realizar una Publicacion</li></div>
+                  <div class="span2"><li class="brand">
+                          <a href="{{ path('_mascotaNew')}}">Agregar a tu mascota</a>
+                   </li></div>
+                  <div class="span2"><li class="brand">
+                    {% if is_granted('ROLE_USER') %} 
+                        <a href="{{ path('logout')}}">Salir</a>
+                    {% else%}
+                         <a href="{{ path('registro')}}">Registrarse</a>
+                    {% endif%}</a></li></div>
+
+               </ul>
+            </div>
+      </div>
+   </div>
+   </div>
+  </div>
+  
         {% endblock %}
-        
-        {% block titulo%}<h1 align="center"></h1>{%endblock%}    
-        {% block body%}
-  <div class="container-fluid">
-<div class="span10<">
-    <h1 align="center"></h1>
-     </div>
+ 
+     {% block titulo%}{%endblock%}
+     {% block body%}
+     <div class="span10 text-center">
+    </div>
+      {% block script %}
       <script src="{{asset ('bundles/mascotasmascotas/js/jquery-1.10.1.min.js') }}"></script>
       <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.min.js') }}"></script>
+      <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.js') }}"></script>
         {% endblock %}
+      {% endblock %}
+      </div>
       </div>
     </body>
 </html>
+
 

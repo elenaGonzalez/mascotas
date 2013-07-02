@@ -38,45 +38,58 @@ class ComentarioController extends Controller
     /**
      * Creates a new Comentario entity.
      *
-     * @Route("/", name="comentario_create")
+     * @Route("/create/{publicacion_id}", name="comentario_create")
      * @Method("POST")
      * @Template("MascotasMascotasBundle:Comentario:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
+    public function createAction( $publicacion_id){
         $entity  = new Comentario();
+        $publicacion = $this->getPublication($publicacion_id);
+        $entity->setPublicacion($publicacion);
         $form = $this->createForm(new ComentarioType(), $entity);
+        
+        $request = $this->getRequest();
         $form->bind($request);
-
+        
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('comentario_show', array('id' => $entity->getId())));
+            
+            //return $this->redirect($this->generateUrl('comentario_show', array('id' => $entity->getId())));
+            return $this->redirect(
+                            $this->generateUrl('publicacion_show', array(
+                                'id' => $entity->getPublicacion()->getId() .
+                                '#comentario-' . $entity->getId()
+                    )));
         }
-
+        
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
+            'publicacion' => $publicacion,
         );
     }
 
     /**
      * Displays a form to create a new Comentario entity.
      *
-     * @Route("/new", name="comentario_new")
+     * @Route("/new/{publicacion_id}", name="comentario_new")
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
+    public function newAction($publicacion_id)
     {
-        $entity = new Comentario();
+        $entity = new Comentario();        
+        $entity->setPublicacion($this->getPublication($publicacion_id));
+        
+        
         $form   = $this->createForm(new ComentarioType(), $entity);
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form'   => $form->createView(),            
+            'publicacion' => $entity->getPublicacion(),
         );
     }
 
@@ -207,4 +220,17 @@ class ComentarioController extends Controller
             ->getForm()
         ;
     }
+    
+    private function getPublication($id){        
+        $em = $this->getDoctrine()->getManager();
+        $publicacion = $em->getRepository('MascotasMascotasBundle:Publicacion')->find($id);
+        
+        if (!$publicacion){
+            throw $this->createNotFoundException('No se pude recuperar la publicación para este comentario.');
+        }
+        
+        return $publicacion;
+    }
+    
+    
 }

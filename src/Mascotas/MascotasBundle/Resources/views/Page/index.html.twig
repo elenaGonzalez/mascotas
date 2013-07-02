@@ -1,0 +1,25 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    {% for publicacion in publicacioness %}
+        <article class="publicacion">
+            <div class="date"><time datetime="{{ blog.created|date('c') }}">{{ blog.created|date('l, F j, Y') }}</time></div>
+            <header>
+                <h2><a href="{{ path('BloggerBlogBundle_blog_show', { 'id': publicacion.id }) }}">{{ publicacion.title }}</a></h2>
+            </header>
+
+            <div class="snippet">
+                <p>{{ publicacion.publicacion(500) }}</p>
+                <p class="continue"><a href="{{ path('BloggerBlogBundle_blog_show', { 'id': blog.id }) }}">Continue reading...</a></p>
+            </div>
+
+            <footer class="meta">
+                <p>Comments: -</p>
+                <p>Posted by <span class="highlight">{{blog.author}}</span> at {{ blog.created|date('h:iA') }}</p>
+                <p>Tags: <span class="highlight">{{ blog.tags }}</span></p>
+            </footer>
+        </article>
+    {% else %}
+        <p>There are no blog entries for symblog</p>
+    {% endfor %}
+{% endblock %}

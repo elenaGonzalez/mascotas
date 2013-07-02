@@ -66,19 +66,28 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     private $password;
 
     /**
-     * @var string
-     *
-     * @ORM\ManyToOne(targetEntity="Mascota", inversedBy="usuario", cascade={"persist"})
-     * @ORM\JoinColumn(name="mascota_id", referencedColumnName="id"),
+     * 
+     * @ORM\OneToMany(targetEntity="Mascota", mappedBy="usuario")
      *
      */
-    private $mascota;
+    private $mascotas;
 
     /**
      * @ORM\Column(name="salt", type="string", length=32)
      */
     private $salt;
 
+       
+     /**    
+     * @ORM\OneToMany(targetEntity="Comentario", mappedBy="usuario")
+     */
+    private $comentarios;
+    
+     /**
+     * @ORM\Column(name="tipoUsuario", type="string", length=32)
+     */
+    private $tipoUsuario;
+    
     /**
      * Get id
      *
@@ -215,27 +224,6 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     }
 
     /**
-     * Set marca
-     *
-     * @param \Mascotas\MascotasBundle\Entity\Mascota $mascota
-     *  @return Usuario
-     */
-    public function setMascota(\Mascota\MascotaBundle\Entity\Mascota $mascota = null) {
-        $this->mascota = $mascota;
-
-        return $this;
-    }
-
-    /**
-     * Get mascota
-     *
-     * @return \Mascotas\MascotasBundle\Entity\Mascota 
-     */
-    public function getMascota() {
-        return $this->mascota;
-    }
-
-    /**
      * Set password
      *
      * @param string $password
@@ -253,8 +241,7 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
      * @return string 
      */
     public function getSalt() {
-        //return $this->salt;
-        return '';
+        return $this->salt;        
     }
 
     public function serialize() {
@@ -278,6 +265,9 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     }
     
     public function __construct() {
+        //$this->mascotas = new ArrayCollection();
+        //$this->comentarios = new ArrayCollection();
+        
         $this->setSalt(md5(uniqid(null, true)));
     }
 
@@ -285,4 +275,97 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
         return  $this->id === $user->getId();
     }
 
+
+    /**
+     * Add comentarios
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Comentario $comentarios
+     * @return Usuario
+     */
+    public function addComentario(\Mascotas\MascotasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios[] = $comentarios;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Mascotas\MascotasBundle\Entity\Comentario $comentarios)
+    {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios()
+    {
+        return $this->comentarios;
+    }
+    
+    public function __toString() {
+        return $this->getUsername();
+    }
+
+    /**
+     * Add mascotas
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Mascota $mascotas
+     * @return Usuario
+     */
+    public function addMascota(\Mascotas\MascotasBundle\Entity\Mascota $mascotas)
+    {
+        $this->mascotas[] = $mascotas;
+    
+        return $this;
+    }
+
+    /**
+     * Remove mascotas
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Mascota $mascotas
+     */
+    public function removeMascota(\Mascotas\MascotasBundle\Entity\Mascota $mascotas)
+    {
+        $this->mascotas->removeElement($mascotas);
+    }
+
+    /**
+     * Get mascotas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMascotas()
+    {
+        return $this->mascotas;
+    }
+
+    /**
+     * Set tipoUsuario
+     *
+     * @param string $tipoUsuario
+     * @return Usuario
+     */
+    public function setTipoUsuario($tipoUsuario)
+    {
+        $this->tipoUsuario = $tipoUsuario;
+    
+        return $this;
+    }
+
+    /**
+     * Get tipoUsuario
+     *
+     * @return string 
+     */
+    public function getTipoUsuario()
+    {
+        return $this->tipoUsuario;
+    }
 }

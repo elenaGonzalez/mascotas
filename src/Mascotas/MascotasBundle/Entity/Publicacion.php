@@ -1,6 +1,7 @@
 <?php
 
 namespace Mascotas\MascotasBundle\Entity;
+
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,8 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="Mascotas\MascotasBundle\Entity\PublicacionRepository")
  */
-class Publicacion
-{
+class Publicacion {
+
     /**
      * @var integer
      *
@@ -27,18 +28,20 @@ class Publicacion
      *
      * @ORM\Column(name="usuario", type="string", length=255)
      */
-     /**
+
+    /**
      * @Assert\NotBlank()
      */
     private $usuario;
 
-   
+
     /**
      * @var string
      *
      * @ORM\Column(name="tipo", type="string", length=255)
      */
-     /**
+
+    /**
      * @Assert\NotBlank()
      */
     private $tipo;
@@ -63,38 +66,30 @@ class Publicacion
      * @ORM\Column(name="foto", type="string", length=255)
      */
     private $foto;
-    
+
     /**
      * @var string
      *
      * @ORM\Column(name="contacto", type="string", length=255)
      */
     private $contacto;
-    
-     /**
+
+    /**
      *
      * @ORM\OneToMany(targetEntity="Comentario", mappedBy="publicacion")
      */
     private $comentarios;
 
     public function __construct() {
-        $this-> comentarios = new ArrayCollection();
+        $this->comentarios = new ArrayCollection();
     }
-    
-    
-    protected $miscomentarios = array();
 
-    public function addMiscomentarios(Comment $miscomentarios)
-    {
-        $this->comentarios[] = $miscommentarios;
-    }
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -104,8 +99,7 @@ class Publicacion
      * @param string $usuario
      * @return Publicacion
      */
-    public function setUsuario($usuario)
-    {
+    public function setUsuario($usuario) {
         $this->usuario = $usuario;
 
         return $this;
@@ -116,19 +110,17 @@ class Publicacion
      *
      * @return string 
      */
-    public function getUsuario()
-    {
+    public function getUsuario() {
         return $this->usuario;
     }
-     
+
     /**
      * Set tipo
      *
      * @param string $tipo
      * @return Publicacion
      */
-    public function setTipo($tipo)
-    {
+    public function setTipo($tipo) {
         $this->tipo = $tipo;
 
         return $this;
@@ -139,8 +131,7 @@ class Publicacion
      *
      * @return string 
      */
-    public function getTipo()
-    {
+    public function getTipo() {
         return $this->tipo;
     }
 
@@ -150,8 +141,7 @@ class Publicacion
      * @param \DateTime $fechaPublicacion
      * @return Publicacion
      */
-    public function setFechaPublicacion($fechaPublicacion)
-    {
+    public function setFechaPublicacion($fechaPublicacion) {
         $this->fechapublicacion = $fechaPublicacion;
 
         return $this;
@@ -162,8 +152,7 @@ class Publicacion
      *
      * @return \DateTime 
      */
-    public function getFechaPublicacion()
-    {
+    public function getFechaPublicacion() {
         return $this->fechapublicacion;
     }
 
@@ -173,8 +162,7 @@ class Publicacion
      * @param string $aviso
      * @return Publicacion
      */
-    public function setAviso($aviso)
-    {
+    public function setAviso($aviso) {
         $this->aviso = $aviso;
 
         return $this;
@@ -185,8 +173,7 @@ class Publicacion
      *
      * @return string 
      */
-    public function getAviso()
-    {
+    public function getAviso() {
         return $this->aviso;
     }
 
@@ -196,8 +183,7 @@ class Publicacion
      * @param string $foto
      * @return Publicacion
      */
-    public function setFoto($foto)
-    {
+    public function setFoto($foto) {
         $this->foto = $foto;
 
         return $this;
@@ -208,19 +194,17 @@ class Publicacion
      *
      * @return string 
      */
-    public function getFoto()
-    {
+    public function getFoto() {
         return $this->foto;
     }
-    
-     /**
+
+    /**
      * Set foto
      *
      * @param string $contacto
      * @return Publicacion
      */
-    public function setContacto($contacto)
-    {
+    public function setContacto($contacto) {
         $this->contacto = $contacto;
 
         return $this;
@@ -231,17 +215,42 @@ class Publicacion
      *
      * @return string 
      */
-    public function getContacto()
-    {
+    public function getContacto() {
         return $this->contacto;
     }
-    
+
     public function __toString() {
         return $this->getAviso();
     }
-    
-     public function getMiscomentarios()
-    {
-        return $this->comments;
+
+    /**
+     * Add comentarios
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Comentario $comentarios
+     * @return Publicacion
+     */
+    public function addComentario(\Mascotas\MascotasBundle\Entity\Comentario $comentarios) {
+        $this->comentarios[] = $comentarios;
+
+        return $this;
     }
+
+    /**
+     * Remove comentarios
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Comentario $comentarios
+     */
+    public function removeComentario(\Mascotas\MascotasBundle\Entity\Comentario $comentarios) {
+        $this->comentarios->removeElement($comentarios);
+    }
+
+    /**
+     * Get comentarios
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComentarios() {
+        return $this->comentarios;
+    }
+
 }

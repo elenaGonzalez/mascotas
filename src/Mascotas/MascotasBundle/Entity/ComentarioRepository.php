@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class ComentarioRepository extends EntityRepository
 {
+    public function getComentarios($publicacion_id) {
+         $qb = $this->createQueryBuilder('c')
+                   ->select('c')
+                   ->where('c.publicacion = :publicacion_id')
+                   ->setParameter('publicacion_id', $publicacion_id);
+
+        return $qb->getQuery()
+                  ->getResult();
+    }
 }

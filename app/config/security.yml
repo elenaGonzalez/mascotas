@@ -1,7 +1,8 @@
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
-        Mascotas\MascotasBundle\Entity\Usuario: plaintext
+        Symfony\Component\Security\Core\User\User: sha512
+        Mascotas\MascotasBundle\Entity\Usuario: sha512
+        encode_as_base64: false
         
     firewalls:
         secured_area:
@@ -17,11 +18,17 @@ security:
         ROLE_ADMIN:       ROLE_USER
 
     access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/mascotas/publicacion/new, roles: ROLE_USER }
         - { path: ^/mascotas/mascota/new, roles: ROLE_USER}
-        
+        - { path: ^/mascotas/usuario/new, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/edit, roles: ROLE_ADMIN}
+        - { path: ^/update, roles: ROLE_ADMIN}
     providers:
-      chain_provider:
-            entity:
-                { class: Mascotas\MascotasBundle\Entity\Usuario, property: usuario }
-              
+      en_memoria:
+        memory:
+          users:
+            admin: { password: admin, roles: ROLE_ADMIN }
+      de_la_base:
+        entity:
+          { class: Mascotas\MascotasBundle\Entity\Usuario, property: usuario }

@@ -2,18 +2,26 @@ mascotas_mascotas:
     resource: "@MascotasMascotasBundle/Controller/"
     type:     annotation
     prefix:   /mascotas
-_publicacion:
-    pattern:  /mascotas/publicacion
-    defaults: { _PublicacionController: MascotasMascotasBundle:publicacion}
+    
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 
-_publicacionNew:
-    pattern:  /mascotas/publicacion/new
-    defaults: { _PublicacionController: MascotasMascotasBundle:Publicacion:new }
-  
-comentarioNew:
-    pattern:  /mascotas/comentario/new
-    defaults: { _PublicacionController: MascotasMascotasBundle:Comentario:new }
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
 
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+
+fos_user_change_password:
+    resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
+    prefix: /profile
+    
 registro:
     pattern:  /mascotas/usuario/new
     defaults: { _UsuarioController: MascotasMascotasBundle:Usuario:new }
@@ -27,7 +35,7 @@ login_check:
    
 logout:
     pattern:   /logout
-
-_mascotaNew:
-    pattern:  /mascotas/mascota/new
-    defaults: { _MascotaController: MascotasMascotasBundle:mascota:new }
+    
+contacto:
+    pattern:  /mascotas/usuario/contacto
+    defaults: { _UsuarioController: MascotasMascotasBundle:Usuario:contacto }

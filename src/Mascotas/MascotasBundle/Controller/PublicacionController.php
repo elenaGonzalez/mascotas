@@ -87,6 +87,7 @@ class PublicacionController extends Controller
      * @Method("GET")
      * @Template()
      */
+    
     public function showAction($id)
     {
         $em = $this->getDoctrine()->getManager();
@@ -96,12 +97,14 @@ class PublicacionController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Publicacion entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
-
+         $deleteForm = $this->createDeleteForm($id);
+        $comentarios = $em->getRepository('MascotasMascotasBundle:Comentario')
+                   ->getComentarios($entity->getId());
+       
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
+            'comentarios' => $comentarios,
         );
     }
 
@@ -208,4 +211,5 @@ class PublicacionController extends Controller
             ->getForm()
         ;
     }
+    
 }

@@ -49,6 +49,13 @@ class UsuarioController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
+            
+            $factory = $this->get('security.encoder_factory');
+             
+            $encoder = $factory->getEncoder($entity);
+            $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+            $entity->setPassword($password);
+            $entity->setTipoUsuario('ROLE_USER');
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -206,5 +213,18 @@ class UsuarioController extends Controller
             ->add('id', 'hidden')
             ->getForm()
         ;
+    }
+    
+     /**
+     *
+     * @Route("/contacto", name="usuario_contacto")
+     * @Method("GET")
+     * @Template()
+     */
+    public function ContactoAction()
+    {
+        return array(
+           
+        );
     }
 }

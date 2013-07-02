@@ -24,19 +24,21 @@
            <div class="row-fluid">
                <ul>
                   <div class="span2"><a class="brand"><href="#"><i class="icon-home icon-white"></i>Sistema Mascotas</a></div>
-                  <div class="span2"><li class="brand"><a href="{{ path('_publicacion')}}">Ver las Publicaciones</a></li></div>
-                  <div class="span2"><li class="brand"> 
-                         <a href="{{ path('_publicacionNew')  }}">Realizar una Publicacion</li></div>
+                  <div class="span2"><li class="brand"><a href="{{ path('publicacion')}}">Ver las Publicaciones</a></li></div>
+                  <div class="span2"><li class="brand"><a href="{{ path('publicacion_new')}}">Realizar una Publicacion</a></li></div>
                   <div class="span2"><li class="brand">
-                          <a href="{{ path('_mascotaNew')}}">Agregar a tu mascota</a>
+                          <a href="{{ path('mascota_new')}}">Agregar a tu mascota</a>
                    </li></div>
-                  <div class="span2"><li class="brand">
-                    {% if is_granted('ROLE_USER') %} 
+                  {% if is_granted('ROLE_USER') %}
+                     <div class="span2">     
+                     <li class="brand">
                         <a href="{{ path('logout')}}">Salir</a>
-                    {% else%}
-                         <a href="{{ path('registro')}}">Registrarse</a>
-                    {% endif%}</a></li></div>
-
+                        </a></li></div>
+                    {% endif%}
+                    <div class="span2">     
+                      <li class="brand">
+                        <a href="{{ path('contacto')}}">Contacto</a></li>
+                    </div>
                </ul>
             </div>
       </div>
