@@ -122,8 +122,6 @@ class Publicacion {
      */
     public function setTipo($tipo) {
         $this->tipo = $tipo;
-
-        return $this;
     }
 
     /**

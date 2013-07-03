@@ -10,10 +10,11 @@ class PublicacionType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('usuario')
-                ->add('tipo', 'choice', array(
-                    'choices' => array('e' => 'Encontrado', 'p' => 'Perdido')
-                ))
+                //->add('usuario')
+                //->add('tipo', 'choice', array(
+                //    'choices' => array('e' => 'Encontrado', 'p' => 'Perdido')
+                ///))
+                ->add('tipo')
                 ->add('fechapublicacion', 'date', array(
                     'widget' => 'single_text',
                     'format' => 'yyyy-MM-dd'

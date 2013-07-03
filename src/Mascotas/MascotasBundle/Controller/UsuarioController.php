@@ -49,13 +49,8 @@ class UsuarioController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
+            $this->setSecuredPassword($entity);
             
-            $factory = $this->get('security.encoder_factory');
-             
-            $encoder = $factory->getEncoder($entity);
-            $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
-            $entity->setPassword($password);
-            $entity->setTipoUsuario('ROLE_USER');
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -151,16 +146,22 @@ class UsuarioController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MascotasMascotasBundle:Usuario')->find($id);
-
+               
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Usuario entity.');
         }
 
         $deleteForm = $this->createDeleteForm($id);
+        
+        $password_actual = $entity->getPassword();
         $editForm = $this->createForm(new UsuarioType(), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
+            if ($password_actual != $entity->getPassword()){
+                $this->setSecuredPassword($entity);
+            }
+            
             $em->persist($entity);
             $em->flush();
 
@@ -226,5 +227,12 @@ class UsuarioController extends Controller
         return array(
            
         );
+    }
+    
+    private function setSecuredPassword($entity){
+        $factory = $this->get('security.encoder_factory');            
+        $encoder = $factory->getEncoder($entity);
+        $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
+        $entity->setPassword($password);
     }
 }

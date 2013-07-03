@@ -477,8 +477,8 @@
     <parameter key="jms_di_extra.disable_grep">false</parameter>
     <parameter key="jms_di_extra.doctrine_integration">true</parameter>
     <parameter key="jms_di_extra.cache_warmer.controller_file_blacklist" type="collection"/>
-    <parameter key="jms_di_extra.doctrine_integration.entity_manager.file">D:/xampp/htdocs/mascotas/app/cache/dev/jms_diextra/doctrine/EntityManager_51d313ec8f70b.php</parameter>
-    <parameter key="jms_di_extra.doctrine_integration.entity_manager.class">EntityManager51d313ec8f70b_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager</parameter>
+    <parameter key="jms_di_extra.doctrine_integration.entity_manager.file">D:/xampp/htdocs/mascotas/app/cache/dev/jms_diextra/doctrine/EntityManager_51d3a115323e6.php</parameter>
+    <parameter key="jms_di_extra.doctrine_integration.entity_manager.class">EntityManager51d3a115323e6_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager</parameter>
     <parameter key="security.secured_services" type="collection"/>
     <parameter key="security.access.method_interceptor.class">JMS\SecurityExtraBundle\Security\Authorization\Interception\MethodSecurityInterceptor</parameter>
     <parameter key="security.access.method_access_control" type="collection"/>
@@ -1580,7 +1580,7 @@
       <argument type="collection">
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\DaoAuthenticationProvider" public="false">
-            <argument type="service" id="security.user.provider.concrete.en_memoria"/>
+            <argument type="service" id="security.user.provider.concrete.encadenado"/>
             <argument type="service">
               <service class="Symfony\Component\Security\Core\User\UserChecker" public="false"/>
             </argument>
@@ -1591,7 +1591,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>51d313ec28eb6</argument>
+            <argument>51d3a114d4c24</argument>
           </service>
         </argument>
       </argument>
@@ -1679,7 +1679,13 @@
       <tag name="templating.helper" alias="security"/>
       <argument type="service" id="security.context"/>
     </service>
-    <service id="security.user.provider.concrete.en_memoria" class="Symfony\Component\Security\Core\User\InMemoryUserProvider" public="false">
+    <service id="security.user.provider.concrete.encadenado" class="Symfony\Component\Security\Core\User\ChainUserProvider" public="false">
+      <argument type="collection">
+        <argument type="service" id="security.user.provider.concrete.enmemoria"/>
+        <argument type="service" id="security.user.provider.concrete.de_la_base"/>
+      </argument>
+    </service>
+    <service id="security.user.provider.concrete.enmemoria" class="Symfony\Component\Security\Core\User\InMemoryUserProvider" public="false">
       <call method="createUser">
         <argument type="service">
           <service class="Symfony\Component\Security\Core\User\User" public="false">
@@ -1692,6 +1698,12 @@
         </argument>
       </call>
     </service>
+    <service id="security.user.provider.concrete.de_la_base" class="Symfony\Bridge\Doctrine\Security\User\EntityUserProvider" public="false">
+      <argument type="service" id="doctrine"/>
+      <argument>Mascotas\MascotasBundle\Entity\Usuario</argument>
+      <argument>usuario</argument>
+      <argument>null</argument>
+    </service>
     <service id="security.firewall.map.context.secured_area" class="Symfony\Bundle\SecurityBundle\Security\FirewallContext">
       <argument type="collection">
         <argument type="service">
@@ -1699,17 +1711,6 @@
             <tag name="monolog.logger" channel="security"/>
             <argument type="service">
               <service class="Symfony\Component\Security\Http\AccessMap" public="false">
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>^/login</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
                 <call method="add">
                   <argument type="service">
                     <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
@@ -1732,39 +1733,6 @@
                   </argument>
                   <argument>null</argument>
                 </call>
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>^/mascotas/usuario/new</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>^/edit</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>ROLE_ADMIN</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>^/update</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>ROLE_ADMIN</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
               </service>
             </argument>
             <argument type="service">
@@ -1780,15 +1748,9 @@
           <service class="Symfony\Component\Security\Http\Firewall\ContextListener" public="false">
             <argument type="service" id="security.context"/>
             <argument type="collection">
-              <argument type="service" id="security.user.provider.concrete.en_memoria"/>
-              <argument type="service">
-                <service class="Symfony\Bridge\Doctrine\Security\User\EntityUserProvider" public="false">
-                  <argument type="service" id="doctrine"/>
-                  <argument>Mascotas\MascotasBundle\Entity\Usuario</argument>
-                  <argument>usuario</argument>
-                  <argument>null</argument>
-                </service>
-              </argument>
+              <argument type="service" id="security.user.provider.concrete.encadenado"/>
+              <argument type="service" id="security.user.provider.concrete.enmemoria"/>
+              <argument type="service" id="security.user.provider.concrete.de_la_base"/>
             </argument>
             <argument>secured_area</argument>
             <argument type="service" id="monolog.logger.security"/>
@@ -1820,16 +1782,11 @@
               <argument key="intention">logout</argument>
               <argument key="logout_path">/logout</argument>
             </argument>
-            <call method="addHandler">
-              <argument type="service">
-                <service class="Symfony\Component\Security\Http\Logout\SessionLogoutHandler" public="false"/>
-              </argument>
-            </call>
           </service>
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\UsernamePasswordFormAuthenticationListener" public="false">
-            <tag name="security.remember_me_aware" id="secured_area" provider="security.user.provider.concrete.en_memoria"/>
+            <tag name="security.remember_me_aware" id="secured_area" provider="security.user.provider.concrete.encadenado"/>
             <argument type="service" id="security.context"/>
             <argument type="service" id="security.authentication.manager"/>
             <argument type="service">
@@ -1898,7 +1855,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>51d313ec28eb6</argument>
+            <argument>51d3a114d4c24</argument>
             <argument type="service" id="monolog.logger.security"/>
           </service>
         </argument>
@@ -1909,17 +1866,6 @@
             <argument type="service" id="security.access.decision_manager"/>
             <argument type="service">
               <service class="Symfony\Component\Security\Http\AccessMap" public="false">
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>^/login</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
                 <call method="add">
                   <argument type="service">
                     <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
@@ -1939,39 +1885,6 @@
                   </argument>
                   <argument type="collection">
                     <argument>ROLE_USER</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>^/mascotas/usuario/new</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>IS_AUTHENTICATED_ANONYMOUSLY</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>^/edit</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>ROLE_ADMIN</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>^/update</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>ROLE_ADMIN</argument>
                   </argument>
                   <argument>null</argument>
                 </call>
@@ -2342,8 +2255,8 @@
       <argument type="collection"/>
       <argument type="collection"/>
     </service>
-    <service id="doctrine.orm.default_entity_manager" class="EntityManager51d313ec8f70b_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager">
-      <file>D:/xampp/htdocs/mascotas/app/cache/dev/jms_diextra/doctrine/EntityManager_51d313ec8f70b.php</file>
+    <service id="doctrine.orm.default_entity_manager" class="EntityManager51d3a115323e6_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager">
+      <file>D:/xampp/htdocs/mascotas/app/cache/dev/jms_diextra/doctrine/EntityManager_51d3a115323e6.php</file>
       <argument type="service">
         <service class="Doctrine\ORM\EntityManager" factory-method="create" public="false">
           <argument type="service" id="doctrine.dbal.default_connection"/>
@@ -2792,19 +2705,15 @@
     <service id="security.encoder_factory" class="Symfony\Component\Security\Core\Encoder\EncoderFactory">
       <argument type="collection">
         <argument key="Symfony\Component\Security\Core\User\User" type="collection">
-          <argument key="class">%security.encoder.digest.class%</argument>
+          <argument key="class">%security.encoder.plain.class%</argument>
           <argument key="arguments" type="collection">
-            <argument>sha512</argument>
-            <argument>true</argument>
-            <argument>5000</argument>
+            <argument>false</argument>
           </argument>
         </argument>
         <argument key="Mascotas\MascotasBundle\Entity\Usuario" type="collection">
-          <argument key="class">%security.encoder.digest.class%</argument>
+          <argument key="class">%security.encoder.plain.class%</argument>
           <argument key="arguments" type="collection">
-            <argument>sha512</argument>
-            <argument>true</argument>
-            <argument>5000</argument>
+            <argument>false</argument>
           </argument>
         </argument>
       </argument>

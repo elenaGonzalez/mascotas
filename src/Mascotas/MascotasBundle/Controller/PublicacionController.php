@@ -49,6 +49,7 @@ class PublicacionController extends Controller
         $form->bind($request);
 
         if ($form->isValid()) {
+            $entity->setUsuario($this->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();

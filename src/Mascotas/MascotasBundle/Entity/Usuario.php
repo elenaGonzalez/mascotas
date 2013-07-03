@@ -5,6 +5,7 @@ namespace Mascotas\MascotasBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Usuario
@@ -73,7 +74,7 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     private $mascotas;
 
     /**
-     * @ORM\Column(name="salt", type="string", length=32)
+     * @ORM\Column(name="salt", type="string", length=255)
      */
     private $salt;
 
@@ -84,9 +85,11 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     private $comentarios;
     
      /**
-     * @ORM\Column(name="tipoUsuario", type="string", length=32)
-     */
-    private $tipoUsuario;
+     * 
+     * @ORM\Column(name="usuario_role", type="string", length=10)
+     * 
+     */    
+    private $usuario_roles;
     
     /**
      * Get id
@@ -255,9 +258,27 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     public function eraseCredentials() {
         
     }
+       
+    public function addRole($role){
+     $this->usuario_roles[] = $role;
+    }
+    
+    public function setUsuarioRoles($roles){
+        $this->usuario_roles = $roles;
+    }
+    
+    public function getUsuarioRoles() {
+        return $this->usuario_roles;
+    }
 
-    public function getRoles() {
-        return array('ROLE_USER', );
+    /**
+     * 
+     * @return Doctrine\Common\Collections\Collection
+     * 
+     */
+    public function getRoles(){
+        $d[] = $this->usuario_roles;
+        return $d;
     }
 
     public function getUsername() {
@@ -265,16 +286,18 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     }
     
     public function __construct() {
-        //$this->mascotas = new ArrayCollection();
-        //$this->comentarios = new ArrayCollection();
+        $this->mascotas = new ArrayCollection();
+        $this->comentarios = new ArrayCollection();
         
+        $this->usuario_roles = new ArrayCollection();
+                
         $this->setSalt(md5(uniqid(null, true)));
+        $this->addRole('ROLE_USER');
     }
 
-    public function isEqualTo(UserInterface $user) {
-        return  $this->id === $user->getId();
+    public function isEqualTo(UserInterface $user) {        
+        return md5($this->getUsername()) === md5($user->getUsername());
     }
-
 
     /**
      * Add comentarios
@@ -344,28 +367,5 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     public function getMascotas()
     {
         return $this->mascotas;
-    }
-
-    /**
-     * Set tipoUsuario
-     *
-     * @param string $tipoUsuario
-     * @return Usuario
-     */
-    public function setTipoUsuario($tipoUsuario)
-    {
-        $this->tipoUsuario = $tipoUsuario;
-    
-        return $this;
-    }
-
-    /**
-     * Get tipoUsuario
-     *
-     * @return string 
-     */
-    public function getTipoUsuario()
-    {
-        return $this->tipoUsuario;
     }
 }
