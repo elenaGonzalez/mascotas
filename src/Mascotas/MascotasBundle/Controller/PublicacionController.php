@@ -50,7 +50,10 @@ class PublicacionController extends Controller
 
         if ($form->isValid()) {
             $entity->setUsuario($this->getUser());
+            $foto->uploadAction();
+            
             $em = $this->getDoctrine()->getManager();
+            $em->persist($foto);
             $em->persist($entity);
             $em->flush();
 
@@ -74,7 +77,6 @@ class PublicacionController extends Controller
     {
         $entity = new Publicacion();
         $form   = $this->createForm(new PublicacionType(), $entity);
-        
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
@@ -212,5 +214,11 @@ class PublicacionController extends Controller
             ->getForm()
         ;
     }
-    
+      public function uploadAction()
+    {
+    $form = $this->createFormBuilder($foto)
+        ->add('name')
+        ->add('file')
+        ->getForm();
+    }
 }

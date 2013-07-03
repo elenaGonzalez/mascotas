@@ -263,14 +263,22 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
      $this->usuario_roles[] = $role;
     }
     
-    public function setUsuarioRoles($roles){
-        $this->usuario_roles = $roles;
-    }
-    
     public function getUsuarioRoles() {
         return $this->usuario_roles;
     }
+    
+     /**
+     * Set rol
+     *
+     * @param string $usuario_roles
+     * @return Usuario
+     */
+    public function setRoles($usuario_roles) {
+        $this->usuario_roles = $usuario_roles;
 
+        return $this;
+    }
+    
     /**
      * 
      * @return Doctrine\Common\Collections\Collection

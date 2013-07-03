@@ -47,7 +47,7 @@ class __TwigTemplate_b1daf469b324ba4121758bffb5289a6a extends Twig_Template
     </div>
      <br />
     <div class=\"input-prepend\"><span class=\"add-on\"><i class=\"icon-lock\"></i></span>
-        <input type=\"text\" id=\"password\" name=\"_password\" placeholder=\"Contraseña\">
+        <input type=\"password\" id=\"password\" name=\"_password\" placeholder=\"Contraseña\">
     </div>
     <br />
     <input type=\"submit\" value=\"ingresar\" class=\"btn btn-primary\" />

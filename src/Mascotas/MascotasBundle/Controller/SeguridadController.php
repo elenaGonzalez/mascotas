@@ -42,5 +42,6 @@ class SeguridadController extends Controller
             'last_username' => $session->get(SecurityContext::LAST_USERNAME),
             'error'         => $error,
         ));
+        return $this->redirect($this->generateUrl('publicacion', array('id' => $entity->getId())));
     }
 }

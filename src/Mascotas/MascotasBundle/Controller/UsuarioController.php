@@ -33,6 +33,7 @@ class UsuarioController extends Controller
         return array(
             'entities' => $entities,
         );
+        return $this->redirect($this->generateUrl('publicacion_show'));
     }
 
     /**
@@ -50,18 +51,16 @@ class UsuarioController extends Controller
 
         if ($form->isValid()) {
             $this->setSecuredPassword($entity);
-            
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('usuario_show', array('id' => $entity->getId())));
         }
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
         );
+        return $this->redirect($this->generateUrl('publicacion', array('id' => $entity->getId())));
     }
 
     /**
@@ -74,8 +73,9 @@ class UsuarioController extends Controller
     public function newAction()
     {
         $entity = new Usuario();
+        $rol='ROLE_USER';
+        $entity->setRoles($rol);
         $form   = $this->createForm(new UsuarioType(), $entity);
-
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
@@ -117,13 +117,12 @@ class UsuarioController extends Controller
     public function editAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('MascotasMascotasBundle:Usuario')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Usuario entity.');
         }
-
+        
         $editForm = $this->createForm(new UsuarioType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
@@ -150,9 +149,8 @@ class UsuarioController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Usuario entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
         
+        $deleteForm = $this->createDeleteForm($id);
         $password_actual = $entity->getPassword();
         $editForm = $this->createForm(new UsuarioType(), $entity);
         $editForm->bind($request);

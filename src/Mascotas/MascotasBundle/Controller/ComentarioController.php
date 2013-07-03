@@ -52,6 +52,7 @@ class ComentarioController extends Controller
         $form->bind($request);
         
         if ($form->isValid()) {
+            $entity->setUsuario($this->getUser());
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -126,7 +127,8 @@ class ComentarioController extends Controller
      * @Template()
      */
     public function editAction($id)
-    {
+    {   
+        $entity->setUsuario($this->getUser());
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MascotasMascotasBundle:Comentario')->find($id);

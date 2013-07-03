@@ -1,7 +1,7 @@
 <?php
 
 namespace Mascotas\MascotasBundle\Entity;
-
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,21 +29,23 @@ class Publicacion {
      * @ORM\Column(name="usuario", type="string", length=255)
      */
 
-    /**
-     * @Assert\NotBlank()
-     */
+    
     private $usuario;
 
 
     /**
      * @var string
      *
-     * @ORM\Column(name="tipo", type="string", length=255)
+     * @ORM\Column(name="tipo", type="string", length=1)
      */
 
     /**
-     * @Assert\NotBlank()
-     */
+     * @Assert\Choice(
+    * choices = { "p", "e" },
+    * message = "Elige una opción válida."
+    * )
+    */
+    
     private $tipo;
 
     /**
@@ -59,12 +61,13 @@ class Publicacion {
      * @ORM\Column(name="lugar", type="string", length=255)
      */
     private $aviso;
-
+    
     /**
      * @var string
      *
-     * @ORM\Column(name="foto", type="string", length=255)
+     * @ORM\Column(name="foto", type="file")
      */
+    
     private $foto;
 
     /**
@@ -122,6 +125,7 @@ class Publicacion {
      */
     public function setTipo($tipo) {
         $this->tipo = $tipo;
+        return $this;
     }
 
     /**
@@ -131,27 +135,6 @@ class Publicacion {
      */
     public function getTipo() {
         return $this->tipo;
-    }
-
-    /**
-     * Set fechapublicacion
-     *
-     * @param \DateTime $fechaPublicacion
-     * @return Publicacion
-     */
-    public function setFechaPublicacion($fechaPublicacion) {
-        $this->fechapublicacion = $fechaPublicacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechapublicacion
-     *
-     * @return \DateTime 
-     */
-    public function getFechaPublicacion() {
-        return $this->fechapublicacion;
     }
 
     /**
@@ -173,27 +156,6 @@ class Publicacion {
      */
     public function getAviso() {
         return $this->aviso;
-    }
-
-    /**
-     * Set foto
-     *
-     * @param string $foto
-     * @return Publicacion
-     */
-    public function setFoto($foto) {
-        $this->foto = $foto;
-
-        return $this;
-    }
-
-    /**
-     * Get foto
-     *
-     * @return string 
-     */
-    public function getFoto() {
-        return $this->foto;
     }
 
     /**
@@ -251,4 +213,70 @@ class Publicacion {
         return $this->comentarios;
     }
 
+
+    /**
+     * Set fechapublicacion
+     *
+     * @param \DateTime $fechapublicacion
+     * @return Publicacion
+     */
+    public function setFechapublicacion($fechapublicacion)
+    {
+        $this->fechapublicacion = $fechapublicacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechapublicacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechapublicacion()
+    {
+        return $this->fechapublicacion;
+    }
+
+
+    public function setFoto(File $foto = null)
+    {
+        $this->foto = $foto;
+    }
+
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+    
+    public $path;
+
+    public function getAbsolutePath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadRootDir().'/'.$this->path;
+    }
+
+    public function getWebPath()
+    {
+        return null === $this->path
+            ? null
+            : $this->getUploadDir().'/'.$this->path;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // the absolute directory path where uploaded
+        // documents should be saved
+        return __DIR__.'/../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // get rid of the __DIR__ so it doesn't screw up
+        // when displaying uploaded doc/image in the view.
+        return 'uploads/documents';
+    }
+    
 }
+
