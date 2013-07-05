@@ -5,6 +5,7 @@ namespace Mascotas\MascotasBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -260,7 +261,7 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     }
        
     public function addRole($role){
-     $this->usuario_roles[] = $role;
+     $this->usuario_roles = $role;
     }
     
     public function getUsuarioRoles() {

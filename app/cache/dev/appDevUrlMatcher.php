@@ -209,17 +209,13 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         if (0 === strpos($pathinfo, '/mascotas')) {
             if (0 === strpos($pathinfo, '/mascotas/comentario')) {
                 // comentario
-                if (rtrim($pathinfo, '/') === '/mascotas/comentario') {
+                if ($pathinfo === '/mascotas/comentario/{$publicacion_id}/{$pag_actual}') {
                     if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                         $allow = array_merge($allow, array('GET', 'HEAD'));
                         goto not_comentario;
                     }
 
-                    if (substr($pathinfo, -1) !== '/') {
-                        return $this->redirect($pathinfo.'/', 'comentario');
-                    }
-
-                    return array (  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\ComentarioController::indexAction',  '_route' => 'comentario',);
+                    return array (  'pag_actual' => 1,  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\ComentarioController::indexAction',  '_route' => 'comentario',);
                 }
                 not_comentario:
 
@@ -386,7 +382,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
             if (0 === strpos($pathinfo, '/mascotas/publicacion')) {
                 // publicacion
-                if (rtrim($pathinfo, '/') === '/mascotas/publicacion') {
+                if (preg_match('#^/mascotas/publicacion(?P<pagina_actual>[^/]++)/?$#s', $pathinfo, $matches)) {
                     if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                         $allow = array_merge($allow, array('GET', 'HEAD'));
                         goto not_publicacion;
@@ -396,7 +392,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                         return $this->redirect($pathinfo.'/', 'publicacion');
                     }
 
-                    return array (  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\PublicacionController::indexAction',  '_route' => 'publicacion',);
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'publicacion')), array (  'pagina_actual' => 1,  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\PublicacionController::indexAction',));
                 }
                 not_publicacion:
 
@@ -423,13 +419,13 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 not_publicacion_new:
 
                 // publicacion_show
-                if (preg_match('#^/mascotas/publicacion/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                if (preg_match('#^/mascotas/publicacion/(?P<id>[^/]++)(?:/(?P<comentario_nro_pagina>[^/]++))?$#s', $pathinfo, $matches)) {
                     if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                         $allow = array_merge($allow, array('GET', 'HEAD'));
                         goto not_publicacion_show;
                     }
 
-                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'publicacion_show')), array (  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\PublicacionController::showAction',));
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'publicacion_show')), array (  'comentario_nro_pagina' => 1,  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\PublicacionController::showAction',));
                 }
                 not_publicacion_show:
 
@@ -550,17 +546,6 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 }
                 not_usuario_delete:
 
-                // usuario_contacto
-                if ($pathinfo === '/mascotas/usuario/contacto') {
-                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                        $allow = array_merge($allow, array('GET', 'HEAD'));
-                        goto not_usuario_contacto;
-                    }
-
-                    return array (  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\UsuarioController::ContactoAction',  '_route' => 'usuario_contacto',);
-                }
-                not_usuario_contacto:
-
                 // registro
                 if ($pathinfo === '/mascotas/usuario/new') {
                     return array (  '_UsuarioController' => 'MascotasMascotasBundle:Usuario:new',  '_route' => 'registro',);
@@ -592,8 +577,8 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
 
         // contacto
-        if ($pathinfo === '/mascotas/usuario/contacto') {
-            return array (  '_UsuarioController' => 'MascotasMascotasBundle:Usuario:contacto',  '_route' => 'contacto',);
+        if ($pathinfo === '/contacto') {
+            return array (  '_controller' => 'MascotasMascotasBundle:Contacto:contacto',  '_route' => 'contacto',);
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

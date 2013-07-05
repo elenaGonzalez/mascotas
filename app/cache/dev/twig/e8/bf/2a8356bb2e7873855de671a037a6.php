@@ -10,7 +10,6 @@ class __TwigTemplate_e8bf2a8356bb2e7873855de671a037a6 extends Twig_Template
         $this->parent = false;
 
         $this->blocks = array(
-            'body' => array($this, 'block_body'),
         );
     }
 
@@ -18,110 +17,81 @@ class __TwigTemplate_e8bf2a8356bb2e7873855de671a037a6 extends Twig_Template
     {
         // line 1
         echo "
-
-";
-        // line 3
-        $this->displayBlock('body', $context, $blocks);
-    }
-
-    public function block_body($context, array $blocks = array())
-    {
-        // line 4
-        echo "<div class=\"text-center\">
+<div class=\"text-center\">
     <p><br/></p>
-    <h3>Lista de Comentarios</h3>
+    <h3>Lista de Comentarios.......</h3>
 
     <table class=\"container table-bordered table-striped\">
         <thead>
-            <tr>
-                <th>Id</th>
+            <tr class=\"alert alert-info\">
                 <th>Usuario</th>
                 <th>Comentario</th>
                 <th>Fecha</th>
                 ";
-        // line 15
+        // line 12
         if ($this->env->getExtension('security')->isGranted("ROLE_ADMIN")) {
-            // line 16
-            echo "                <th>Actiones</th> ";
+            // line 13
+            echo "                    <th>Acciones</th> ";
         }
+        // line 14
+        echo "                </tr>
+            </thead>
+            <tbody>
+                ";
         // line 17
-        echo "            </tr>
-        </thead>
-        <tbody>
-        ";
-        // line 20
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["entities"]) ? $context["entities"] : $this->getContext($context, "entities")));
         foreach ($context['_seq'] as $context["_key"] => $context["entity"]) {
-            // line 21
-            echo "            <tr>
-                <td>";
-            // line 22
+            // line 18
+            echo "                    <tr>
+                        <td id=\"comentario-";
+            // line 19
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "id"), "html", null, true);
-            echo "</td>
-                <td>";
-            // line 23
+            echo "\">";
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "usuario"), "html", null, true);
             echo "</td>
-                <td>";
-            // line 24
+                        <td>";
+            // line 20
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "comentario"), "html", null, true);
             echo "</td>
-                <td>";
-            // line 25
+                        <td>";
+            // line 21
             echo twig_escape_filter($this->env, twig_date_format_filter($this->env, $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "fecha"), "d/m/Y h:iA"), "html", null, true);
             echo "</td>
-                
-                 ";
-            // line 27
+                        ";
+            // line 22
             if ($this->env->getExtension('security')->isGranted("ROLE_ADMIN")) {
-                // line 28
-                echo "                <td>
-                <ul>
-                    <li>
-                        <a href=\"";
-                // line 31
+                // line 23
+                echo "                        <td>
+                            <div class=\"btn btn-small\">
+                                <a href=\"";
+                // line 25
                 echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("comentario_show", array("id" => $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "id"))), "html", null, true);
                 echo "\">ver</a>
-                    </li>
-                    <li>
-                        <a href=\"";
-                // line 34
+                            </div>
+                            <div class=\"btn btn-small\">
+                                <a href=\"";
+                // line 28
                 echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("comentario_edit", array("id" => $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "id"))), "html", null, true);
                 echo "\">editar</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
+                            </div>
+                        </td>
+                    </tr>
              ";
             }
-            // line 40
-            echo "        ";
+            // line 32
+            echo "                     
+        ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entity'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 41
-        echo "        </tbody>
-    </table>
-        ";
-        // line 43
-        if ($this->env->getExtension('security')->isGranted("ROLE_ADMIN")) {
-            // line 44
-            echo "        <ul>
-        <li>
-            <a href=\"";
-            // line 46
-            echo "\">
-                Crear un Nuevo Comentario
-            </a>
-        </li>
-    </ul>
-     ";
-        }
-        // line 52
-        echo "</div>
-    ";
+        // line 34
+        echo "                   
+                </tbody>
+            </table>
+        </div>
+";
     }
 
     public function getTemplateName()
@@ -129,8 +99,13 @@ class __TwigTemplate_e8bf2a8356bb2e7873855de671a037a6 extends Twig_Template
         return "MascotasMascotasBundle:Comentario:index.html.twig";
     }
 
+    public function isTraitable()
+    {
+        return false;
+    }
+
     public function getDebugInfo()
     {
-        return array (  115 => 46,  111 => 44,  109 => 43,  105 => 41,  99 => 40,  84 => 31,  79 => 28,  72 => 25,  68 => 24,  64 => 23,  60 => 22,  48 => 17,  45 => 16,  43 => 15,  30 => 4,  24 => 3,  20 => 1,  145 => 58,  139 => 55,  135 => 53,  131 => 51,  129 => 50,  126 => 49,  123 => 52,  113 => 41,  108 => 39,  102 => 36,  97 => 34,  92 => 31,  90 => 34,  87 => 29,  85 => 28,  77 => 27,  73 => 22,  69 => 21,  65 => 20,  61 => 19,  57 => 21,  53 => 20,  38 => 4,  35 => 3,  29 => 2,);
+        return array (  90 => 34,  83 => 32,  69 => 25,  65 => 23,  49 => 19,  46 => 18,  42 => 17,  37 => 14,  34 => 13,  32 => 12,  19 => 1,  186 => 46,  182 => 45,  178 => 44,  174 => 43,  170 => 42,  166 => 40,  163 => 39,  159 => 74,  149 => 67,  144 => 65,  138 => 62,  133 => 59,  130 => 58,  123 => 54,  119 => 53,  115 => 51,  112 => 50,  110 => 39,  107 => 38,  105 => 37,  102 => 36,  100 => 35,  97 => 34,  94 => 33,  91 => 32,  89 => 31,  79 => 24,  75 => 28,  71 => 22,  67 => 21,  63 => 22,  59 => 21,  55 => 20,  39 => 4,  36 => 3,  30 => 2,);
     }
 }

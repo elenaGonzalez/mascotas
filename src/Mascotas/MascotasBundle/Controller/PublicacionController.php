@@ -7,9 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Mascotas\MascotasBundle\Entity\Publicacion;
 use Mascotas\MascotasBundle\Form\PublicacionType;
-
+use Mascotas\MascotasBundle\Entity\Publicacion;
+use Mascotas\MascotasBundle\Entity\Document;
 /**
  * Publicacion controller.
  *
@@ -20,18 +20,21 @@ class PublicacionController extends Controller
     /**
      * Lists all Publicacion entities.
      *
-     * @Route("/", name="publicacion")
+     * @Route("{pagina_actual}/", name="publicacion")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($pagina_actual = 1)
     {
+        
         $em = $this->getDoctrine()->getManager();
-
-        $entities = $em->getRepository('MascotasMascotasBundle:Publicacion')->findAll();
-
+        $entities = $em->getRepository('MascotasMascotasBundle:Publicacion')->getPagina($pagina_actual);
+        $max_pax = $em->getRepository('MascotasMascotasBundle:Publicacion')->getCantidad();
+        
         return array(
             'entities' => $entities,
+            'max_pag' => $max_pax,
+            'pagina_actual' => $pagina_actual,            
         );
     }
 
@@ -50,10 +53,15 @@ class PublicacionController extends Controller
 
         if ($form->isValid()) {
             $entity->setUsuario($this->getUser());
-            $foto->uploadAction();
             
+            $file = $form['foto_subida']->getData();
+            $document = new Document();
+            
+            $document->setFile($file);            
+            
+            $entity->setFoto($document);
+                        
             $em = $this->getDoctrine()->getManager();
-            $em->persist($foto);
             $em->persist($entity);
             $em->flush();
 
@@ -86,12 +94,12 @@ class PublicacionController extends Controller
     /**
      * Finds and displays a Publicacion entity.
      *
-     * @Route("/{id}", name="publicacion_show")
+     * @Route("/{id}/{comentario_nro_pagina}", name="publicacion_show")
      * @Method("GET")
      * @Template()
      */
     
-    public function showAction($id)
+    public function showAction($id, $comentario_nro_pagina = 1)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -100,14 +108,20 @@ class PublicacionController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Publicacion entity.');
         }
-         $deleteForm = $this->createDeleteForm($id);
-        $comentarios = $em->getRepository('MascotasMascotasBundle:Comentario')
-                   ->getComentarios($entity->getId());
-       
+        
+        $deleteForm = $this->createDeleteForm($id, $comentario_nro_pagina);
+         $rpC = $em->getRepository('MascotasMascotasBundle:Comentario');
+        $comentarios = $rpC->getComentarios($entity->getId(), $comentario_nro_pagina);
+        $max_pag =  $rpC->getCantidad($id);
+        
+        $fotopath = $entity->getFoto()->getWebPath();
         return array(
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
             'comentarios' => $comentarios,
+            'foto' => $fotopath,
+            'max_pag' => $max_pag,
+            'pagina_actual' => $comentario_nro_pagina,
         );
     }
 
@@ -154,8 +168,11 @@ class PublicacionController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Publicacion entity.');
         }
-
-        $deleteForm = $this->createDeleteForm($id);
+        //if ($entity->getUsuario()->getId() !== $this->getUser()->getId()){
+        //    throw \Symfony\Component\Security\Core\SecurityContext::ACCESS_DENIED_ERROR;
+     //   }
+        
+        //$deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new PublicacionType(), $entity);
         $editForm->bind($request);
 
@@ -163,13 +180,13 @@ class PublicacionController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('publicacion_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('publicacion', array('id' => $id)));
         }
 
         return array(
             'entity'      => $entity,
-            //'edit_form'   => $editForm->createView(),
-            //'delete_form' => $deleteForm->createView(),
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
         );
     }
     
@@ -181,7 +198,7 @@ class PublicacionController extends Controller
      * @Method("DELETE")
      */
     public function deleteAction(Request $request, $id)
-    {
+    {   
         $form = $this->createDeleteForm($id);
         $form->bind($request);
 
@@ -199,8 +216,8 @@ class PublicacionController extends Controller
 
         return $this->redirect($this->generateUrl('publicacion'));
     }
-
-    /**
+    
+     /**
      * Creates a form to delete a Publicacion entity by id.
      *
      * @param mixed $id The entity id
@@ -212,13 +229,6 @@ class PublicacionController extends Controller
         return $this->createFormBuilder(array('id' => $id))
             ->add('id', 'hidden')
             ->getForm()
-        ;
-    }
-      public function uploadAction()
-    {
-    $form = $this->createFormBuilder($foto)
-        ->add('name')
-        ->add('file')
-        ->getForm();
+        ;        
     }
 }

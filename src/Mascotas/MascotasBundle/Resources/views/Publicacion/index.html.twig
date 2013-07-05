@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
- <title class="h1">{% block title %}Publicaciones{% endblock %}</title>
+<title class="h1">{% block title %}Publicaciones{% endblock %}</title>
 <div class="text-center" style="margin: auto">
     <h1 class="text-info">Publicaciones</h1>
     <h4>Estas son las Publicaciones</h4>
@@ -9,41 +9,35 @@
     <p><br></br></p>
     <table class="container table-bordered table-striped">
         <thead>
-            <tr class="text-center">
-                <th class="text-center">Id</th>
-                <th class="text-center">Aviso</th>
+            <tr class="text-center alert alert-danger">
+                <th class="text-center">Avisos</th>
                 <th class="text-center">Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for entity in entities %}
-            <tr style="central">
-                <td class="text-center">{{ entity.id }}</td>
-                <td class="text-center">{{ entity.aviso }}</td>
-                
-                <td class="text-center">
-                <ul>
-                     {% if is_granted('ROLE_ADMIN') %}
-                    <li class="text-center">
-                        <a href="{{ path('publicacion_show', { 'id': entity.id }) }}">ver</a>
-                    </li>
-                    <li class="text-center">
-                        <a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">editar</a>
-                    </li>
-                </ul>
-                 </td>
-                 {% endif %}
-                         <a href="{{ path('publicacion_show', { 'id': entity.id }) }}">ver Mas</a>
-                    </td>
-            </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+                <tr style="central">
+                    <td class="text-center">{{ entity.aviso }}</td>
 
-        <ul>
-        <li>
-           
-        </li>
-    </ul>
-</div>
-    {% endblock %}
+                    <td class="text-center">
+                     {% if is_granted('ROLE_ADMIN') %}
+                            <div class="btn btn-small"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">editar</a></div>
+                 {% endif %}
+                            <div class="btn btn-small"><a href="{{ path('publicacion_show', { 'id': entity.id }) }}">ver detalles</a></div>
+                    </tr>
+        {% endfor %}
+                </tbody>
+            </table>
+        {% block paginador %}
+            <div class="pagination">
+                <ul>                    
+                     <li><a href="{{ path( 'publicacion', {'pagina_actual' : 1}) }}">Primero</a></li>
+                     <li><a href="{{ path('publicacion' , { 'pagina_actual' : pagina_actual - 1 }) }}">Anterior</a></li>
+                     <li><a href="#" class="disabled">{{ pagina_actual }}</a></li>
+                     <li><a href="{{ path( 'publicacion', {'pagina_actual' : pagina_actual + 1 }) }}">Siguiente</a></li>
+                    <li><a href="{{ path('publicacion' , { 'pagina_actual' : max_pag }) }}">Ultimo</a></li>                    
+                </ul>                
+            </div>
+         {% endblock %}
+        </div>
+{% endblock %}

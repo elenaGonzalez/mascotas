@@ -2,9 +2,13 @@
 
 namespace Mascotas\MascotasBundle\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Document;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Publicacion
@@ -49,7 +53,7 @@ class Publicacion {
     private $tipo;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="fechapublicacion", type="date")
      */
@@ -61,13 +65,15 @@ class Publicacion {
      * @ORM\Column(name="lugar", type="string", length=255)
      */
     private $aviso;
-
+    
     /**
-     * @var string
      *
-     * @ORM\Column(name="foto", type="file")
-     */
-    private $foto;
+     * @ORM\OneToOne(targetEntity="Document")
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="id") 
+     * 
+     */    
+     private $foto;
+     
 
     /**
      * @var string
@@ -82,6 +88,7 @@ class Publicacion {
      */
     private $comentarios;
 
+    
     public function __construct() {
         $this->comentarios = new ArrayCollection();
     }
@@ -206,7 +213,7 @@ class Publicacion {
     /**
      * Get comentarios
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Collection 
      */
     public function getComentarios() {
         return $this->comentarios;
@@ -216,7 +223,7 @@ class Publicacion {
     /**
      * Set fechapublicacion
      *
-     * @param \DateTime $fechapublicacion
+     * @param DateTime $fechapublicacion
      * @return Publicacion
      */
     public function setFechapublicacion($fechapublicacion)
@@ -229,10 +236,11 @@ class Publicacion {
     /**
      * Get fechapublicacion
      *
-     * @return \DateTime 
+     * @return DateTime 
      */
     public function getFechapublicacion()
     {
         return $this->fechapublicacion;
     }
 }
+

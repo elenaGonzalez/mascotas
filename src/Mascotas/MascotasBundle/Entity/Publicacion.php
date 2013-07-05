@@ -1,10 +1,13 @@
 <?php
 
 namespace Mascotas\MascotasBundle\Entity;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\Common\Collections\ArrayCollection;
+
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Publicacion
@@ -27,9 +30,7 @@ class Publicacion {
      * @var string
      *
      * @ORM\Column(name="usuario", type="string", length=255)
-     */
-
-    
+     */   
     private $usuario;
 
 
@@ -39,17 +40,10 @@ class Publicacion {
      * @ORM\Column(name="tipo", type="string", length=1)
      */
 
-    /**
-     * @Assert\Choice(
-    * choices = { "p", "e" },
-    * message = "Elige una opción válida."
-    * )
-    */
-    
     private $tipo;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="fechapublicacion", type="date")
      */
@@ -63,12 +57,13 @@ class Publicacion {
     private $aviso;
     
     /**
-     * @var string
      *
-     * @ORM\Column(name="foto", type="file")
-     */
-    
-    private $foto;
+     * @ORM\OneToOne(targetEntity="Document", cascade={"persist"})
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="id") 
+     * 
+     */    
+     private $foto;
+     
 
     /**
      * @var string
@@ -82,7 +77,10 @@ class Publicacion {
      * @ORM\OneToMany(targetEntity="Comentario", mappedBy="publicacion")
      */
     private $comentarios;
-
+    
+    // para recibir la fotos/uploadedfile del formulario
+    private $foto_subida;
+    
     public function __construct() {
         $this->comentarios = new ArrayCollection();
     }
@@ -95,7 +93,7 @@ class Publicacion {
     public function getId() {
         return $this->id;
     }
-
+    
     /**
      * Set usuario
      *
@@ -207,7 +205,7 @@ class Publicacion {
     /**
      * Get comentarios
      *
-     * @return \Doctrine\Common\Collections\Collection 
+     * @return Collection 
      */
     public function getComentarios() {
         return $this->comentarios;
@@ -217,7 +215,7 @@ class Publicacion {
     /**
      * Set fechapublicacion
      *
-     * @param \DateTime $fechapublicacion
+     * @param DateTime $fechapublicacion
      * @return Publicacion
      */
     public function setFechapublicacion($fechapublicacion)
@@ -230,53 +228,46 @@ class Publicacion {
     /**
      * Get fechapublicacion
      *
-     * @return \DateTime 
+     * @return DateTime 
      */
     public function getFechapublicacion()
     {
         return $this->fechapublicacion;
     }
 
-
-    public function setFoto(File $foto = null)
+    /**
+     * Set foto
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Document $foto
+     * @return Publicacion
+     */
+    public function setFoto(\Mascotas\MascotasBundle\Entity\Document $foto = null)
     {
         $this->foto = $foto;
+    
+        return $this;
     }
 
+    /**
+     * Get foto
+     *
+     * @return \Mascotas\MascotasBundle\Entity\Document 
+     */
     public function getFoto()
     {
         return $this->foto;
     }
     
-    public $path;
-
-    public function getAbsolutePath()
-    {
-        return null === $this->path
-            ? null
-            : $this->getUploadRootDir().'/'.$this->path;
-    }
-
-    public function getWebPath()
-    {
-        return null === $this->path
-            ? null
-            : $this->getUploadDir().'/'.$this->path;
-    }
-
-    protected function getUploadRootDir()
-    {
-        // the absolute directory path where uploaded
-        // documents should be saved
-        return __DIR__.'/../../../../web/'.$this->getUploadDir();
-    }
-
-    protected function getUploadDir()
-    {
-        // get rid of the __DIR__ so it doesn't screw up
-        // when displaying uploaded doc/image in the view.
-        return 'uploads/documents';
+    /**
+     * Get foto_subida
+     *
+     * @return UploadedFile
+     */
+    public function getFotoSubida(){
+        return $this->foto_subida;
     }
     
+    public function setFotoSubida(UploadedFile $fotoSubida){
+        $this->foto_subida = $fotoSubida;
+    }
 }
-

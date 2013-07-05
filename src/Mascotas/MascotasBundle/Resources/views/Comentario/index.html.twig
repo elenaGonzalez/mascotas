@@ -1,53 +1,37 @@
 
-
-{% block body -%}
 <div class="text-center">
     <p><br/></p>
-    <h3>Lista de Comentarios</h3>
+    <h3>Lista de Comentarios.......</h3>
 
     <table class="container table-bordered table-striped">
         <thead>
-            <tr>
-                <th>Id</th>
+            <tr class="alert alert-info">
                 <th>Usuario</th>
                 <th>Comentario</th>
                 <th>Fecha</th>
                 {% if is_granted('ROLE_ADMIN') %}
-                <th>Actiones</th> {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-        {% for entity in entities %}
-            <tr>
-                <td>{{ entity.id }}</td>
-                <td>{{ entity.usuario }}</td>
-                <td>{{ entity.comentario }}</td>
-                <td>{{ entity.fecha | date('d/m/Y h:iA')}}</td>
-                
-                 {% if is_granted('ROLE_ADMIN') %}
-                <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('comentario_show', { 'id': entity.id }) }}">ver</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('comentario_edit', { 'id': entity.id }) }}">editar</a>
-                    </li>
-                </ul>
-                </td>
-            </tr>
-             {% endif %}
+                    <th>Acciones</th> {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td id="comentario-{{ entity.id }}">{{ entity.usuario }}</td>
+                        <td>{{ entity.comentario }}</td>
+                        <td>{{ entity.fecha | date('d/m/Y h:iA')}}</td>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <td>
+                            <div class="btn btn-small">
+                                <a href="{{ path('comentario_show', { 'id': entity.id }) }}">ver</a>
+                            </div>
+                            <div class="btn btn-small">
+                                <a href="{{ path('comentario_edit', { 'id': entity.id }) }}">editar</a>
+                            </div>
+                        </td>
+                    </tr>
+             {% endif %}                     
         {% endfor %}
-        </tbody>
-    </table>
-        {% if is_granted('ROLE_ADMIN') %}
-        <ul>
-        <li>
-            <a href="{#{ path('comentario_new') }#}">
-                Crear un Nuevo Comentario
-            </a>
-        </li>
-    </ul>
-     {% endif %}
-</div>
-    {% endblock %}
+                   
+                </tbody>
+            </table>
+        </div>

@@ -2,58 +2,73 @@
 {% block title %}Detalle de Publicacion{% endblock %}
 {% block body %}
 <div class="text-center" style="align:center">
-    <h1>Publicacion</h1>
+    <h1 class="text-info">Publicación</h1>
     <table class="container record_properties table-striped table-bordered text-center">
         <tbody>
-            <tr>
-                <th class="text-center">Id</th>
+            <tr class="text-center alert alert-danger">
+                <th class="text-center">Publicacion Nro</th>
                 <th class="text-center">Usuario</th>
                 <th class="text-center">Tipo</th>
                 <th class="text-center">Fechapublicacion</th>
                 <th class="text-center">Aviso</th>
                 <th class="text-center">Foto</th>
-                 <th class="text-center">Contacto</th>
-               </tr>
-            <tr><td class="text-center">{{ entity.id }}</td>
-               <td class="text-center">{{ entity.usuario }}</td>
-               <td class="text-center">{{ entity.tipo }}</td>
-               <td class="text-center">{{ entity.fechapublicacion|date('d/m/Y') }}</td>
-               <td class="text-center">{{ entity.aviso }}</td>
-               <td class="text-center">{{ entity.foto }}</td>
-               <td class="text-center">{{ entity.contacto }}</td>
+                <th class="text-center">Contacto</th>
+            </tr>
+            <tr>
+                <td class="text-center"> {{ entity.id }}</td>
+                <td class="text-center">{{ entity.usuario }}</td>
+                <td class="text-center">{{ entity.tipo }}</td>
+                <td class="text-center">{{ entity.fechapublicacion|date('d/m/Y') }}</td>
+                <td class="text-center">{{ entity.aviso }}</td>
+                <td class="text-center"><img src="{{ asset(entity.foto.webpath) }}" alt="Zelda!">  </td>
+                <td class="text-center">{{ entity.contacto }}</td>
             </tr>
         </tbody>
     </table>
-    <div>
-        {% include "MascotasMascotasBundle:Comentario:index.html.twig" with {'entities':comentarios} %}
-    </div>
-       {% if is_granted('ROLE_ADMIN') %}
+    {% if is_granted('ROLE_USER') %}
         <div>
-             <ul class="record_actions">
-                 <li>
+            {% include "MascotasMascotasBundle:Comentario:index.html.twig" with {'entities':comentarios} %}
+              
+            {% block paginador %}
+            <div class="pagination">
+                <ul>
+                    <li><a href="{{ path( 'publicacion_show', {'id' : entity.id }) }}">Primero</a></li>
+                    <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual - 1 }) }}">Anterior</a></li>
+                    <li><a href="#" class="disabled">{{ pagina_actual }}</a></li>
+                    <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual + 1 }) }}">Siguiente</a></li>
+                    <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : max_pag }) }}">Ultimo ({{ max_pag }})</a></li>
+                </ul>
+            </div>
+            {% endblock %}
+        </div>
+    {% endif %}
+    
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div align="center">
+             {% render ( controller( 'MascotasMascotasBundle:Comentario:new', { 'publicacion_id' : entity.id } ) ) %}
+        </div>
+    {% else %}
+        <div class="text-center">
+            <h5>Si desea realizar un comentario<a class="brand">
+                    <a href= "{{ path('login', {'_target_path' : 'publicacion'  })}}">Ingresar</a></h5>
+            <h5>Si Todavía no estás registrado<a href= "{{ path('registro')}}">
+                    <i class="icon-pencil"></i>Registrarse</a></h4>
+        </div>
+    {% endif %}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div>
+            <ul class="record_actions">
+                <li>
                     <a href="{{ path('publicacion') }}">vover a la Lista</a>
-                    </li>
-                  <li><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">Editar</a>
-                   </li>
-                  <li>
-                     <form action="{{ path('publicacion_delete', { 'id': entity.id }) }}" method="post">
-                     <input type="hidden" name="_method" value="DELETE" />
+                </li>
+                <li>
+                    <form action="{{ path('publicacion_delete', { 'id': entity.id }) }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE" />
                         {{ form_widget(delete_form) }}
-                    <button type="submit">Borrar</button>
-                     </form>
+                        <button type="submit">Borrar</button>
+                    </form>
                 </li>
             </ul>
     </div>
     {% endif %}
-    {% if is_granted('ROLE_USER') %}
-       <div align="center">
-         {% render ( controller( 'MascotasMascotasBundle:Comentario:new', { 'publicacion_id' : entity.id } ) ) %}
-       </div>
-    {% else %}
-    <div class="text-center">
-        <h5>Si desea realizar un comentario<a class="brand">
-          <a href= "{{ path('login')}}">Comentar</a></h5>
-     </div>
-    {% endif %}
-    {% endblock %}
-
+ {% endblock %}

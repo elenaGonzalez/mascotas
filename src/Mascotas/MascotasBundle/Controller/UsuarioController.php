@@ -54,13 +54,13 @@ class UsuarioController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+            return $this->redirect($this->generateUrl('publicacion'));
         }
 
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
         );
-        return $this->redirect($this->generateUrl('publicacion', array('id' => $entity->getId())));
     }
 
     /**
@@ -74,7 +74,7 @@ class UsuarioController extends Controller
     {
         $entity = new Usuario();
         $rol='ROLE_USER';
-        $entity->setRoles($rol);
+        $entity->addRole($rol);
         $form   = $this->createForm(new UsuarioType(), $entity);
         return array(
             'entity' => $entity,
@@ -213,20 +213,7 @@ class UsuarioController extends Controller
             ->getForm()
         ;
     }
-    
-     /**
-     *
-     * @Route("/contacto", name="usuario_contacto")
-     * @Method("GET")
-     * @Template()
-     */
-    public function ContactoAction()
-    {
-        return array(
-           
-        );
-    }
-    
+     
     private function setSecuredPassword($entity){
         $factory = $this->get('security.encoder_factory');            
         $encoder = $factory->getEncoder($entity);

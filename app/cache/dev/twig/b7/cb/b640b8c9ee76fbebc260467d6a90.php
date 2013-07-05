@@ -57,7 +57,7 @@ class __TwigTemplate_b7cbb640b8c9ee76fbebc260467d6a90 extends Twig_Template
        
         <a href=\"";
             // line 19
-            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("usuario"), "html", null, true);
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion"), "html", null, true);
             echo "\">
             Volver
         </a>

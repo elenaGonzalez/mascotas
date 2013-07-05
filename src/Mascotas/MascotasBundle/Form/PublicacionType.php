@@ -11,17 +11,19 @@ class PublicacionType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
                 //->add('usuario')
+                //->add('id', 'hidden')
                 ->add('tipo', 'choice', array(
-                   'choices' => array('e' => 'Encontrado', 'p' => 'Perdido')
+                   'choices' => array('Encontrado' => 'Encontrado', 'Perdido' => 'Perdido')
                 ))                
                 ->add('fechapublicacion', 'date', array(
                     'widget' => 'single_text',
                     'format' => 'yyyy-MM-dd'
                 ))
                 ->add('aviso', 'textarea')
-                ->add('foto', 'file')
+                ->add('foto_subida', 'file')
                 ->add('contacto', 'textarea')
                 ->getForm();
+        
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

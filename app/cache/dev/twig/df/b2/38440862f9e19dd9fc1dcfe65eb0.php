@@ -29,7 +29,7 @@ class __TwigTemplate_dfb238440862f9e19dd9fc1dcfe65eb0 extends Twig_Template
     {
         // line 4
         echo "<div class=\"text-center\">
-    <h1>Publicacion edit</h1>
+    <h1>Editar Publicación</h1>
 
     <form action=\"";
         // line 7
@@ -42,32 +42,27 @@ class __TwigTemplate_dfb238440862f9e19dd9fc1dcfe65eb0 extends Twig_Template
         // line 9
         echo $this->env->getExtension('form')->renderer->searchAndRenderBlock((isset($context["edit_form"]) ? $context["edit_form"] : $this->getContext($context, "edit_form")), 'widget');
         echo "
-        <p>
-            <button type=\"submit\">Edit</button>
-        </p>
+            <button type=\"submit\" class=\"btn-warning\">Editar</button>
     </form>
-
-        <ul class=\"record_actions\">
-    <li>
-        <a href=\"";
-        // line 17
-        echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion"), "html", null, true);
-        echo "\">
-            Back to the list
-        </a>
-    </li>
-    <li>
-        <form action=\"";
-        // line 22
+    <form action=\"";
+        // line 12
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion_delete", array("id" => $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "id"))), "html", null, true);
         echo "\" method=\"post\">
             <input type=\"hidden\" name=\"_method\" value=\"DELETE\" />
             ";
-        // line 24
+        // line 14
         echo $this->env->getExtension('form')->renderer->searchAndRenderBlock((isset($context["delete_form"]) ? $context["delete_form"] : $this->getContext($context, "delete_form")), 'widget');
         echo "
-            <button type=\"submit\">Delete</button>
+            <button type=\"submit\" class=\"btn-danger\">Borrar</button>
         </form>
+        <ul class=\"record_actions\">
+    <li>
+        <a href=\"";
+        // line 19
+        echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion"), "html", null, true);
+        echo "\">
+           Volver a las Publicaciones
+        </a>
     </li>
 </ul>
 </div>
@@ -86,6 +81,6 @@ class __TwigTemplate_dfb238440862f9e19dd9fc1dcfe65eb0 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  67 => 24,  62 => 22,  54 => 17,  43 => 9,  36 => 7,  31 => 4,  28 => 3,);
+        return array (  62 => 19,  54 => 14,  49 => 12,  43 => 9,  36 => 7,  31 => 4,  28 => 3,);
     }
 }

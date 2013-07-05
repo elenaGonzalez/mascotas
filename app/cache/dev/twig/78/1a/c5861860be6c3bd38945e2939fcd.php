@@ -14,6 +14,7 @@ class __TwigTemplate_781ac5861860be6c3bd38945e2939fcd extends Twig_Template
             'stylesheets' => array($this, 'block_stylesheets'),
             'header' => array($this, 'block_header'),
             'titulo' => array($this, 'block_titulo'),
+            'saludo' => array($this, 'block_saludo'),
             'body' => array($this, 'block_body'),
             'script' => array($this, 'block_script'),
         );
@@ -43,11 +44,12 @@ class __TwigTemplate_781ac5861860be6c3bd38945e2939fcd extends Twig_Template
   ";
         // line 13
         $this->displayBlock('header', $context, $blocks);
-        // line 50
-        echo " 
-     ";
-        // line 51
+        // line 49
+        echo "     ";
         $this->displayBlock('titulo', $context, $blocks);
+        // line 50
+        echo "     ";
+        $this->displayBlock('saludo', $context, $blocks);
         // line 52
         echo "     ";
         $this->displayBlock('body', $context, $blocks);
@@ -96,7 +98,10 @@ class __TwigTemplate_781ac5861860be6c3bd38945e2939fcd extends Twig_Template
            <div class=\"container-fluid\">
            <div class=\"row-fluid\">
                <ul>
-                  <div class=\"span2\"><a class=\"brand\"><href=\"#\"><i class=\"icon-home icon-white\"></i>Sistema Mascotas</a></div>
+                  <div class=\"span2\"><li class=\"brand\"><a href=\"";
+        // line 26
+        echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion"), "html", null, true);
+        echo "\"><i class=\"icon-home icon-white\"></i>Sistema Mascotas</a></div>
                   <div class=\"span2\"><li class=\"brand\"><a href=\"";
         // line 27
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion"), "html", null, true);
@@ -138,13 +143,24 @@ class __TwigTemplate_781ac5861860be6c3bd38945e2939fcd extends Twig_Template
    </div>
    </div>
   </div>
-  
-        ";
+  ";
     }
 
-    // line 51
+    // line 49
     public function block_titulo($context, array $blocks = array())
     {
+    }
+
+    // line 50
+    public function block_saludo($context, array $blocks = array())
+    {
+        if (($this->env->getExtension('security')->isGranted("ROLE_ADMIN") || $this->env->getExtension('security')->isGranted("ROLE_USER"))) {
+            echo "<h4 class=\"text-right\"><i class=\"icon-user\"></i>
+         Hola ";
+            // line 51
+            echo twig_escape_filter($this->env, $this->getAttribute($this->getAttribute((isset($context["app"]) ? $context["app"] : $this->getContext($context, "app")), "user"), "username"), "html", null, true);
+            echo "</h4>";
+        }
     }
 
     // line 52
@@ -190,6 +206,6 @@ class __TwigTemplate_781ac5861860be6c3bd38945e2939fcd extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  176 => 58,  172 => 57,  167 => 56,  164 => 55,  160 => 60,  158 => 55,  154 => 53,  151 => 52,  146 => 51,  132 => 40,  128 => 38,  122 => 35,  118 => 33,  116 => 32,  111 => 30,  106 => 28,  102 => 27,  90 => 17,  88 => 15,  85 => 14,  82 => 13,  76 => 8,  69 => 7,  63 => 6,  55 => 61,  52 => 52,  50 => 51,  47 => 50,  45 => 13,  38 => 10,  36 => 7,  32 => 6,  25 => 1,  40 => 4,  37 => 3,  29 => 2,);
+        return array (  192 => 58,  188 => 57,  183 => 56,  180 => 55,  176 => 60,  174 => 55,  170 => 53,  167 => 52,  161 => 51,  155 => 50,  150 => 49,  137 => 40,  133 => 38,  127 => 35,  123 => 33,  121 => 32,  116 => 30,  111 => 28,  107 => 27,  103 => 26,  92 => 17,  90 => 15,  87 => 14,  84 => 13,  78 => 8,  71 => 7,  65 => 6,  57 => 61,  54 => 52,  51 => 50,  48 => 49,  46 => 13,  39 => 10,  37 => 7,  33 => 6,  26 => 1,);
     }
 }

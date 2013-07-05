@@ -20,18 +20,21 @@ class ComentarioController extends Controller
     /**
      * Lists all Comentario entities.
      *
-     * @Route("/", name="comentario")
+     * @Route("/{$publicacion_id}/{$pag_actual}", name="comentario")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($publicacion_id , $pag_actual = 1)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entities = $em->getRepository('MascotasMascotasBundle:Comentario')->findAll();
-
+        $entities = $em->getRepository('MascotasMascotasBundle:Comentario')->getPagina($pag_actual, $publicacion_id);
+        $max_pag = $em->getRepository('MascotasMascotasBundle:Comentario')->getCantidad($publicacion_id);
+        
         return array(
             'entities' => $entities,
+            'max_pag' => $max_pag,
+            'pagina_actual' => $pag_actual,
         );
     }
 

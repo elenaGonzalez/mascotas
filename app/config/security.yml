@@ -7,7 +7,8 @@ security:
         secured_area:
             pattern:    ^/
             anonymous: ~
-            form_login: ~
+            form_login: 
+              default_target_path: /mascotas
         
             logout:
                 path: /logout
@@ -20,6 +21,8 @@ security:
     access_control:
         - { path: ^/mascotas/publicacion/new, roles: ROLE_USER }
         - { path: ^/mascotas/mascota/new, roles: ROLE_USER}
+        - { path: ^/mascotas/comentario/new, roles: ROLE_USER}
+        - { path: /edit$ , roles: ROLE_ADMIN}
         
     providers:
       encadenado:

@@ -1,5 +1,5 @@
 mascotas_mascotas:
-    resource: "@MascotasMascotasBundle/Controller/"
+    resource: "@MascotasMascotasBundle/Controller"
     type:     annotation
     prefix:   /mascotas
     
@@ -18,5 +18,6 @@ logout:
     pattern:   /logout
     
 contacto:
-    pattern:  /mascotas/usuario/contacto
-    defaults: { _UsuarioController: MascotasMascotasBundle:Usuario:contacto }
+    pattern:  /contacto
+    defaults: { _controller: MascotasMascotasBundle:Contacto:contacto }
+   

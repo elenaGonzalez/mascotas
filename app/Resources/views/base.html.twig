@@ -23,7 +23,7 @@
            <div class="container-fluid">
            <div class="row-fluid">
                <ul>
-                  <div class="span2"><a class="brand"><href="#"><i class="icon-home icon-white"></i>Sistema Mascotas</a></div>
+                  <div class="span2"><li class="brand"><a href="{{ path('publicacion')}}"><i class="icon-home icon-white"></i>Sistema Mascotas</a></div>
                   <div class="span2"><li class="brand"><a href="{{ path('publicacion')}}">Ver las Publicaciones</a></li></div>
                   <div class="span2"><li class="brand"><a href="{{ path('publicacion_new')}}">Realizar una Publicacion</a></li></div>
                   <div class="span2"><li class="brand">
@@ -45,10 +45,10 @@
    </div>
    </div>
   </div>
-  
-        {% endblock %}
- 
+  {% endblock %}
      {% block titulo%}{%endblock%}
+     {% block saludo%}{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_USER') %}<h4 class="text-right"><i class="icon-user"></i>
+         Hola {{app.user.username}}</h4>{% endif %}{%endblock%}
      {% block body%}
      <div class="span10 text-center">
     </div>
