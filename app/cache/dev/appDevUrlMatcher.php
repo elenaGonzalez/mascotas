@@ -419,7 +419,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 not_publicacion_new:
 
                 // publicacion_show
-                if (preg_match('#^/mascotas/publicacion/(?P<id>[^/]++)(?:/(?P<comentario_nro_pagina>[^/]++))?$#s', $pathinfo, $matches)) {
+                if (preg_match('#^/mascotas/publicacion/(?P<id>\\d+)(?:/(?P<comentario_nro_pagina>\\d+))?$#s', $pathinfo, $matches)) {
                     if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                         $allow = array_merge($allow, array('GET', 'HEAD'));
                         goto not_publicacion_show;
@@ -461,6 +461,17 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                     return $this->mergeDefaults(array_replace($matches, array('_route' => 'publicacion_delete')), array (  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\PublicacionController::deleteAction',));
                 }
                 not_publicacion_delete:
+
+                // usuario_panel
+                if (0 === strpos($pathinfo, '/mascotas/publicacion/panel') && preg_match('#^/mascotas/publicacion/panel/(?P<usuario>[^/]++)$#s', $pathinfo, $matches)) {
+                    if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                        $allow = array_merge($allow, array('GET', 'HEAD'));
+                        goto not_usuario_panel;
+                    }
+
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'usuario_panel')), array (  '_controller' => 'Mascotas\\MascotasBundle\\Controller\\PublicacionController::panelAction',));
+                }
+                not_usuario_panel:
 
             }
 
@@ -574,11 +585,6 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return array('_route' => 'logout');
             }
 
-        }
-
-        // contacto
-        if ($pathinfo === '/contacto') {
-            return array (  '_controller' => 'MascotasMascotasBundle:Contacto:contacto',  '_route' => 'contacto',);
         }
 
         throw 0 < count($allow) ? new MethodNotAllowedException(array_unique($allow)) : new ResourceNotFoundException();

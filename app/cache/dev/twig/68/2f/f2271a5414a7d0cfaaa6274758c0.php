@@ -41,50 +41,51 @@ class __TwigTemplate_682ff2271a5414a7d0cfaaa6274758c0 extends Twig_Template
     <table class=\"container table-bordered table-striped\">
         <thead>
             <tr class=\"text-center alert alert-danger\">
+                <th class=\"text-center\">Nro de Aviso</th>
+                <th class=\"text-center\">Foto</th>
                 <th class=\"text-center\">Avisos</th>
                 <th class=\"text-center\">Acciones</th>
             </tr>
         </thead>
         <tbody>
         ";
-        // line 18
+        // line 20
         $context['_parent'] = (array) $context;
         $context['_seq'] = twig_ensure_traversable((isset($context["entities"]) ? $context["entities"] : $this->getContext($context, "entities")));
         foreach ($context['_seq'] as $context["_key"] => $context["entity"]) {
-            // line 19
+            // line 21
             echo "                <tr style=\"central\">
+                    <td class=\"text-center\">
+                     <div class=\"btn btn-small\">";
+            // line 23
+            echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "id"), "html", null, true);
+            echo "</td>
+                    <td><img src=\"";
+            // line 24
+            echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl($this->getAttribute($this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "foto"), "webpath")), "html", null, true);
+            echo "\" alt=\"Zelda!\"alt=\"Zelda!\" width=\"140\" height=\"140\" class=\"img-polaroid\"></td>
                     <td class=\"text-center\">";
-            // line 20
+            // line 25
             echo twig_escape_filter($this->env, $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "aviso"), "html", null, true);
             echo "</td>
-
                     <td class=\"text-center\">
-                     ";
-            // line 23
-            if ($this->env->getExtension('security')->isGranted("ROLE_ADMIN")) {
-                // line 24
-                echo "                            <div class=\"btn btn-small\"><a href=\"";
-                echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion_edit", array("id" => $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "id"))), "html", null, true);
-                echo "\">editar</a></div>
-                 ";
-            }
-            // line 26
-            echo "                            <div class=\"btn btn-small\"><a href=\"";
+                     <div class=\"btn btn-small\"><a href=\"";
+            // line 27
             echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion_show", array("id" => $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "id"))), "html", null, true);
-            echo "\">ver detalles</a></div>
-                    </tr>
+            echo "\">ver detalles</a></td></div>
+               </tr>
         ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_iterated'], $context['_key'], $context['entity'], $context['_parent'], $context['loop']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 29
+        // line 30
         echo "                </tbody>
             </table>
         ";
-        // line 31
+        // line 32
         $this->displayBlock('paginador', $context, $blocks);
-        // line 42
+        // line 51
         echo "        </div>
 ";
     }
@@ -95,30 +96,50 @@ class __TwigTemplate_682ff2271a5414a7d0cfaaa6274758c0 extends Twig_Template
         echo "Publicaciones";
     }
 
-    // line 31
+    // line 32
     public function block_paginador($context, array $blocks = array())
     {
-        // line 32
+        // line 33
         echo "            <div class=\"pagination\">
                 <ul>                    
                      <li><a href=\"";
-        // line 34
+        // line 35
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion", array("pagina_actual" => 1)), "html", null, true);
         echo "\">Primero</a></li>
-                     <li><a href=\"";
-        // line 35
-        echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion", array("pagina_actual" => ((isset($context["pagina_actual"]) ? $context["pagina_actual"] : $this->getContext($context, "pagina_actual")) - 1))), "html", null, true);
-        echo "\">Anterior</a></li>
-                     <li><a href=\"#\" class=\"disabled\">";
+                     ";
         // line 36
+        if (((isset($context["pagina_actual"]) ? $context["pagina_actual"] : $this->getContext($context, "pagina_actual")) <= 1)) {
+            // line 37
+            echo "                          <li class=\"disabled\"><a href=\"\">Anterior</a></li>
+                     ";
+        } else {
+            // line 39
+            echo "                          <li><a href=\"";
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion", array("pagina_actual" => ((isset($context["pagina_actual"]) ? $context["pagina_actual"] : $this->getContext($context, "pagina_actual")) - 1))), "html", null, true);
+            echo "\">Anterior</a></li>
+                     ";
+        }
+        // line 41
+        echo "                     <li><a href=\"#\" class=\"disabled\">";
         echo twig_escape_filter($this->env, (isset($context["pagina_actual"]) ? $context["pagina_actual"] : $this->getContext($context, "pagina_actual")), "html", null, true);
         echo "</a></li>
-                     <li><a href=\"";
-        // line 37
-        echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion", array("pagina_actual" => ((isset($context["pagina_actual"]) ? $context["pagina_actual"] : $this->getContext($context, "pagina_actual")) + 1))), "html", null, true);
-        echo "\">Siguiente</a></li>
-                    <li><a href=\"";
-        // line 38
+                      ";
+        // line 42
+        if (((isset($context["pagina_actual"]) ? $context["pagina_actual"] : $this->getContext($context, "pagina_actual")) >= (isset($context["max_pag"]) ? $context["max_pag"] : $this->getContext($context, "max_pag")))) {
+            // line 43
+            echo "                          <li class=\"disabled\"><a href=\"";
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion", array("pagina_actual" => (isset($context["max_pag"]) ? $context["max_pag"] : $this->getContext($context, "max_pag")))), "html", null, true);
+            echo "\">Siguiente</a></li>
+                     ";
+        } else {
+            // line 45
+            echo "                          <li><a href=\"";
+            echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion", array("pagina_actual" => ((isset($context["pagina_actual"]) ? $context["pagina_actual"] : $this->getContext($context, "pagina_actual")) + 1))), "html", null, true);
+            echo "\">Siguiente</a></li>
+                     ";
+        }
+        // line 47
+        echo "                    <li><a href=\"";
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion", array("pagina_actual" => (isset($context["max_pag"]) ? $context["max_pag"] : $this->getContext($context, "max_pag")))), "html", null, true);
         echo "\">Ultimo</a></li>                    
                 </ul>                
@@ -138,6 +159,6 @@ class __TwigTemplate_682ff2271a5414a7d0cfaaa6274758c0 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  122 => 38,  118 => 37,  114 => 36,  110 => 35,  106 => 34,  102 => 32,  99 => 31,  93 => 4,  88 => 42,  86 => 31,  82 => 29,  72 => 26,  66 => 24,  64 => 23,  58 => 20,  55 => 19,  51 => 18,  33 => 4,  30 => 3,);
+        return array (  142 => 47,  136 => 45,  130 => 43,  128 => 42,  123 => 41,  117 => 39,  113 => 37,  111 => 36,  107 => 35,  103 => 33,  100 => 32,  94 => 4,  89 => 51,  87 => 32,  83 => 30,  74 => 27,  69 => 25,  65 => 24,  61 => 23,  57 => 21,  53 => 20,  33 => 4,  30 => 3,);
     }
 }

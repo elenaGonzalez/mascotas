@@ -30,13 +30,16 @@ class __TwigTemplate_dfb238440862f9e19dd9fc1dcfe65eb0 extends Twig_Template
         // line 4
         echo "<div class=\"text-center\">
     <h1>Editar Publicación</h1>
-
     <form action=\"";
-        // line 7
+        // line 6
         echo twig_escape_filter($this->env, $this->env->getExtension('routing')->getPath("publicacion_update", array("id" => $this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "id"))), "html", null, true);
         echo "\" method=\"post\" ";
         echo $this->env->getExtension('form')->renderer->searchAndRenderBlock((isset($context["edit_form"]) ? $context["edit_form"] : $this->getContext($context, "edit_form")), 'enctype');
         echo ">
+        <td class=\"text-center\"><img src=\"";
+        // line 7
+        echo twig_escape_filter($this->env, $this->env->getExtension('assets')->getAssetUrl($this->getAttribute($this->getAttribute((isset($context["entity"]) ? $context["entity"] : $this->getContext($context, "entity")), "foto"), "webpath")), "html", null, true);
+        echo "\" alt=\"Zelda!\" width=\"100\" height=\"100\">Foto Actual</td>
         <input type=\"hidden\" name=\"_method\" value=\"PUT\" />
         ";
         // line 9
@@ -81,6 +84,6 @@ class __TwigTemplate_dfb238440862f9e19dd9fc1dcfe65eb0 extends Twig_Template
 
     public function getDebugInfo()
     {
-        return array (  62 => 19,  54 => 14,  49 => 12,  43 => 9,  36 => 7,  31 => 4,  28 => 3,);
+        return array (  65 => 19,  57 => 14,  52 => 12,  46 => 9,  41 => 7,  35 => 6,  31 => 4,  28 => 3,);
     }
 }

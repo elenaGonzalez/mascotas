@@ -10,6 +10,8 @@
     <table class="container table-bordered table-striped">
         <thead>
             <tr class="text-center alert alert-danger">
+                <th class="text-center">Nro de Aviso</th>
+                <th class="text-center">Foto</th>
                 <th class="text-center">Avisos</th>
                 <th class="text-center">Acciones</th>
             </tr>
@@ -17,14 +19,13 @@
         <tbody>
         {% for entity in entities %}
                 <tr style="central">
-                    <td class="text-center">{{ entity.aviso }}</td>
-
                     <td class="text-center">
-                     {% if is_granted('ROLE_ADMIN') %}
-                            <div class="btn btn-small"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">editar</a></div>
-                 {% endif %}
-                            <div class="btn btn-small"><a href="{{ path('publicacion_show', { 'id': entity.id }) }}">ver detalles</a></div>
-                    </tr>
+                     <div class="btn btn-small">{{entity.id }}</td>
+                    <td><img src="{{ asset(entity.foto.webpath) }}" alt="Zelda!"alt="Zelda!" width="140" height="140" class="img-polaroid"></td>
+                    <td class="text-center">{{ entity.aviso }}</td>
+                    <td class="text-center">
+                     <div class="btn btn-small"><a href="{{ path('publicacion_show', { 'id': entity.id }) }}">ver detalles</a></td></div>
+               </tr>
         {% endfor %}
                 </tbody>
             </table>
@@ -32,9 +33,17 @@
             <div class="pagination">
                 <ul>                    
                      <li><a href="{{ path( 'publicacion', {'pagina_actual' : 1}) }}">Primero</a></li>
-                     <li><a href="{{ path('publicacion' , { 'pagina_actual' : pagina_actual - 1 }) }}">Anterior</a></li>
+                     {% if (pagina_actual <= 1 ) %}
+                          <li class="disabled"><a href="">Anterior</a></li>
+                     {% else %}
+                          <li><a href="{{ path('publicacion' , { 'pagina_actual' : pagina_actual - 1 }) }}">Anterior</a></li>
+                     {% endif %}
                      <li><a href="#" class="disabled">{{ pagina_actual }}</a></li>
-                     <li><a href="{{ path( 'publicacion', {'pagina_actual' : pagina_actual + 1 }) }}">Siguiente</a></li>
+                      {% if (pagina_actual >= max_pag ) %}
+                          <li class="disabled"><a href="{{ path( 'publicacion', {'pagina_actual' : max_pag }) }}">Siguiente</a></li>
+                     {% else %}
+                          <li><a href="{{ path( 'publicacion', {'pagina_actual' : pagina_actual + 1 }) }}">Siguiente</a></li>
+                     {% endif %}
                     <li><a href="{{ path('publicacion' , { 'pagina_actual' : max_pag }) }}">Ultimo</a></li>                    
                 </ul>                
             </div>

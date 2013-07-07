@@ -15,8 +15,7 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $titulo="Bienvenido al Sistema Mascotas";
-        $mens="Si amas a las mascotas, este es un Sitio que te va a encantar. No dudes en registrarte y comienza a participar";
-        return array('titulo' => $titulo,'mens' => $mens);
+       
+       return $this->redirect($this->generateUrl('publicacion'));
     }
 }

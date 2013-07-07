@@ -24,7 +24,7 @@ class Document {
     private $id;
 
     /**
-     * @Assert\File(maxSize="60000")
+     * @Assert\File( maxSize="500K")
      */
     private $file;
 

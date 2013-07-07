@@ -1,0 +1,27 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+Hola. Estas son tus publicaciones:
+<table class="container table-bordered table-striped">
+    <thead>
+        <tr class="text-center alert alert-danger">
+            <th class="text-center">Nro de Aviso</th>
+            <th class="text-center">Foto</th>
+            <th class="text-center">Avisos</th>
+            <th class="text-center">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entity in entities %}
+            <tr style="central">
+                <td class="text-center">
+                    <div class="btn btn-small">{{entity.id }}</td>
+                <td><img src="{{ asset(entity.foto.webpath) }}" alt="Zelda!"alt="Zelda!" width="140" height="140" class="img-polaroid"></td>
+                <td class="text-center">{{ entity.aviso }}</td>
+                <td class="text-center">
+                    <div class="btn btn-small"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">Editar</a>
+                    <div class="btn btn-small"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">Finalizar</a></td></div>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

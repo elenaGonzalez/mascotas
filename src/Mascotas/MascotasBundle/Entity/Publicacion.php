@@ -48,6 +48,7 @@ class Publicacion {
      * @ORM\Column(name="fechapublicacion", type="date")
      */
     private $fechapublicacion;
+    
 
     /**
      * @var string

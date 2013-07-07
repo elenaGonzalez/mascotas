@@ -23,6 +23,18 @@ class PublicacionRepository extends EntityRepository {
     public function getCantidad() {
         return ceil(count($this->findAll()) / 5);
     }
-
+    
+    public function getPublicaciones($usuario) {
+        /*$query = $this->createQueryBuilder('p, u')
+                    ->join($join, $alias)
+                    ->where('u.id = :usuario')
+                    ->setParameter('usuario', $usuario->getID())
+                    ->orderBy('p.fechapublicacion', 'DESC')
+                    ->getQuery();
+        return $query->getResult();        */
+        
+        return $this->findByUsuario($usuario->getUsername());
+             
+    }
 }
 

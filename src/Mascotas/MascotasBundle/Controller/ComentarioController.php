@@ -60,20 +60,19 @@ class ComentarioController extends Controller
             $em->persist($entity);
             $em->flush();
             
-            //return $this->redirect($this->generateUrl('comentario_show', array('id' => $entity->getId())));
-            return $this->redirect(
-                            $this->generateUrl('publicacion_show', array(
-                                'id' => $entity->getPublicacion()->getId() .
-                                '#comentario-' . $entity->getId()
-                    )));
-        }
-        
+        return $this->redirect(
+               $this->generateUrl('publicacion_show', array('id' =>$entity->getPublicacion()->getId()))
+            );
+         }
+  
         return array(
             'entity' => $entity,
             'form'   => $form->createView(),
             'publicacion' => $publicacion,
         );
-    }
+        }  
+        
+   
 
     /**
      * Displays a form to create a new Comentario entity.

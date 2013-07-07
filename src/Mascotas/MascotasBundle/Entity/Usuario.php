@@ -64,6 +64,7 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
+     * @Assert\Length(min = 5)
      */
     private $password;
 

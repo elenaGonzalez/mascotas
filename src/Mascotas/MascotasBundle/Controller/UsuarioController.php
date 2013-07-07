@@ -220,4 +220,5 @@ class UsuarioController extends Controller
         $password = $encoder->encodePassword($entity->getPassword(), $entity->getSalt());
         $entity->setPassword($password);
     }
+    
 }

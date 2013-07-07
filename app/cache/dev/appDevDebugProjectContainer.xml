@@ -274,6 +274,21 @@
         <parameter>ROLE_USER</parameter>
       </parameter>
     </parameter>
+    <parameter key="security.acl.permission_granting_strategy.class">Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy</parameter>
+    <parameter key="security.acl.voter.class">Symfony\Component\Security\Acl\Voter\AclVoter</parameter>
+    <parameter key="security.acl.permission.map.class">Symfony\Component\Security\Acl\Permission\BasicPermissionMap</parameter>
+    <parameter key="security.acl.object_identity_retrieval_strategy.class">Symfony\Component\Security\Acl\Domain\ObjectIdentityRetrievalStrategy</parameter>
+    <parameter key="security.acl.security_identity_retrieval_strategy.class">Symfony\Component\Security\Acl\Domain\SecurityIdentityRetrievalStrategy</parameter>
+    <parameter key="security.acl.cache.doctrine.class">Symfony\Component\Security\Acl\Domain\DoctrineAclCache</parameter>
+    <parameter key="security.acl.collection_cache.class">Symfony\Component\Security\Acl\Domain\AclCollectionCache</parameter>
+    <parameter key="security.acl.dbal.provider.class">Symfony\Component\Security\Acl\Dbal\MutableAclProvider</parameter>
+    <parameter key="security.acl.dbal.schema.class">Symfony\Component\Security\Acl\Dbal\Schema</parameter>
+    <parameter key="security.acl.dbal.schema_listener.class">Symfony\Bundle\SecurityBundle\EventListener\AclSchemaListener</parameter>
+    <parameter key="security.acl.dbal.class_table_name">acl_classes</parameter>
+    <parameter key="security.acl.dbal.entry_table_name">acl_entries</parameter>
+    <parameter key="security.acl.dbal.oid_table_name">acl_object_identities</parameter>
+    <parameter key="security.acl.dbal.oid_ancestors_table_name">acl_object_identity_ancestors</parameter>
+    <parameter key="security.acl.dbal.sid_table_name">acl_security_identities</parameter>
     <parameter key="twig.class">Twig_Environment</parameter>
     <parameter key="twig.loader.filesystem.class">Symfony\Bundle\TwigBundle\Loader\FilesystemLoader</parameter>
     <parameter key="twig.loader.chain.class">Twig_Loader_Chain</parameter>
@@ -477,8 +492,8 @@
     <parameter key="jms_di_extra.disable_grep">false</parameter>
     <parameter key="jms_di_extra.doctrine_integration">true</parameter>
     <parameter key="jms_di_extra.cache_warmer.controller_file_blacklist" type="collection"/>
-    <parameter key="jms_di_extra.doctrine_integration.entity_manager.file">D:/xampp/htdocs/mascotas/app/cache/dev/jms_diextra/doctrine/EntityManager_51d5f6f7e986d.php</parameter>
-    <parameter key="jms_di_extra.doctrine_integration.entity_manager.class">EntityManager51d5f6f7e986d_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager</parameter>
+    <parameter key="jms_di_extra.doctrine_integration.entity_manager.file">D:/xampp/htdocs/mascotas/app/cache/dev/jms_diextra/doctrine/EntityManager_51d8faa611c94.php</parameter>
+    <parameter key="jms_di_extra.doctrine_integration.entity_manager.class">EntityManager51d8faa611c94_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager</parameter>
     <parameter key="security.secured_services" type="collection"/>
     <parameter key="security.access.method_interceptor.class">JMS\SecurityExtraBundle\Security\Authorization\Interception\MethodSecurityInterceptor</parameter>
     <parameter key="security.access.method_access_control" type="collection"/>
@@ -1591,7 +1606,7 @@
         </argument>
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>51d5f6f797dc7</argument>
+            <argument>51d8faa5b00b6</argument>
           </service>
         </argument>
       </argument>
@@ -1618,6 +1633,18 @@
               <service class="Symfony\Component\Security\Core\Authorization\Voter\AuthenticatedVoter" public="false">
                 <tag name="security.voter" priority="250"/>
                 <argument type="service" id="security.authentication.trust_resolver"/>
+              </service>
+            </argument>
+            <argument type="service">
+              <service class="JMS\SecurityExtraBundle\Security\Acl\Voter\AclVoter" public="false">
+                <tag name="monolog.logger" channel="security"/>
+                <tag name="security.voter" priority="255"/>
+                <argument type="service" id="security.acl.provider"/>
+                <argument type="service" id="security.acl.object_identity_retrieval_strategy"/>
+                <argument type="service" id="security.acl.security_identity_retrieval_strategy"/>
+                <argument type="service" id="security.acl.permission.map"/>
+                <argument type="service" id="monolog.logger.security"/>
+                <argument>true</argument>
               </service>
             </argument>
           </argument>
@@ -1744,17 +1771,6 @@
                   </argument>
                   <argument>null</argument>
                 </call>
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>/edit$</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>ROLE_ADMIN</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
               </service>
             </argument>
             <argument type="service">
@@ -1877,7 +1893,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.context"/>
-            <argument>51d5f6f797dc7</argument>
+            <argument>51d8faa5b00b6</argument>
             <argument type="service" id="monolog.logger.security"/>
           </service>
         </argument>
@@ -1921,17 +1937,6 @@
                   </argument>
                   <argument>null</argument>
                 </call>
-                <call method="add">
-                  <argument type="service">
-                    <service class="Symfony\Component\HttpFoundation\RequestMatcher" public="false">
-                      <argument>/edit$</argument>
-                    </service>
-                  </argument>
-                  <argument type="collection">
-                    <argument>ROLE_ADMIN</argument>
-                  </argument>
-                  <argument>null</argument>
-                </call>
               </service>
             </argument>
             <argument type="service" id="security.authentication.manager"/>
@@ -1968,6 +1973,26 @@
           <argument type="service" id="monolog.logger.security"/>
         </service>
       </argument>
+    </service>
+    <service id="security.acl.object_identity_retrieval_strategy" class="Symfony\Component\Security\Acl\Domain\ObjectIdentityRetrievalStrategy" public="false"/>
+    <service id="security.acl.security_identity_retrieval_strategy" class="Symfony\Component\Security\Acl\Domain\SecurityIdentityRetrievalStrategy" public="false">
+      <argument type="service" id="security.role_hierarchy"/>
+      <argument type="service" id="security.authentication.trust_resolver"/>
+    </service>
+    <service id="security.acl.permission.map" class="Symfony\Component\Security\Acl\Permission\BasicPermissionMap" public="false"/>
+    <service id="security.acl.dbal.schema" class="Symfony\Component\Security\Acl\Dbal\Schema">
+      <argument type="collection">
+        <argument key="class_table_name">acl_classes</argument>
+        <argument key="entry_table_name">acl_entries</argument>
+        <argument key="oid_table_name">acl_object_identities</argument>
+        <argument key="oid_ancestors_table_name">acl_object_identity_ancestors</argument>
+        <argument key="sid_table_name">acl_security_identities</argument>
+      </argument>
+      <argument type="service" id="doctrine.dbal.default_connection"/>
+    </service>
+    <service id="security.acl.dbal.schema_listener" class="Symfony\Bundle\SecurityBundle\EventListener\AclSchemaListener">
+      <tag name="doctrine.event_listener" connection="default" event="postGenerateSchema" lazy="1"/>
+      <argument type="service" id="service_container"/>
     </service>
     <service id="twig" class="Twig_Environment">
       <argument type="service" id="twig.loader"/>
@@ -2275,6 +2300,12 @@
       <argument type="service">
         <service class="Symfony\Bridge\Doctrine\ContainerAwareEventManager" public="false">
           <argument type="service" id="service_container"/>
+          <call method="addEventListener">
+            <argument type="collection">
+              <argument>postGenerateSchema</argument>
+            </argument>
+            <argument>security.acl.dbal.schema_listener</argument>
+          </call>
         </service>
       </argument>
       <argument type="collection"/>
@@ -2299,8 +2330,8 @@
       <argument type="collection"/>
       <argument type="collection"/>
     </service>
-    <service id="doctrine.orm.default_entity_manager" class="EntityManager51d5f6f7e986d_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager">
-      <file>D:/xampp/htdocs/mascotas/app/cache/dev/jms_diextra/doctrine/EntityManager_51d5f6f7e986d.php</file>
+    <service id="doctrine.orm.default_entity_manager" class="EntityManager51d8faa611c94_546a8d27f194334ee012bfe64f629947b07e4919\__CG__\Doctrine\ORM\EntityManager">
+      <file>D:/xampp/htdocs/mascotas/app/cache/dev/jms_diextra/doctrine/EntityManager_51d8faa611c94.php</file>
       <argument type="service">
         <service class="Doctrine\ORM\EntityManager" factory-method="create" public="false">
           <argument type="service" id="doctrine.dbal.default_connection"/>
@@ -2455,7 +2486,17 @@
       <argument type="service" id="security.access.decision_manager"/>
       <argument type="service">
         <service class="JMS\SecurityExtraBundle\Security\Authorization\AfterInvocation\AfterInvocationManager" public="false">
-          <argument type="collection"/>
+          <argument type="collection">
+            <argument type="service">
+              <service class="JMS\SecurityExtraBundle\Security\Authorization\AfterInvocation\AclAfterInvocationProvider" public="false">
+                <tag name="security.after_invocation.provider"/>
+                <argument type="service" id="security.acl.provider"/>
+                <argument type="service" id="security.acl.object_identity_retrieval_strategy"/>
+                <argument type="service" id="security.acl.security_identity_retrieval_strategy"/>
+                <argument type="service" id="security.acl.permission.map"/>
+              </service>
+            </argument>
+          </argument>
         </service>
       </argument>
       <argument type="service">
@@ -2762,6 +2803,20 @@
         </argument>
       </argument>
     </service>
+    <service id="security.acl.provider" class="Symfony\Component\Security\Acl\Dbal\MutableAclProvider">
+      <argument type="service" id="doctrine.dbal.default_connection"/>
+      <argument type="service">
+        <service class="Symfony\Component\Security\Acl\Domain\PermissionGrantingStrategy" public="false"/>
+      </argument>
+      <argument type="collection">
+        <argument key="class_table_name">acl_classes</argument>
+        <argument key="entry_table_name">acl_entries</argument>
+        <argument key="oid_table_name">acl_object_identities</argument>
+        <argument key="oid_ancestors_table_name">acl_object_identity_ancestors</argument>
+        <argument key="sid_table_name">acl_security_identities</argument>
+      </argument>
+      <argument>null</argument>
+    </service>
     <service id="twig.loader" class="Symfony\Bundle\TwigBundle\Loader\FilesystemLoader">
       <tag name="twig.loader"/>
       <argument type="service" id="templating.locator"/>
@@ -2899,6 +2954,7 @@
       </argument>
     </service>
     <service id="session.storage" alias="session.storage.native"/>
+    <service id="security.acl.dbal.connection" alias="doctrine.dbal.default_connection"/>
     <service id="debug.templating.engine.twig" alias="templating"/>
     <service id="database_connection" alias="doctrine.dbal.default_connection"/>
     <service id="doctrine.orm.entity_manager" alias="doctrine.orm.default_entity_manager"/>

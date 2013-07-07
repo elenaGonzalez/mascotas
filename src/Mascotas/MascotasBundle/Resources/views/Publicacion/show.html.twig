@@ -6,22 +6,31 @@
     <table class="container record_properties table-striped table-bordered text-center">
         <tbody>
             <tr class="text-center alert alert-danger">
-                <th class="text-center">Publicacion Nro</th>
-                <th class="text-center">Usuario</th>
-                <th class="text-center">Tipo</th>
-                <th class="text-center">Fechapublicacion</th>
+                <th class="text-center">Usuario<i class="icon-user"></i></th>
+                <th class="text-center">Tipo de Publicación</th>
+                <th class="text-center">Fecha de publicación<i class = "icon-calendar" ></i></th>
                 <th class="text-center">Aviso</th>
-                <th class="text-center">Foto</th>
+                <th class="text-center"><i class="icon-picture"></i>Foto</th>
                 <th class="text-center">Contacto</th>
+                 {% if is_granted('ROLE_USER') %}
+                <th class="text-center">Acciones</th>
+                {% endif %}
             </tr>
             <tr>
-                <td class="text-center"> {{ entity.id }}</td>
                 <td class="text-center">{{ entity.usuario }}</td>
-                <td class="text-center">{{ entity.tipo }}</td>
+                 {% if ( entity.tipo ) =='e' %}
+                <td class="text-center"><strong>Encontrado</strong></td>
+                 {% else %}
+                <td class="text-center"><strong>Perdido</strong></td>
+                 {% endif %}
                 <td class="text-center">{{ entity.fechapublicacion|date('d/m/Y') }}</td>
                 <td class="text-center">{{ entity.aviso }}</td>
-                <td class="text-center"><img src="{{ asset(entity.foto.webpath) }}" alt="Zelda!">  </td>
+                <td class="text-center"><img src="{{ asset(entity.foto.webpath) }}" alt="Zelda!"alt="Zelda!" width="140" height="140" class="img-rounded"></td>
                 <td class="text-center">{{ entity.contacto }}</td>
+                 {% if is_granted('ROLE_USER') %}
+                 <td class="text-center">
+                 <div class="btn btn-small"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">editar</a></div>
+                {% endif %}
             </tr>
         </tbody>
     </table>
@@ -33,9 +42,17 @@
             <div class="pagination">
                 <ul>
                     <li><a href="{{ path( 'publicacion_show', {'id' : entity.id }) }}">Primero</a></li>
-                    <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual - 1 }) }}">Anterior</a></li>
-                    <li><a href="#" class="disabled">{{ pagina_actual }}</a></li>
-                    <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual + 1 }) }}">Siguiente</a></li>
+                    {% if (pagina_actual <= 1 ) %}
+                        <li class="disabled"><a href="#">Anterior</a></li>
+                    {% else %}
+                        <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual - 1 }) }}">Anterior</a></li>
+                    {% endif %}
+                      <li><a href="#" class="disabled">{{ pagina_actual }}</a></li>
+                     {% if (pagina_actual >= max_pag ) %} 
+                        <li class="disabled"><a href="#">Siguiente</a></li>
+                    {% else %}
+                         <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual + 1 }) }}">Siguiente</a></li>
+                    {% endif %} 
                     <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : max_pag }) }}">Ultimo ({{ max_pag }})</a></li>
                 </ul>
             </div>
@@ -47,7 +64,8 @@
         <div align="center">
              {% render ( controller( 'MascotasMascotasBundle:Comentario:new', { 'publicacion_id' : entity.id } ) ) %}
         </div>
-    {% else %}
+    {% endif %}
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="text-center">
             <h5>Si desea realizar un comentario<a class="brand">
                     <a href= "{{ path('login', {'_target_path' : 'publicacion'  })}}">Ingresar</a></h5>
