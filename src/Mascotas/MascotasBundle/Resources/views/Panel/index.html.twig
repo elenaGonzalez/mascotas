@@ -1,27 +1,105 @@
 {% extends "::base.html.twig" %}
 {% block body %}
-Hola. Estas son tus publicaciones:
+{% if is_granted('ROLE_USER') %}
+<div class="btn btn-inverse"><a href="{{ path('usuario_edit')}}">Editar Perfil</a></div>
+<h1 class="text-center text-info">Estas son tus publicaciones</h1>
 <table class="container table-bordered table-striped">
     <thead>
         <tr class="text-center alert alert-danger">
             <th class="text-center">Nro de Aviso</th>
-            <th class="text-center">Foto</th>
+            <th class="text-center"><i class="icon-picture"></i>Foto</th>
             <th class="text-center">Avisos</th>
             <th class="text-center">Acciones</th>
         </tr>
     </thead>
     <tbody>
+       {%if entities| length >0 %}{
         {% for entity in entities %}
             <tr style="central">
                 <td class="text-center">
                     <div class="btn btn-small">{{entity.id }}</td>
-                <td><img src="{{ asset(entity.foto.webpath) }}" alt="Zelda!"alt="Zelda!" width="140" height="140" class="img-polaroid"></td>
+                <td><img src="{{ asset(entity.foto.webpath) }}" alt="Sin foto" width="140" height="140" class="img-polaroid"></td>
                 <td class="text-center">{{ entity.aviso }}</td>
                 <td class="text-center">
-                    <div class="btn btn-small"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">Editar</a>
-                    <div class="btn btn-small"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">Finalizar</a></td></div>
+                 {% if entity.fechaFinalizacion is  null %}
+                    <div class="btn btn-inverse"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">Editar</a></div>
+                    <div class="btn btn-bg"><a href="{{ path('publicacion_finalizar', { 'id': entity.id })}}">Finalizar</a></td></div>
+               {% else %}
+                <h6 class="text-center">Publicación Finalizada. Motivo:</h6>
+                <h6>{{entity.motivo}}</h6>
+              {% endif%}
+                </tr>
+ {% endfor %}
+{% else %}
+<td colspan=4 class="text-center">No tienes publicaciones realizadas</td>
+{% endif %}
+</tbody>
+ </table>
+<p></p>
+ <table class="container table-bordered table-striped">
+    <thead>
+        <tr class="text-center alert alert-danger">
+            <th class="text-center">Aviso</th>
+            <th class="text-center">Comentario</th>
+            <th class="text-center">Acciones</th>
+        </tr>
+    </thead>
+    <p><h3 class="text-center">Estos son tus comentarios:</h3></p>
+    <tbody> 
+      {%if comentarios| length >0 %}{
+       {% for comentario in comentarios %}
+                 <tr class="text-center border-l" stylee="solid 1px">   
+                         <td styles="border solid 1px">{{ comentario.publicacion}}</td>
+                        <td styles="border solid 1px">{{ comentario.comentario }}</td>
+                        <td styles="border solid 1px">
+                            <div class="btn btn-inverse">
+                                <a href="{{ path('comentario_edit',{'id': comentario.id }) }}">editar</a>
+                            </div>
+                            <div class="btn btn-bg">
+                                <a href="{{ path('comentario_delete', { 'id': comentario.id }) }}">eliminar</a>
+                            </div>
+                        </td>
+                   </tr>  
+      {% endfor %}
+     {% else %}
+                   <tr><td colspan=3 class="text-center">Actualmente no has realizado comentarios</td></tr>
+        {% endif %}
+          </tbody>
+       </table>
+<p></p>
+<div class="text-center">
+<h3>Tus mascotas</h3>
+    <table class="container table-bordered table-striped text-center">
+        <thead>
+            <tr class="text-center">
+                <th>Nombre</th>
+                <th>Raza</th>
+                <th>Sexo</th>
+                <th>Foto</th
+                <th>Usuario</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+       {%if mascotas| length >0 %}
+        {% for mascota in mascotas %}
+            <tr>
+                <td>{{ mascota.nombre }}</td>
+                <td>{{ mascota.raza }}</td>
+                <td>{{ mascota.sexo }}</td>
+                 <td><img src="{{ asset(mascota.foto.webpath) }}" alt="Sin foto" width="140" height="140" class="img-polaroid"></td>
+                <td>{{ mascota.getUsuario()}}</td>
+                <td>
+                    <div class="btn-inverse"><a href="{{ path('mascota_edit', { 'id': mascota.id }) }}">editar</a></div>
+                    <div class="btn-inverse"><a href="{{ path('publicacion_new', { 'id': mascota.id }) }}">publicar</a></div>
+                </td>
             </tr>
         {% endfor %}
+       {% else %}
+            <tr><td colspan=6 class="text-center">No has añadido a ninguna mascota</td></tr>
+        {% endif %}
         </tbody>
     </table>
-{% endblock %}
+    </div>
+{% endif %}
+{% endblock %}    

@@ -54,7 +54,7 @@ class UsuarioController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
-            return $this->redirect($this->generateUrl('publicacion'));
+            return $this->redirect($this->generateUrl('login'));
         }
 
         return array(
@@ -85,12 +85,13 @@ class UsuarioController extends Controller
     /**
      * Finds and displays a Usuario entity.
      *
-     * @Route("/{id}", name="usuario_show")
+     * @Route("/", name="usuario_show")
      * @Method("GET")
      * @Template()
      */
-    public function showAction($id)
+    public function showAction()
     {
+        $id=$this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MascotasMascotasBundle:Usuario')->find($id);
@@ -110,17 +111,18 @@ class UsuarioController extends Controller
     /**
      * Displays a form to edit an existing Usuario entity.
      *
-     * @Route("/{id}/edit", name="usuario_edit")
+     * @Route("/edit", name="usuario_edit")
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
+    public function editAction()
     {
+        $id=$this->getUser()->getId();
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('MascotasMascotasBundle:Usuario')->find($id);
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Usuario entity.');
+            throw $this->createNotFoundException('Unable to find Usuario entity.' . $id);
         }
         
         $editForm = $this->createForm(new UsuarioType(), $entity);
@@ -136,14 +138,14 @@ class UsuarioController extends Controller
     /**
      * Edits an existing Usuario entity.
      *
-     * @Route("/{id}", name="usuario_update")
+     * @Route("/", name="usuario_update")
      * @Method("PUT")
      * @Template("MascotasMascotasBundle:Usuario:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-
+        $id=$this->getUser()->getId();
         $entity = $em->getRepository('MascotasMascotasBundle:Usuario')->find($id);
                
         if (!$entity) {

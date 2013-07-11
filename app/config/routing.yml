@@ -1,0 +1,19 @@
+mascotas_mascotas:
+    resource: "@MascotasMascotasBundle/Controller"
+    type:     annotation
+    prefix:   /mascotas
+    
+registro:
+    pattern:  /mascotas/usuario/new
+    defaults: { _UsuarioController: MascotasMascotasBundle:Usuario:new }
+
+login:
+   pattern: /login
+   defaults: { _controller:MascotasMascotasBundle:Seguridad:login }
+   
+login_check:
+  pattern: /login_check
+  
+logout:
+    pattern:   /logout
+    

@@ -26,11 +26,9 @@ class Publicacion {
      */
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="usuario", type="string", length=255)
-     */   
+     /**
+     * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="publicacion", cascade={"persist"})
+     */
     private $usuario;
 
 
@@ -49,7 +47,21 @@ class Publicacion {
      */
     private $fechapublicacion;
     
-
+     /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="fechafinalizacion", type="date", nullable=true)
+     */
+    private $fechafinalizacion;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="motivo", type="string", length=255, nullable=true)
+     */
+    private $motivo;
+    
+    
     /**
      * @var string
      *
@@ -96,27 +108,6 @@ class Publicacion {
     }
     
     /**
-     * Set usuario
-     *
-     * @param string $usuario
-     * @return Publicacion
-     */
-    public function setUsuario($usuario) {
-        $this->usuario = $usuario;
-
-        return $this;
-    }
-
-    /**
-     * Get usuario
-     *
-     * @return string 
-     */
-    public function getUsuario() {
-        return $this->usuario;
-    }
-
-    /**
      * Set tipo
      *
      * @param string $tipo
@@ -158,7 +149,7 @@ class Publicacion {
     }
 
     /**
-     * Set foto
+     * Set contacto
      *
      * @param string $contacto
      * @return Publicacion
@@ -181,7 +172,7 @@ class Publicacion {
     public function __toString() {
         return $this->getAviso();
     }
-
+    
     /**
      * Add comentarios
      *
@@ -270,5 +261,75 @@ class Publicacion {
     
     public function setFotoSubida(UploadedFile $fotoSubida){
         $this->foto_subida = $fotoSubida;
+    }
+
+    /**
+     * Set fechafinalizacion
+     *
+     * @param \DateTime $fechafinalizacion
+     * @return Publicacion
+     */
+    public function setFechafinalizacion($fechafinalizacion)
+    {
+        $this->fechafinalizacion = $fechafinalizacion;
+    
+        return $this;
+    }
+
+    /**
+     * Get fechafinalizacion
+     *
+     * @return \DateTime 
+     */
+    public function getFechafinalizacion()
+    {
+        return $this->fechafinalizacion;
+    }
+
+    /**
+     * Set motivo
+     *
+     * @param string $motivo
+     * @return Publicacion
+     */
+    public function setMotivo($motivo)
+    {
+        $this->motivo = $motivo;
+    
+        return $this;
+    }
+
+    /**
+     * Get motivo
+     *
+     * @return string 
+     */
+    public function getMotivo()
+    {
+        return $this->motivo;
+    }
+    
+    
+    /**
+     * Set usuario
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Usuario $usuario
+     * @return Publicacion
+     */
+    public function setUsuario(\Mascotas\MascotasBundle\Entity\Usuario $usuario)
+    {
+        $this->usuario = $usuario;
+    
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Mascotas\MascotasBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
     }
 }

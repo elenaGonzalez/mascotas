@@ -11,7 +11,7 @@
         <thead>
             <tr class="text-center alert alert-danger">
                 <th class="text-center">Nro de Aviso</th>
-                <th class="text-center">Foto</th>
+                <th class="text-center"><i class="icon-picture"></i>Foto</th>
                 <th class="text-center">Avisos</th>
                 <th class="text-center">Acciones</th>
             </tr>
@@ -21,9 +21,12 @@
                 <tr style="central">
                     <td class="text-center">
                      <div class="btn btn-small">{{entity.id }}</td>
-                    <td><img src="{{ asset(entity.foto.webpath) }}" alt="Zelda!"alt="Zelda!" width="140" height="140" class="img-polaroid"></td>
+                    <td><img src="{{ asset(entity.foto.webpath) }}" alt="Sin foto" width="140" height="140" class="img-polaroid"></td>
                     <td class="text-center">{{ entity.aviso }}</td>
                     <td class="text-center">
+                     {% if entity.fechaFinalizacion is not null %}
+                        <div class="text-info">Publicación finalizada.Motivo:{{entity.motivo}}</div>
+                     {% endif %}
                      <div class="btn btn-small"><a href="{{ path('publicacion_show', { 'id': entity.id }) }}">ver detalles</a></td></div>
                </tr>
         {% endfor %}

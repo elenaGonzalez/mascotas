@@ -9,7 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Mascotas\MascotasBundle\Entity\Comentario;
 use Mascotas\MascotasBundle\Form\ComentarioType;
-
+use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
+use Symfony\Component\Security\Acl\Permission\MaskBuilder;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 /**
  * Comentario controller.
  *
@@ -59,6 +62,14 @@ class ComentarioController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+            $aclProvider= $this->get('security.acl.provider');
+            $objectIdentity = ObjectIdentity::fromDomainObject($entity);
+            $acl = $aclProvider->createAcl($objectIdentity);
+            $securityContext = $this->get('security.context');
+            $user = $securityContext->getToken()->getUser();
+            $securityIdentity = UserSecurityIdentity:: fromAccount($user);
+            $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OPERATOR);
+            $aclProvider->updateAcl($acl);
             
         return $this->redirect(
                $this->generateUrl('publicacion_show', array('id' =>$entity->getPublicacion()->getId()))
@@ -124,17 +135,21 @@ class ComentarioController extends Controller
     /**
      * Displays a form to edit an existing Comentario entity.
      *
-     * @Route("/{id}/edit", name="comentario_edit")
+     * @Route("/{id}/editar/comentario", name="comentario_edit")
      * @Method("GET")
      * @Template()
      */
     public function editAction($id)
     {   
-        $entity->setUsuario($this->getUser());
+        //$entity->setUsuario($this->getUser());
         $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository('MascotasMascotasBundle:Comentario')->find($id);
-
+        $securityContext = $this->get('security.context');
+        if ((false === $securityContext->isGranted('EDIT', $entity))
+                and !($securityContext->isGranted('ROLE_ADMIN', $this->getUser()))) {
+                   throw new AccessDeniedException("Acceso no autorizado");
+        }
+        
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Comentario entity.');
         }
@@ -161,7 +176,7 @@ class ComentarioController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MascotasMascotasBundle:Comentario')->find($id);
-
+      
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Comentario entity.');
         }
@@ -174,7 +189,7 @@ class ComentarioController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('comentario_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('panel_index', array('id' => $id)));
         }
 
         return array(
@@ -200,14 +215,14 @@ class ComentarioController extends Controller
             $entity = $em->getRepository('MascotasMascotasBundle:Comentario')->find($id);
 
             if (!$entity) {
-                throw $this->createNotFoundException('Unable to find Comentario entity.');
+                throw $this->createNotFoundException('No se puede encontrar el comentario.');
             }
-
+            $publicacion_id = $entity->getPublicacion();
             $em->remove($entity);
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('comentario'));
+        return $this->redirect($this->generateUrl('panel_index', array('id' => $id)));
     }
 
     /**

@@ -9,15 +9,17 @@
         {{ form_widget(edit_form) }}
             <button type="submit" class="btn-warning">Editar</button>
     </form>
+    {% if is_granted('ROLE_ADMIN') %}
     <form action="{{ path('publicacion_delete', { 'id': entity.id }) }}" method="post">
             <input type="hidden" name="_method" value="DELETE" />
             {{ form_widget(delete_form) }}
             <button type="submit" class="btn-danger">Borrar</button>
         </form>
+    {% endif %}
         <ul class="record_actions">
     <li>
-        <a href="{{ path('publicacion') }}">
-           Volver a las Publicaciones
+        <a href="{{ path('panel_index') }}">
+           Atras
         </a>
     </li>
 </ul>

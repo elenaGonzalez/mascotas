@@ -56,7 +56,7 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     /**
      * @var string
      *
-     * @ORM\Column(name="usuario", type="string", length=255)
+     * @ORM\Column(name="usuario", type="string", length=255 , unique = true)
      */
     private $usuario;
 
@@ -93,11 +93,19 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
      */    
     private $usuario_roles;
     
+     /**
+     * 
+     * @ORM\OneToMany(targetEntity="Publicacion", mappedBy="usuario")
+     *
+     */
+    private $publicacion;
+            
     /**
      * Get id
      *
      * @return integer 
      */
+            
     public function getId() {
         return $this->id;
     }
@@ -298,7 +306,7 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     public function __construct() {
         $this->mascotas = new ArrayCollection();
         $this->comentarios = new ArrayCollection();
-        
+        $this->publicacion = new ArrayCollection();
         $this->usuario_roles = new ArrayCollection();
                 
         $this->setSalt(md5(uniqid(null, true)));
@@ -321,7 +329,8 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     
         return $this;
     }
-
+    
+    
     /**
      * Remove comentarios
      *
@@ -378,4 +387,28 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     {
         return $this->mascotas;
     }
+    
+    /**
+     * Add comentarios
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Publicacion $publicaciones
+     * @return Usuario
+     */
+    public function addPublicacion(\Mascotas\MascotasBundle\Entity\Publicacion $publicaciones)
+    {
+        $this->publicaciones[] = $publicaciones;
+    
+        return $this;
+    }
+    
+    /**
+     * Remove publicaciones
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Publicacion $publicaciones
+     */
+    public function removePublicacion(\Mascotas\MascotasBundle\Entity\Publicacion $publicaciones)
+    {
+        $this->publicaciones->removeElement($publicaciones);
+    }
+
 }

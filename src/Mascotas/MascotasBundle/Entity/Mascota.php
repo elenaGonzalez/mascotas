@@ -3,6 +3,11 @@
 namespace Mascotas\MascotasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 /**
  * Mascota
@@ -38,29 +43,28 @@ class Mascota {
     /**
      * @var string
      *
-     * @ORM\Column(name="edad", type="string", length=10)
+     * @ORM\Column(name="sexo", type="string", length=10)
      */
-    private $edad;
+    private $sexo;
 
     /**
-     * @var string
      *
-     * @ORM\Column(name="foto", type="string", length=255)
-     */
+     * @ORM\OneToOne(targetEntity="Document", cascade={"persist"})
+     * @ORM\JoinColumn(name="document_id", referencedColumnName="id") 
+     * 
+     */    
     private $foto;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descripcion", type="string", length=255)
-     */
-    private $descripcion;
 
     /**
      * @ORM\ManyToOne(targetEntity="Usuario", inversedBy="mascotas", cascade={"persist"})
      */
     private $usuario;
-
+    
+    
+    // para recibir la fotos/uploadedfile del formulario
+    private $foto_cargada;
+    
     /**
      * Get id
      *
@@ -113,68 +117,48 @@ class Mascota {
     }
 
     /**
-     * Set edad
+     * Set sexo
      *
-     * @param string $edad
+     * @param string $sexo
      * @return Mascota
      */
-    public function setEdad($edad) {
-        $this->edad = $edad;
+    public function setSexo($sexo) {
+        $this->sexo = $sexo;
 
         return $this;
     }
 
     /**
-     * Get edad
+     * Get sexo
      *
      * @return string 
      */
-    public function getEdad() {
-        return $this->edad;
+    public function getSexo() {
+        return $this->sexo;
     }
 
-    /**
+   /**
      * Set foto
      *
-     * @param string $foto
-     * @return Mascota
+     * @param \Mascotas\MascotasBundle\Entity\Document $foto
+     * @return Publicacion
      */
-    public function setFoto($foto) {
+    public function setFoto(\Mascotas\MascotasBundle\Entity\Document $foto = null)
+    {
         $this->foto = $foto;
-
+    
         return $this;
     }
 
     /**
      * Get foto
      *
-     * @return string 
+     * @return \Mascotas\MascotasBundle\Entity\Document 
      */
-    public function getFoto() {
+    public function getFoto()
+    {
         return $this->foto;
     }
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     * @return Mascota
-     */
-    public function setDescripcion($descripcion) {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string 
-     */
-    public function getDescripcion() {
-        return $this->descripcion;
-    }
-
 
     /**
      * Set usuario
@@ -198,4 +182,22 @@ class Mascota {
     {
         return $this->usuario;
     }
+    
+     /**
+     * Get foto_cargada
+     *
+     * @return UploadedFile
+     */
+    public function getFotoCargada(){
+        return $this->foto_cargada;
+    }
+    
+    public function setFotoCargada(UploadedFile $foto_cargada){
+        $this->foto_subida = $foto_cargada;
+    }
+    
+     public function __toString() {
+        return $this->getNombre();
+    }
+    
 }

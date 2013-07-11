@@ -3,12 +3,11 @@
 namespace Mascotas\MascotasBundle\Entity;
 
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Document;
-use Symfony\Component\HttpFoundation\File\File;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Publicacion
@@ -31,9 +30,7 @@ class Publicacion {
      * @var string
      *
      * @ORM\Column(name="usuario", type="string", length=255)
-     */
-
-    
+     */   
     private $usuario;
 
 
@@ -43,13 +40,6 @@ class Publicacion {
      * @ORM\Column(name="tipo", type="string", length=1)
      */
 
-    /**
-     * @Assert\Choice(
-    * choices = { "p", "e" },
-    * message = "Elige una opción válida."
-    * )
-    */
-    
     private $tipo;
 
     /**
@@ -58,7 +48,22 @@ class Publicacion {
      * @ORM\Column(name="fechapublicacion", type="date")
      */
     private $fechapublicacion;
-
+    
+     /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="fechafinalizacion", type="date")
+     */
+    private $fechafinalizacion;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="motivo", type="string", length=255)
+     */
+    private $motivo;
+    
+    
     /**
      * @var string
      *
@@ -68,7 +73,7 @@ class Publicacion {
     
     /**
      *
-     * @ORM\OneToOne(targetEntity="Document")
+     * @ORM\OneToOne(targetEntity="Document", cascade={"persist"})
      * @ORM\JoinColumn(name="document_id", referencedColumnName="id") 
      * 
      */    
@@ -87,7 +92,9 @@ class Publicacion {
      * @ORM\OneToMany(targetEntity="Comentario", mappedBy="publicacion")
      */
     private $comentarios;
-
+    
+    // para recibir la fotos/uploadedfile del formulario
+    private $foto_subida;
     
     public function __construct() {
         $this->comentarios = new ArrayCollection();
@@ -101,7 +108,7 @@ class Publicacion {
     public function getId() {
         return $this->id;
     }
-
+    
     /**
      * Set usuario
      *
@@ -242,5 +249,40 @@ class Publicacion {
     {
         return $this->fechapublicacion;
     }
-}
 
+    /**
+     * Set foto
+     *
+     * @param \Mascotas\MascotasBundle\Entity\Document $foto
+     * @return Publicacion
+     */
+    public function setFoto(\Mascotas\MascotasBundle\Entity\Document $foto = null)
+    {
+        $this->foto = $foto;
+    
+        return $this;
+    }
+
+    /**
+     * Get foto
+     *
+     * @return \Mascotas\MascotasBundle\Entity\Document 
+     */
+    public function getFoto()
+    {
+        return $this->foto;
+    }
+    
+    /**
+     * Get foto_subida
+     *
+     * @return UploadedFile
+     */
+    public function getFotoSubida(){
+        return $this->foto_subida;
+    }
+    
+    public function setFotoSubida(UploadedFile $fotoSubida){
+        $this->foto_subida = $fotoSubida;
+    }
+}

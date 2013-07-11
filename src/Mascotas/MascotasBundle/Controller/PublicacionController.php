@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Mascotas\MascotasBundle\Form\PublicacionType;
+use Mascotas\MascotasBundle\Form\FinalizarType;
 use Mascotas\MascotasBundle\Entity\Publicacion;
 use Mascotas\MascotasBundle\Entity\Document;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -19,8 +20,8 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
  *
  * @Route("/publicacion")
  */
-class PublicacionController extends Controller
-{
+class PublicacionController extends Controller {
+
     /**
      * Lists all Publicacion entities.
      *
@@ -28,17 +29,16 @@ class PublicacionController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function indexAction($pagina_actual = 1)
-    {
-        
+    public function indexAction($pagina_actual = 1) {
+
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('MascotasMascotasBundle:Publicacion')->getPagina($pagina_actual);
         $max_pax = $em->getRepository('MascotasMascotasBundle:Publicacion')->getCantidad();
-        
+
         return array(
             'entities' => $entities,
             'max_pag' => $max_pax,
-            'pagina_actual' => $pagina_actual,            
+            'pagina_actual' => $pagina_actual,
         );
     }
 
@@ -49,39 +49,39 @@ class PublicacionController extends Controller
      * @Method("POST")
      * @Template("MascotasMascotasBundle:Publicacion:new.html.twig")
      */
-    public function createAction(Request $request)
-    {
-        $entity  = new Publicacion();
+    public function createAction(Request $request) {
+        $entity = new Publicacion();
         $form = $this->createForm(new PublicacionType(), $entity);
         $form->bind($request);
 
         if ($form->isValid()) {
             $entity->setUsuario($this->getUser());
-            
+
             $file = $form['foto_subida']->getData();
             $document = new Document();
-            
-            $document->setFile($file);            
-            
+
+            $document->setFile($file);
+
             $entity->setFoto($document);
-                        
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
             $aclProvider = $this->get('security.acl.provider');
             $objectIdentity = ObjectIdentity::fromDomainObject($entity);
-            $acl= $aclProvider->createAcl($objectIdentity);
+            $acl = $aclProvider->createAcl($objectIdentity);
             $securityContext = $this->get('security.context');
             $user = $securityContext->getToken()->getUser();
             $securityIdentity = UserSecurityIdentity:: fromAccount($user);
-            $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OWNER);
+            $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OPERATOR);
             $aclProvider->updateAcl($acl);
+
             return $this->redirect($this->generateUrl('publicacion_show', array('id' => $entity->getId())));
         }
 
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -92,13 +92,12 @@ class PublicacionController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function newAction()
-    {
+    public function newAction() {
         $entity = new Publicacion();
-        $form   = $this->createForm(new PublicacionType(), $entity);
+        $form = $this->createForm(new PublicacionType(), $entity);
         return array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         );
     }
 
@@ -109,30 +108,27 @@ class PublicacionController extends Controller
      * @Method("GET")
      * @Template()
      */
-    
-    public function showAction($id, $comentario_nro_pagina = 1)
-    {
+    public function showAction($id, $comentario_nro_pagina = 1) {
         $em = $this->getDoctrine()->getManager();
- 
+
         $entity = $em->getRepository('MascotasMascotasBundle:Publicacion')->find($id);
- 
+
         if (!$entity) {
             throw $this->createNotFoundException('Esta publicación no puede ser encontrada');
         }
-        
-        /*if($comentario_nro_pagina <1){
-            $comentario_nro_pagina=1;
-        }*/
-        $deleteForm = $this->createDeleteForm($id, $comentario_nro_pagina);
-         $rpC = $em->getRepository('MascotasMascotasBundle:Comentario');
-        $comentarios = $rpC->getComentarios($entity->getId(), $comentario_nro_pagina);
-        $max_pag =  $rpC->getCantidad($id);        
-        $fotopath = $entity->getFoto()->getWebPath();
-        $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('MascotasMascotasBundle:Publicacion')->find($id);
 
+        /* if($comentario_nro_pagina <1){
+          $comentario_nro_pagina=1;
+          } */
+        $deleteForm = $this->createDeleteForm($id, $comentario_nro_pagina);
+        $rpC = $em->getRepository('MascotasMascotasBundle:Comentario');
+        $comentarios = $rpC->getComentarios($entity->getId(), $comentario_nro_pagina);
+        $max_pag = $rpC->getCantidad($id);
+        
+        $fotopath = $entity->getFoto()->getWebPath();
+        
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
             'comentarios' => $comentarios,
             'foto' => $fotopath,
@@ -148,29 +144,30 @@ class PublicacionController extends Controller
      * @Method("GET")
      * @Template()
      */
-    public function editAction($id)
-    {   
-         $em = $this->getDoctrine()->getManager();
+    public function editAction($id) {
+        $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MascotasMascotasBundle:Publicacion')->find($id);
 
         $securityContext = $this->get('security.context');
-        if(false === $securityContext->isGranted('EDIT', $entity)){
-            //throw new AccessDeniedException();
-             return $this->redirect($this->generateUrl('publicacion'));
+
+        if ((false === $securityContext->isGranted('EDIT', $entity)) 
+                and !($securityContext->isGranted('ROLE_ADMIN', $this->getUser()))) {
+            throw new AccessDeniedException();
+            //return $this->redirect($this->generateUrl('publicacion'));
         }
-       
+
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Publicacion entity.');
+            throw $this->createNotFoundException('No es posible hallar la Publicacion buscada.');
         }
 
         $editForm = $this->createForm(new PublicacionType(), $entity);
         $deleteForm = $this->createDeleteForm($id);
-        $editar= 'si';
+        $editar = 'si';
         return array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'editar' => $editar,
-            'edit_form'   => $editForm->createView(),
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -182,24 +179,33 @@ class PublicacionController extends Controller
      * @Method("PUT")
      * @Template("MascotasMascotasBundle:Publicacion:edit.html.twig")
      */
-    public function updateAction(Request $request, $id)
-    {
+    public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MascotasMascotasBundle:Publicacion')->find($id);
+        $securityContext = $this->get('security.context');
+        if ((false === $securityContext->isGranted('EDIT', $entity)) 
+                and !($securityContext->isGranted('ROLE_ADMIN', $this->getUser()))) 
+        {
+            throw new AccessDeniedException();
+        }
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Publicacion entity.');
         }
-        //if ($entity->getUsuario()->getId() !== $this->getUser()->getId()){
-        //    throw \Symfony\Component\Security\Core\SecurityContext::ACCESS_DENIED_ERROR;
-     //   }
-        
+
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new PublicacionType(), $entity);
         $editForm->bind($request);
 
         if ($editForm->isValid()) {
+            $file = $editForm['foto_subida']->getData();
+            if (isset($file)){
+                $document = new Document();
+                $document->setFile($file);
+                $entity->setFoto($document);
+            }
+            
             $em->persist($entity);
             $em->flush();
 
@@ -207,28 +213,30 @@ class PublicacionController extends Controller
         }
 
         return array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         );
     }
-    
-    
+
     /**
      * Deletes a Publicacion entity.
      *
      * @Route("/{id}", name="publicacion_delete")
      * @Method("DELETE")
      */
-    public function deleteAction(Request $request, $id)
-    {   
+    public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
         $form->bind($request);
-
+         
         if ($form->isValid()) {
+      
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('MascotasMascotasBundle:Publicacion')->find($id);
-
+            if ((false === $securityContext->isGranted('DELETE', $entity)) and !($securityContext->isGranted('ROLE_ADMIN', $this->getUser()))) {
+            throw new AccessDeniedException();
+            //return $this->redirect($this->generateUrl('publicacion'));
+        }
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Publicacion entity.');
             }
@@ -239,38 +247,53 @@ class PublicacionController extends Controller
 
         return $this->redirect($this->generateUrl('publicacion'));
     }
-    
-     /**
+
+    /**
      * Creates a form to delete a Publicacion entity by id.
      *
      * @param mixed $id The entity id
      *
      * @return Symfony\Component\Form\Form The form
      */
-    private function createDeleteForm($id)
-    {
+    private function createDeleteForm($id) {
         return $this->createFormBuilder(array('id' => $id))
-            ->add('id', 'hidden')
-            ->getForm()
-        ;        
+                        ->add('id', 'hidden')
+                        ->getForm()
+        ;
     }
-    
+
     /**
      * Muestra las publicaciones del usuario
      *
-     * @Route("/panel/{usuario}", name="usuario_panel")
-     * @Method("GET")
-     * @Template()
+     * @Route("/panel/{id}/finalizar", name="publicacion_finalizar")
+     * @Method({"GET", "POST"})
+     * @Template("MascotasMascotasBundle:Publicacion:finalizar.html.twig")
      */
-    public function panelAction($usuario)
-    {
-        $usuario = $this->getUser();
+    public function finalizarAction($id) {
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('MascotasMascotasBundle:Publicacion')->getPublicaciones($usuario);
+        $publicacion = $em->getRepository('MascotasMascotasBundle:Publicacion')->find($id);
+
+        if (!$publicacion) {
+            throw $this->createNotFoundException(
+                    'No es posible encontrar la publicación ' . $id
+            );
+        }
+        $finalizarForm = $this->createForm(new FinalizarType(), $publicacion);
         
+        if ($this->getRequest()->getMethod() === 'POST') {
+            $finalizarForm->bind($this->getRequest());
+            if ($finalizarForm->isValid()) {
+                $publicacion->setFechafinalizacion(new \DateTime("now"));
+                $em->persist($publicacion);
+                $em->flush();
+                return $this->redirect($this->generateUrl('panel_index'));
+            }
+        }
         return array(
-            'entities' => $entities,
+            'publicacion' => $publicacion,
+            'finalizar_form' => $finalizarForm->createView(),
+            'metodo' => $this->getRequest()->getMethod(),
         );
-       
     }
+
 }

@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Mascotas\MascotasBundle\Entity\Mascota;
+use Mascotas\MascotasBundle\Entity\Document;
 use Mascotas\MascotasBundle\Form\MascotaType;
 
 /**
@@ -43,17 +44,26 @@ class MascotaController extends Controller
      * @Template("MascotasMascotasBundle:Mascota:new.html.twig")
      */
     public function createAction(Request $request)
-    {
+    {   
+        $usuario = $this->getUser();
         $entity  = new Mascota();
+        $entity->setUsuario($usuario);
         $form = $this->createForm(new MascotaType(), $entity);
         $form->bind($request);
 
         if ($form->isValid()) {
+            $entity->setUsuario($this->getUser());
+            $archivo = $form['foto_cargada']->getData();
+            $documento = new Document();
+
+            $documento->setFile($archivo);
+
+            $entity->setFoto($documento);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('mascota_show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('panel_index', array('id' => $entity->getId())));
         }
 
         return array(
@@ -98,9 +108,10 @@ class MascotaController extends Controller
         }
 
         $deleteForm = $this->createDeleteForm($id);
-
+        $fotopath = $entity->getFoto()->getWebPath();
         return array(
             'entity'      => $entity,
+            'foto' => $fotopath,
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -142,7 +153,7 @@ class MascotaController extends Controller
     public function updateAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-
+        
         $entity = $em->getRepository('MascotasMascotasBundle:Mascota')->find($id);
 
         if (!$entity) {
@@ -157,7 +168,7 @@ class MascotaController extends Controller
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('mascota_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('panel_index'));
         }
 
         return array(
@@ -190,7 +201,7 @@ class MascotaController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('mascota'));
+        return $this->redirect($this->generateUrl('panel_index'));
     }
 
     /**

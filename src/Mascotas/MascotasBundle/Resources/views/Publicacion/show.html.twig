@@ -12,9 +12,6 @@
                 <th class="text-center">Aviso</th>
                 <th class="text-center"><i class="icon-picture"></i>Foto</th>
                 <th class="text-center">Contacto</th>
-                 {% if is_granted('ROLE_USER') %}
-                <th class="text-center">Acciones</th>
-                {% endif %}
             </tr>
             <tr>
                 <td class="text-center">{{ entity.usuario }}</td>
@@ -25,12 +22,8 @@
                  {% endif %}
                 <td class="text-center">{{ entity.fechapublicacion|date('d/m/Y') }}</td>
                 <td class="text-center">{{ entity.aviso }}</td>
-                <td class="text-center"><img src="{{ asset(entity.foto.webpath) }}" alt="Zelda!"alt="Zelda!" width="140" height="140" class="img-rounded"></td>
+                <td class="text-center"><img src="{{ asset(entity.foto.webpath) }}" alt="Sin foto" width="140" height="140" class="img-rounded"></td>
                 <td class="text-center">{{ entity.contacto }}</td>
-                 {% if is_granted('ROLE_USER') %}
-                 <td class="text-center">
-                 <div class="btn btn-small"><a href="{{ path('publicacion_edit', { 'id': entity.id }) }}">editar</a></div>
-                {% endif %}
             </tr>
         </tbody>
     </table>
@@ -60,7 +53,7 @@
         </div>
     {% endif %}
     
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% if is_granted('ROLE_USER') and entity.fechaFinalizacion is null %}
         <div align="center">
              {% render ( controller( 'MascotasMascotasBundle:Comentario:new', { 'publicacion_id' : entity.id } ) ) %}
         </div>
@@ -74,18 +67,13 @@
         </div>
     {% endif %}
     {% if is_granted('ROLE_ADMIN') %}
-        <div>
-            <ul class="record_actions">
-                <li>
+        <div class="text-center">
                     <a href="{{ path('publicacion') }}">vover a la Lista</a>
-                </li>
-                <li>
                     <form action="{{ path('publicacion_delete', { 'id': entity.id }) }}" method="post">
                         <input type="hidden" name="_method" value="DELETE" />
                         {{ form_widget(delete_form) }}
                         <button type="submit">Borrar</button>
                     </form>
-                </li>
             </ul>
     </div>
     {% endif %}

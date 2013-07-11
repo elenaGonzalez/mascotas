@@ -13,9 +13,9 @@ class MascotaType extends AbstractType
         $builder
           ->add('nombre')
             ->add('raza')
-            ->add('edad')
-            ->add('foto')
-            ->add('descripcion')
+            ->add('sexo','choice', array( 'choices' => array('macho'=>'macho','hembra'=>'hembra')))
+            ->add('foto_cargada','file', array('required' => false))
+            ->getForm();
         ;
     }
 

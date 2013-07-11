@@ -26,9 +26,10 @@
                                             <div class="span2"><li class="brand"><a href="{{ path('publicacion')}}"><i class="icon-home icon-white"></i>Sistema Mascotas</a></div>
                                             <div class="span2"><li class="brand"><a href="{{ path('publicacion_new')}}">Realizar una Publicacion</a></li></div>
                                             <div class="span2"><li class="brand">
+                                                     {% if is_granted('ROLE_USER') or not is_granted('IS_AUTHENTICATED_FULLY') %}
                                                     <a href="{{ path('mascota_new')}}">Agregar a tu mascota</a>
-                                                </li></div>
-                  {% if is_granted('ROLE_USER') %}
+                                                </li>{% endif %}</div>
+                 {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')%}
                                             <div class="span2">     
                                                 <li class="brand">
                                                     <a href="{{ path('logout')}}">Salir</a>
@@ -36,43 +37,46 @@
                     {% endif%}
                       {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
                                             <div class="span2"><li class="brand"><a href="{{ path('login')}}">Ingresar</a></li></div>
-                      {% endif%} 
-                                                    {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')%}
+                      {% endif%}
                                                     <div class="span2">     
                                                         <li class="brand">
-                                                          <a href="{{ path('usuario_panel', { 'usuario':app.user.username }) }}">Panel de control</a></li></div>                                                                         
- 
-                                            </div>
-                                            {% endif %}
+                                                         {% if is_granted('ROLE_USER') %}
+                                                                <a href="{{ path('panel_index')}}">Panel de control</a></li></div>                                                                         
+                                                          {% endif %}
+                                                      {% if is_granted('ROLE_ADMIN')%}
+                                                        <a href="{{ path('panel_admin')}}">Panel de control</a></li></div>                                                                         
+                                                          {% endif %}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
   {% endblock %}
      {% block titulo%}{%endblock%}
      {% block saludo%}
                          {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')%}
-                                <div class="btn-group text-right">
-                                    <a class="btn btn-primary text-right" href="#"><i class="icon-user"></i>Hola {{app.user.username}}</a>
-                                </div>
-                        {% else %}
-                                 <div class="btn-group text-right">
-                                 <a class="btn btn-primary text-right" href="#"><i class="icon-user"></i>Hola Anónimo</a>
-                                </div>
+                        <div class="btn-group text-right">
+                            <a class="btn btn-primary text-right" href="#"><i class="icon-user"></i>Hola {{app.user.username}}</a>
+                        </div>
+                        {% endif %}
+                         {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <div class="btn-group text-right">
+                            <a class="btn btn-primary text-right" href="#"><i class="icon-user"></i>Hola Anónimo</a>
+                        </div>
                         {% endif %}
        {% endblock %}
-                       
+
      {% block body%}
-                                <div class="span10 text-center">
-                                </div>
+                        <div class="span10 text-center">
+                        </div>
       {% block javascripts %}   
-                                <script src="{{asset ('bundles/mascotasmascotas/js/jquery-1.10.1.min.js') }}"></script>
-                                <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.min.js') }}"></script>
-                                <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.js') }}"></script>
+                        <script src="{{asset ('bundles/mascotasmascotas/js/jquery-1.10.1.min.js') }}"></script>
+                        <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.min.js') }}"></script>
+                        <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.js') }}"></script>
         {% endblock %}
       {% endblock %}
-                        </div>
                     </div>
-                </body>
-            </html>
+                </div>
+            </body>
+        </html>
