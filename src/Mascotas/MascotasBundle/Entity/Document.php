@@ -126,6 +126,7 @@ class Document {
      */
     public function removeUpload() {
         if ($file = $this->getAbsolutePath()) {
+            throw new Exception('Trato de borrar!!' . $file);
             unlink($file);
         }
     }

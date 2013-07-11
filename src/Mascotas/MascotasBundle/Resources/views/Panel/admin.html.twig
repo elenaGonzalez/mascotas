@@ -1,6 +1,8 @@
 {% extends "::base.html.twig" %}
+{% block title%}Panel de Control{%endblock%}
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
+<div class="btn btn-inverse"><a href="{{ path('usuario_edit')}}">Editar Perfil</a></div>
 <h1 class="text-center">Estos son los usuarios registrados:</h1>
 <div align="center" class="container-fluid">
       {% render ( controller( 'MascotasMascotasBundle:Usuario:index') ) %}
@@ -26,51 +28,56 @@
                         <td class="text-center">{{ publicacion.aviso }}</td>
                         <td class="text-center">
                     {% if publicacion.fechaFinalizacion is  null %}
-                            <div class="btn btn-inverse"><a href="{{ path('publicacion_edit', { 'id': publicacion.id }) }}">Editar</a></div>
-                            <div class="btn btn-bg"><a href="{{ path('publicacion_finalizar', { 'id': publicacion.id })}}">Finalizar</a></div>
-                            <div class="btn btn-bg"><a href="{{ path('publicacion_delete', { 'id': publicacion.id })}}">Borrar</a></div></td>
+                                <div class="btn btn-inverse"><a href="{{ path('publicacion_edit', { 'id': publicacion.id }) }}">Editar</a></div>
+                                <div class="btn btn-bg"><a href="{{ path('publicacion_finalizar', { 'id': publicacion.id })}}">Finalizar</a></div>
+                            </td>
                  {% else %}
-                <h6 class="text-center">Publicación Finalizada. Motivo:</h6>
+                    <h6 class="text-center">Publicación Finalizada. Motivo:</h6>
                     <h6>{{publicacion.motivo}}</h6>
                  {% endif%}
-                </tr>
+                    </tr>
  {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
  {% else %}
-            <td colspan=4 class="text-center">No tienes publicaciones realizadas</td>
+                <td colspan=4 class="text-center">No tienes publicaciones realizadas</td>
 {% endif %}
-        </div>
+            </div>
 {% endif %}
-        <p></p>
-        <p><h3 class="text-center">Estos son los comentarios:</h3></p>
-    <table class="container table-bordered table-striped">
-        <thead>
-            <tr class="text-center alert alert-danger">
-                <th class="text-center">Aviso</th>
-                <th class="text-center">Comentario</th>
-                <th class="text-center">Acciones</th>
-            </tr>
-        </thead>
-        <tbody> 
+            <p></p>
+            <p><h3 class="text-center">Estos son los comentarios:</h3></p>
+        <table class="container table-bordered table-striped">
+            <thead>
+                <tr class="text-center alert alert-danger">
+                    <th class="text-center">Aviso</th>
+                    <th class="text-center">Comentario</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+            <tbody> 
       {%if entities| length >0 %}{
        {% for comentario in comentarios %}
-                <tr class="text-center border-l" stylee="solid 1px">   
-                    <td styles="border solid 1px">{{ comentario.getPublicacion()}}</td>
-                    <td styles="border solid 1px">{{ comentario.comentario }}</td>
-                    <td styles="border solid 1px">
-                        <div class="btn btn-inverse">
-                            <a href="{{ path('comentario_edit',{'id': comentario.id }) }}">editar</a>
-                        </div>
-                        <div class="btn btn-bg">
-                            <a href="{{ path('comentario_delete', { 'id': comentario.id }) }}">eliminar</a>
-                        </div>
-                    </td>
-                </tr>  
+                    <tr class="text-center border-l" stylee="solid 1px">   
+                        <td styles="border solid 1px">{{ comentario.getPublicacion()}}</td>
+                        <td styles="border solid 1px">{{ comentario.comentario }}</td>
+                        <td styles="border solid 1px">
+                            {% if comentario.publicacion.getFechaFinalizacion is null %}
+                                <div class="btn btn-inverse">
+                                    <a href="{{ path('comentario_edit',{'id': comentario.id }) }}">editar</a>
+                                </div>
+                                <div class="btn btn-bg">
+                                    <a href="{{ path('comentario_delete', { 'id': comentario.id }) }}">eliminar</a>
+                                </div>
+                            {% else %}
+                                <div class="text-error">
+                                <div class="text-center"><h6>¡Publicación Finalizada! :No puedes modificar los comentarios</h6></div>
+                     {% endif %}
+                            </td>
+                        </tr>  
       {% endfor %}
      {% else %}
-            <td colspan=3 class="text-center">Actualmente no has realizado comentarios</td>
+                    <td colspan=3 class="text-center">Actualmente no has realizado comentarios</td>
         {% endif %}
-        </tbody>
-    </table>
+                </tbody>
+            </table>
 {% endblock %}    

@@ -234,7 +234,7 @@ class ComentarioController extends Controller
                     and !($securityContext->isGranted('ROLE_ADMIN', $this->getUser()))) {
                 throw new AccessDeniedException();
             //return $this->redirect($this->generateUrl('publicacion'));
-        }
+             }
             if (!$entity) {
                 throw $this->createNotFoundException('No se puede encontrar el comentario.');
             }

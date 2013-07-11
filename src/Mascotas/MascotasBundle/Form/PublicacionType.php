@@ -13,7 +13,11 @@ class PublicacionType extends AbstractType {
                 //->add('usuario')
                 //->add('id')
                 ->add('tipo', 'choice', array(
-                    'choices' => array('Encontrado' => 'Encontrado', 'Perdido' => 'Perdido')
+                    'choices' => array(
+                        'Encontrado' => 'Encontrado', 
+                        'Perdido' => 'Perdido',
+                        'Busca Pareja' => 'Busca Pareja',
+                        'Regalo Mascota' => 'Regalo Mascota')
                 ))
                 ->add('fechapublicacion', 'date', array(
                     'widget' => 'single_text',

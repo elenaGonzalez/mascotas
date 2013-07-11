@@ -17,8 +17,14 @@
                 <td class="text-center">{{ entity.usuario }}</td>
                  {% if ( entity.tipo ) =='e' %}
                 <td class="text-center"><strong>Encontrado</strong></td>
-                 {% else %}
+                 {% endif %}
+                 {% if ( entity.tipo ) =='p' %}
                 <td class="text-center"><strong>Perdido</strong></td>
+                 {% endif %}
+                {% if ( entity.tipo ) =='B' %}
+                <td class="text-center"><strong>Busco pareja</strong></td>
+                 {% else %}
+                <td class="text-center"><strong>Regalo mascota</strong></td>
                  {% endif %}
                 <td class="text-center">{{ entity.fechapublicacion|date('d/m/Y') }}</td>
                 <td class="text-center">{{ entity.aviso }}</td>
@@ -28,9 +34,9 @@
         </tbody>
     </table>
     {% if is_granted('ROLE_USER') %}
-        <div>
+    <div>
             {% include "MascotasMascotasBundle:Comentario:index.html.twig" with {'entities':comentarios} %}
-              
+
             {% block paginador %}
             <div class="pagination">
                 <ul>
@@ -38,32 +44,32 @@
                     {% if (pagina_actual <= 1 ) %}
                         <li class="disabled"><a href="#">Anterior</a></li>
                     {% else %}
-                        <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual - 1 }) }}">Anterior</a></li>
+                            <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual - 1 }) }}">Anterior</a></li>
                     {% endif %}
-                      <li><a href="#" class="disabled">{{ pagina_actual }}</a></li>
+                                <li><a href="#" class="disabled">{{ pagina_actual }}</a></li>
                      {% if (pagina_actual >= max_pag ) %} 
-                        <li class="disabled"><a href="#">Siguiente</a></li>
+                                    <li class="disabled"><a href="#">Siguiente</a></li>
                     {% else %}
-                         <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual + 1 }) }}">Siguiente</a></li>
+                                        <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : pagina_actual + 1 }) }}">Siguiente</a></li>
                     {% endif %} 
-                    <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : max_pag }) }}">Ultimo ({{ max_pag }})</a></li>
-                </ul>
-            </div>
+                                            <li><a href="{{ path( 'publicacion_show', {'id' : entity.id, 'comentario_nro_pagina' : max_pag }) }}">Ultimo ({{ max_pag }})</a></li>
+                                        </ul>
+                                    </div>
             {% endblock %}
-        </div>
+                                </div>
     {% endif %}
-    
+
     {% if is_granted('ROLE_USER') and entity.fechaFinalizacion is null %}
-        <div align="center">
+                                <div align="center">
              {% render ( controller( 'MascotasMascotasBundle:Comentario:new', { 'publicacion_id' : entity.id } ) ) %}
-        </div>
+                                    </div>
     {% endif %}
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-        <div class="text-center">
-            <h5>Si desea realizar un comentario<a class="brand">
-                    <a href= "{{ path('login', {'_target_path' : 'publicacion'  })}}">Ingresar</a></h5>
-            <h5>Si Todavía no estás registrado<a href= "{{ path('registro')}}">
-                    <i class="icon-pencil"></i>Registrarse</a></h4>
-        </div>
+                                    <div class="text-center">
+                                        <h5>Si desea realizar un comentario<a class="brand">
+                                                <a href= "{{ path('login', {'_target_path' : 'publicacion'  })}}">Ingresar</a></h5>
+                                        <h5>Si Todavía no estás registrado<a href= "{{ path('registro')}}">
+                                                <i class="icon-pencil"></i>Registrarse</a></h4>
+                                    </div>
     {% endif %}
  {% endblock %}
