@@ -66,15 +66,4 @@
                     <i class="icon-pencil"></i>Registrarse</a></h4>
         </div>
     {% endif %}
-    {% if is_granted('ROLE_ADMIN') %}
-        <div class="text-center">
-                    <a href="{{ path('publicacion') }}">vover a la Lista</a>
-                    <form action="{{ path('publicacion_delete', { 'id': entity.id }) }}" method="post">
-                        <input type="hidden" name="_method" value="DELETE" />
-                        {{ form_widget(delete_form) }}
-                        <button type="submit">Borrar</button>
-                    </form>
-            </ul>
-    </div>
-    {% endif %}
  {% endblock %}

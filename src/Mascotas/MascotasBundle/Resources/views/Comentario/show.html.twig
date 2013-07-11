@@ -1,10 +1,9 @@
 {% extends '::base.html.twig' %}
-
+{% block title %}Eliminar Comentario{% endblock %}
 {% block body -%}
-<div class="container text-center">
+<div align="center" class="container text-center">
     <h1>Comentario</h1>
-
-    <table class="table-bordered table-striped">
+    <table class="table-bordered table-striped text-center">
         <tbody>
             <tr>
                 <th>Usuario</th>
@@ -19,18 +18,15 @@
         </tbody>
     </table>
       <div class="text-center">
-        <a href="{{ path('comentario') }}">
-           Volver a la Lista
-        </a>
         <p></p>
-        <div class="btn btn-warning"><a href="{{ path('comentario_edit', { 'id': entity.id }) }}">
-            Editar
-            </a>
-      </div>
         <form action="{{ path('comentario_delete', { 'id': entity.id }) }}" method="post" class="text-center">
             <input type="hidden" name="_method" value="DELETE" />
             {{ form_widget(delete_form) }}
             <button type="submit" class="btn btn-danger">Borrar</button>
         </form>
-   </div>
+         <a href="{{ path('comentario') }}">
+           Volver a la Lista
+        </a>
+      </div>
+      </div>
 {% endblock %}

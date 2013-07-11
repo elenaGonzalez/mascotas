@@ -13,6 +13,7 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Permission\MaskBuilder;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 /**
  * Comentario controller.
  *
@@ -184,16 +185,26 @@ class ComentarioController extends Controller
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Comentario entity.');
         }
-
+        $securityContext = $this->get('security.context');
+        if(false === $securityContext->isGranted('EDIT', $entity)
+                and !$securityContext->isGranted('ROLE_ADMIN', $this->getUser())){
+            throw new AccessDeniedException();
+        }
+        
+        
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new ComentarioType(), $entity);
         $editForm->bind($request);
-
+        
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('panel_index', array('id' => $id)));
+            
+           if ($securityContext->isGranted('ROLE_ADMIN', $this->getUser())){
+                return $this->redirect($this->generateUrl('panel_admin'));
+           }else{
+                return $this->redirect($this->generateUrl('panel_index'));
+           }
         }
 
         return array(
@@ -217,16 +228,25 @@ class ComentarioController extends Controller
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository('MascotasMascotasBundle:Comentario')->find($id);
-
+            $securityContext = $this->get('security.context');
+            
+            if ((false === $securityContext->isGranted('DELETE', $entity))
+                    and !($securityContext->isGranted('ROLE_ADMIN', $this->getUser()))) {
+                throw new AccessDeniedException();
+            //return $this->redirect($this->generateUrl('publicacion'));
+        }
             if (!$entity) {
                 throw $this->createNotFoundException('No se puede encontrar el comentario.');
             }
-            $publicacion_id = $entity->getPublicacion();
+             
             $em->remove($entity);
             $em->flush();
         }
-
-        return $this->redirect($this->generateUrl('panel_index', array('id' => $id)));
+          if($securityContext->isGranted('ROLE_ADMIN', $this->getUser())){
+                    return $this->redirect($this->generateUrl('panel_admin'));
+                }else{
+                    return $this->redirect($this->generateUrl('panel_index'));
+                }
     }
 
     /**

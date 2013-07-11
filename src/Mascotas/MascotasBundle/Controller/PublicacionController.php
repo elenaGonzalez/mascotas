@@ -276,23 +276,34 @@ class PublicacionController extends Controller {
         if (!$publicacion) {
             throw $this->createNotFoundException(
                     'No es posible encontrar la publicación ' . $id
-            );
+            );  
         }
+       $securityContext = $this->get('security.context');
+                        
+         if ((false === $securityContext->isGranted('EDIT', $publicacion))
+                 and !($securityContext->isGranted('ROLE_ADMIN', $this->getUser()))) {
+                throw new AccessDeniedException();
+         }
         $finalizarForm = $this->createForm(new FinalizarType(), $publicacion);
         
         if ($this->getRequest()->getMethod() === 'POST') {
             $finalizarForm->bind($this->getRequest());
+            
             if ($finalizarForm->isValid()) {
                 $publicacion->setFechafinalizacion(new \DateTime("now"));
                 $em->persist($publicacion);
                 $em->flush();
-                return $this->redirect($this->generateUrl('panel_index'));
+                if($securityContext->isGranted('ROLE_ADMIN', $this->getUser())){
+                    return $this->redirect($this->generateUrl('panel_admin'));
+                }else{
+                    return $this->redirect($this->generateUrl('panel_index'));
+                }
+                
             }
         }
         return array(
             'publicacion' => $publicacion,
             'finalizar_form' => $finalizarForm->createView(),
-            'metodo' => $this->getRequest()->getMethod(),
         );
     }
 

@@ -16,7 +16,7 @@
         <tbody>
         {% for entity in entities %}
             <tr>
-                <td><a href="{{ path('usuario_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
+                <td>{{ entity.id }}</td>
                 <td>{{ entity.nombre }}</td>
                 <td>{{ entity.apellido }}</td>
                 <td>{{ entity.tel }}</td>
