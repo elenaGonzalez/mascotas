@@ -25,14 +25,12 @@ class PanelController extends Controller
         $usuario = $this->getUser();
         $em = $this->getDoctrine()->getManager();
         $entities = $em->getRepository('MascotasMascotasBundle:Publicacion')->findByUsuario($usuario);
-        $comentarios = $em ->getRepository('MascotasMascotasBundle:Comentario')->findByUsuario($usuario);
-        $mascotas = $em->getRepository('MascotasMascotasBundle:Mascota')->findByUsuario($usuario);
+        $comentarios = $em ->getRepository('MascotasMascotasBundle:Comentario')->findByUsuario($usuario);        
         
         return array(
             'entities' => $entities,
             'comentarios' => $comentarios,
             'usuario' => $usuario,
-            'mascotas' => $mascotas,
         );
     }
 

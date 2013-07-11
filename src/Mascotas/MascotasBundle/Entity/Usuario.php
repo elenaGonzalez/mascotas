@@ -69,13 +69,6 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     private $password;
 
     /**
-     * 
-     * @ORM\OneToMany(targetEntity="Mascota", mappedBy="usuario")
-     *
-     */
-    private $mascotas;
-
-    /**
      * @ORM\Column(name="salt", type="string", length=255)
      */
     private $salt;
@@ -353,39 +346,6 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     
     public function __toString() {
         return $this->getUsername();
-    }
-
-    /**
-     * Add mascotas
-     *
-     * @param \Mascotas\MascotasBundle\Entity\Mascota $mascotas
-     * @return Usuario
-     */
-    public function addMascota(\Mascotas\MascotasBundle\Entity\Mascota $mascotas)
-    {
-        $this->mascotas[] = $mascotas;
-    
-        return $this;
-    }
-
-    /**
-     * Remove mascotas
-     *
-     * @param \Mascotas\MascotasBundle\Entity\Mascota $mascotas
-     */
-    public function removeMascota(\Mascotas\MascotasBundle\Entity\Mascota $mascotas)
-    {
-        $this->mascotas->removeElement($mascotas);
-    }
-
-    /**
-     * Get mascotas
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getMascotas()
-    {
-        return $this->mascotas;
     }
     
     /**

@@ -25,10 +25,7 @@
                                         <ul>
                                             <div class="span2"><li class="brand"><a href="{{ path('publicacion')}}"><i class="icon-home icon-white"></i>Sistema Mascotas</a></div>
                                             <div class="span2"><li class="brand"><a href="{{ path('publicacion_new')}}">Realizar una Publicacion</a></li></div>
-                                            <div class="span2"><li class="brand">
-                                                     {% if is_granted('ROLE_USER') or not is_granted('IS_AUTHENTICATED_FULLY') %}
-                                                    <a href="{{ path('mascota_new')}}">Agregar a tu mascota</a>
-                                                </li>{% endif %}</div>
+
                  {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')%}
                                             <div class="span2">     
                                                 <li class="brand">

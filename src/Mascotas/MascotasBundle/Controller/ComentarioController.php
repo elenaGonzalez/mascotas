@@ -62,12 +62,15 @@ class ComentarioController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
+            
             $aclProvider= $this->get('security.acl.provider');
             $objectIdentity = ObjectIdentity::fromDomainObject($entity);
             $acl = $aclProvider->createAcl($objectIdentity);
+            
             $securityContext = $this->get('security.context');
             $user = $securityContext->getToken()->getUser();
             $securityIdentity = UserSecurityIdentity:: fromAccount($user);
+            
             $acl->insertObjectAce($securityIdentity, MaskBuilder::MASK_OPERATOR);
             $aclProvider->updateAcl($acl);
             
@@ -145,6 +148,7 @@ class ComentarioController extends Controller
         $em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository('MascotasMascotasBundle:Comentario')->find($id);
         $securityContext = $this->get('security.context');
+        
         if ((false === $securityContext->isGranted('EDIT', $entity))
                 and !($securityContext->isGranted('ROLE_ADMIN', $this->getUser()))) {
                    throw new AccessDeniedException("Acceso no autorizado");
