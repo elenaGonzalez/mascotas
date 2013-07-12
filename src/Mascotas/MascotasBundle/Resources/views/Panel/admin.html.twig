@@ -3,7 +3,7 @@
 {% block body %}
     {% if is_granted('ROLE_ADMIN') %}
 <div class="btn btn-inverse"><a href="{{ path('usuario_edit')}}">Editar Perfil</a></div>
-<h1 class="text-center">Estos son los usuarios registrados:</h1>
+<h1 class="text-center text-info">Estos son los usuarios registrados:</h1>
 <div align="center" class="container-fluid">
       {% render ( controller( 'MascotasMascotasBundle:Usuario:index') ) %}
     </div>

@@ -1,13 +1,6 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
-<div class="btn-group text-center ">
-  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': null})}}>Todos</a></button>
-  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'P'})}}>Perdidos</a></button>
-  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'E'})}}>Encontrados</a></button>
-  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'B'})}}>Buscan Pareja</a></button>
-  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'R'})}}>Regalan mascotas</a></button>
-</div>
 
 <title class="h1">{% block title %}Publicaciones{% endblock %}</title>
 <div class="text-center" style="margin: auto">
@@ -15,7 +8,13 @@
     <h4>Estas son las Publicaciones</h4>
     <h4>Ayudanos a que estas mascotas puedan volver a sus hogares.</h4>
     <p><br></br>
-   
+ <div class="btn-group text-center">
+    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': null})}}>Todos</a></button>
+    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': 'P'})}}>Perdidos</a></button>
+    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': 'E'})}}>Encontrados</a></button>
+    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': 'B'})}}>Buscan Pareja</a></button>
+    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': 'R'})}}>Regalan mascotas</a></button>
+</div>
     </p>
     <table class="container table-bordered table-striped">
         <thead>
@@ -60,7 +59,7 @@
                     <li><a href="{{ path('publicacion' , { 'pagina_actual' : max_pag , 'tipo' : tipo }) }}">Ultimo</a></li>                    
                 </ul>                
             </div>
-    
+          
          {% endblock %}
         </div>
 {% endblock %}

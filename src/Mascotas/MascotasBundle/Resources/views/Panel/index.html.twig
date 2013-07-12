@@ -54,11 +54,13 @@
                 <div class="btn btn-inverse">
                     <a href="{{ path('comentario_edit',{'id': comentario.id }) }}">editar</a>
                 </div>
-             {% else %}
                 <div class="btn btn-bg">
                     <a href="{{ path('comentario_delete', { 'id': comentario.id }) }}">eliminar</a>
                 </div>
-               {% endif %}
+                 {% else %}
+                    <div class="text-error">
+                           <div class="text-center"><h6>¡Publicación Finalizada! :No puedes modificar los comentarios</h6></div>
+                     {% endif %}
             </td>
         </tr>  
      {% else %}
