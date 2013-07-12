@@ -1,4 +1,4 @@
-
+<div class="container text-center">
 <div class="span8" sytle="float:none;margin:0 auto"></div>
     <legend>Ingresa un comentario</legend>
    <title class="h1">{% block title %}Comentar{% endblock %}</title>
@@ -8,15 +8,7 @@
                 <button type="submit" class="btn-primary">Comentar</button>
             </p>
         </form>
-   {% if is_granted('ROLE_ADMIN') %}
-        <ul class="record_actions">
-            <li>
-                <a href="{{ path('comentario') }}">
-                    Volver a la lista
-                </a>
-            </li>
-        </ul>
-    {% endif %}
     </div>
+ </div>
 
 

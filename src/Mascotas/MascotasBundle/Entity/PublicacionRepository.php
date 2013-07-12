@@ -12,17 +12,29 @@ use Doctrine\ORM\EntityRepository;
  */
 class PublicacionRepository extends EntityRepository {
 
-    public function getPagina($nro_pagina) {
+    public function getPagina($nro_pagina, $tipo = null) {
+        
         $limit = 5;
         $offset = ($nro_pagina * $limit) - $limit;
-        $criteria = array();
+        if (isset($tipo)) {
+            $criteria = array('tipo' => $tipo);
+        } else {
+            $criteria = array();
+        }
+        
         $orderBy = array('id' => 'desc');
         return $this->findBy($criteria, $orderBy, $limit, $offset);
     }
 
-    public function getCantidad() {
-        return ceil(count($this->findAll()) / 5);
+    public function getCantidad($tipo = null) {        
+        if (isset($tipo)){            
+            $criteria = array('tipo' => $tipo);            
+            return ceil(count($this->findBy($criteria)) / 5);
+        }else{
+            return ceil(count($this->findAll()) / 5);
+        }
+        
     }
-   
+
 }
 

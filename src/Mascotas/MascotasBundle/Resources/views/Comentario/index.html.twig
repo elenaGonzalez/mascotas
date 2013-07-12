@@ -9,9 +9,6 @@
                 <th>Usuario</th>
                 <th>Comentario</th>
                 <th>Fecha</th>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <th>Acciones</th> {% endif %}
-                </tr>
             </thead>
             <tbody>
                 {% for entity in entities %}
@@ -19,17 +16,6 @@
                         <td id="comentario-{{ entity.id }}">{{ entity.usuario }}</td>
                         <td>{{ entity.comentario }}</td>
                         <td>{{ entity.fecha | date('d/m/Y h:iA')}}</td>
-                        {% if is_granted('ROLE_ADMIN') %}
-                        <td>
-                            <div class="btn btn-small">
-                                <a href="{{ path('comentario_show', { 'id': entity.id }) }}">ver</a>
-                            </div>
-                            <div class="btn btn-small">
-                                <a href="{{ path('comentario_edit', { 'id': entity.id }) }}">editar</a>
-                            </div>
-                        </td>
-                    </tr>
-             {% endif %}                     
         {% endfor %}
                    
                 </tbody>

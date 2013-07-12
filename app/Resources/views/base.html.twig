@@ -63,10 +63,11 @@
                         </div>
                         {% endif %}
        {% endblock %}
-
+                        <h6>Hoy es {{ "now" | date("m/d/Y") }}</h6>
      {% block body%}
                         <div class="span10 text-center">
                         </div>
+                     <iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.es/maps?ll=-27.480101,-58.802948&amp;spn=0.08635,0.169086&amp;t=m&amp;z=13&amp;lci=weather"></iframe><br /><small><a href="https://maps.google.es/maps?ll=-27.480101,-58.802948&amp;spn=0.08635,0.169086&amp;t=m&amp;z=13&amp;lci=weather&amp;source=embed" style="color:#0000FF;text-align:left">Ver mapa más grande</a></small>
       {% block javascripts %}   
                         <script src="{{asset ('bundles/mascotasmascotas/js/jquery-1.10.1.min.js') }}"></script>
                         <script src="{{asset ('bundles/mascotasmascotas/js/bootstrap.min.js') }}"></script>

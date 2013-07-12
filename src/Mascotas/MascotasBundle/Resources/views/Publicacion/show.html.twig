@@ -15,16 +15,18 @@
             </tr>
             <tr>
                 <td class="text-center">{{ entity.usuario }}</td>
-                 {% if ( entity.tipo ) =='e' %}
-                <td class="text-center"><strong>Encontrado</strong></td>
+                <td class="text-center">
+                 {% if ( entity.tipo ) =='E' %}
+                    <strong>Encontrado</strong>
                  {% endif %}
-                 {% if ( entity.tipo ) =='p' %}
-                <td class="text-center"><strong>Perdido</strong></td>
+                 {% if ( entity.tipo ) =='P' %}
+                    <strong>Perdido</strong>
                  {% endif %}
                 {% if ( entity.tipo ) =='B' %}
-                <td class="text-center"><strong>Busco pareja</strong></td>
-                 {% else %}
-                <td class="text-center"><strong>Regalo mascota</strong></td>
+                    <strong>Busco pareja</strong>
+                {% endif %}
+                 {%  if ( entity.tipo ) =='R' %}
+                    <strong>Regalo mascota</strong></td>
                  {% endif %}
                 <td class="text-center">{{ entity.fechapublicacion|date('d/m/Y') }}</td>
                 <td class="text-center">{{ entity.aviso }}</td>
@@ -33,7 +35,7 @@
             </tr>
         </tbody>
     </table>
-    {% if is_granted('ROLE_USER') %}
+    
     <div>
             {% include "MascotasMascotasBundle:Comentario:index.html.twig" with {'entities':comentarios} %}
 
@@ -57,7 +59,7 @@
                                     </div>
             {% endblock %}
                                 </div>
-    {% endif %}
+    
 
     {% if is_granted('ROLE_USER') and entity.fechaFinalizacion is null %}
                                 <div align="center">

@@ -3,6 +3,7 @@
 namespace Mascotas\MascotasBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Comentario
@@ -41,9 +42,15 @@ class Comentario
      private $usuario;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = "2",
+     *      max = "250",
+     *      minMessage = "Tu mensaje debe tener como mínimo {{ limit }} caracteres",
+     *      maxMessage = "Tu mensaje debe tener como máximo {{ limit }} caracteres")
      * @var string
-     *
      * @ORM\Column(name="comentario", type="string", length=255)
+     * 
      */
     private $comentario;
     

@@ -25,20 +25,21 @@ class PublicacionController extends Controller {
     /**
      * Lists all Publicacion entities.
      *
-     * @Route("{pagina_actual}/", name="publicacion")
+     * @Route("{pagina_actual}/{tipo}", defaults = {"pagina_actual" = 1, "tipo" = null }, name="publicacion")
      * @Method("GET")
      * @Template()
      */
-    public function indexAction($pagina_actual = 1) {
+    public function indexAction($pagina_actual, $tipo) {
 
         $em = $this->getDoctrine()->getManager();
-        $entities = $em->getRepository('MascotasMascotasBundle:Publicacion')->getPagina($pagina_actual);
-        $max_pax = $em->getRepository('MascotasMascotasBundle:Publicacion')->getCantidad();
+        $entities = $em->getRepository('MascotasMascotasBundle:Publicacion')->getPagina($pagina_actual, $tipo);
+        $max_pax = $em->getRepository('MascotasMascotasBundle:Publicacion')->getCantidad($tipo);
 
         return array(
             'entities' => $entities,
             'max_pag' => $max_pax,
             'pagina_actual' => $pagina_actual,
+            'tipo' => $tipo, 
         );
     }
 
@@ -307,6 +308,26 @@ class PublicacionController extends Controller {
         return array(
             'publicacion' => $publicacion,
             'finalizar_form' => $finalizarForm->createView(),
+        );
+    }
+    
+     /**
+     * Lists all Publicacion 
+     *
+     * @Route("/busqueda/{tipo}/{pagina}" ,defaults = {"tipo" = null, "pagina" = 1}, name = "publicacion_busqueda")
+     * @Method("GET")
+     * @Template("MascotasMascotasBundle:Publicacion:index.html.twig")
+     */
+    public function busquedaAction($tipo, $pagina) {
+        
+        $em = $this->getDoctrine()->getManager();
+        $entities = $em->getRepository('MascotasMascotasBundle:Publicacion')->getPagina($pagina , $tipo);        
+        $max_pax = $em->getRepository('MascotasMascotasBundle:Publicacion')->getCantidad($tipo);
+        
+        return array(
+            'entities' => $entities,
+            'max_pag' => $max_pax,
+            'pagina_actual' => $pagina,            
         );
     }
 

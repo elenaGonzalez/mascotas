@@ -1,13 +1,22 @@
 {% extends '::base.html.twig' %}
 
 {% block body %}
+<div class="btn-group text-center ">
+  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': null})}}>Todos</a></button>
+  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'P'})}}>Perdidos</a></button>
+  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'E'})}}>Encontrados</a></button>
+  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'B'})}}>Buscan Pareja</a></button>
+  <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'R'})}}>Regalan mascotas</a></button>
+</div>
 
 <title class="h1">{% block title %}Publicaciones{% endblock %}</title>
 <div class="text-center" style="margin: auto">
     <h1 class="text-info">Publicaciones</h1>
     <h4>Estas son las Publicaciones</h4>
     <h4>Ayudanos a que estas mascotas puedan volver a sus hogares.</h4>
-    <p><br></br></p>
+    <p><br></br>
+   
+    </p>
     <table class="container table-bordered table-striped">
         <thead>
             <tr class="text-center alert alert-danger">
@@ -36,21 +45,22 @@
         {% block paginador %}
             <div class="pagination">
                 <ul>                    
-                     <li><a href="{{ path( 'publicacion', {'pagina_actual' : 1}) }}">Primero</a></li>
+                     <li><a href="{{ path( 'publicacion', {'pagina_actual' : 1, 'tipo' : tipo}) }}">Primero</a></li>
                      {% if (pagina_actual <= 1 ) %}
                           <li class="disabled"><a href="">Anterior</a></li>
                      {% else %}
-                          <li><a href="{{ path('publicacion' , { 'pagina_actual' : pagina_actual - 1 }) }}">Anterior</a></li>
+                          <li><a href="{{ path('publicacion' , { 'pagina_actual' : pagina_actual - 1 , 'tipo' : tipo}) }}">Anterior</a></li>
                      {% endif %}
                      <li><a href="#" class="disabled">{{ pagina_actual }}</a></li>
                       {% if (pagina_actual >= max_pag ) %}
-                          <li class="disabled"><a href="{{ path( 'publicacion', {'pagina_actual' : max_pag }) }}">Siguiente</a></li>
+                          <li class="disabled"><a href="{{ path( 'publicacion', {'pagina_actual' : max_pag, 'tipo' : tipo }) }}">Siguiente</a></li>
                      {% else %}
-                          <li><a href="{{ path( 'publicacion', {'pagina_actual' : pagina_actual + 1 }) }}">Siguiente</a></li>
+                          <li><a href="{{ path( 'publicacion', {'pagina_actual' : pagina_actual + 1 , 'tipo' : tipo} ) }}">Siguiente</a></li>
                      {% endif %}
-                    <li><a href="{{ path('publicacion' , { 'pagina_actual' : max_pag }) }}">Ultimo</a></li>                    
+                    <li><a href="{{ path('publicacion' , { 'pagina_actual' : max_pag , 'tipo' : tipo }) }}">Ultimo</a></li>                    
                 </ul>                
             </div>
+    
          {% endblock %}
         </div>
 {% endblock %}
