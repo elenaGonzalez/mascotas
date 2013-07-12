@@ -91,7 +91,7 @@ class Document {
      */
     public function preUpload() {
         if (null !== $this->getFile()) {
-            // haz lo que quieras para generar un nombre único
+            // genera un nombre único
             $filename = sha1(uniqid(mt_rand(), true));
             $this->path = $filename . '.' . $this->getFile()->guessExtension();
         }
@@ -126,7 +126,6 @@ class Document {
      */
     public function removeUpload() {
         if ($file = $this->getAbsolutePath()) {
-            throw new Exception('Trato de borrar!!' . $file);
             unlink($file);
         }
     }

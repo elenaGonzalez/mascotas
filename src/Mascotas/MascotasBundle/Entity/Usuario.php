@@ -297,7 +297,6 @@ class Usuario implements UserInterface, \Serializable, EquatableInterface {
     }
     
     public function __construct() {
-        $this->mascotas = new ArrayCollection();
         $this->comentarios = new ArrayCollection();
         $this->publicacion = new ArrayCollection();
         $this->usuario_roles = new ArrayCollection();

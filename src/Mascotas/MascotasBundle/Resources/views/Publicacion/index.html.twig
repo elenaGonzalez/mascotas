@@ -9,11 +9,11 @@
     <h4>Ayudanos a que estas mascotas puedan volver a sus hogares.</h4>
     <p><br></br>
  <div class="btn-group text-center">
-    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': null})}}>Todos</a></button>
-    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': 'P'})}}>Perdidos</a></button>
-    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': 'E'})}}>Encontrados</a></button>
-    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': 'B'})}}>Buscan Pareja</a></button>
-    <button class="btn btn-inverse span2"><a href={{ path('publicacion',{'tipo': 'R'})}}>Regalan mascotas</a></button>
+    <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': null})}}>Todos</a></button>
+    <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'P'})}}>Perdidos</a></button>
+    <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'E'})}}>Encontrados</a></button>
+    <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'B'})}}>Buscan Pareja</a></button>
+    <button class="btn btn-inverse"><a href={{ path('publicacion',{'tipo': 'R'})}}>Regalan mascotas</a></button>
 </div>
     </p>
     <table class="container table-bordered table-striped">
@@ -27,7 +27,7 @@
         </thead>
         <tbody>
         {% for entity in entities %}
-                <tr style="central">
+                <tr align="center">
                     <td class="text-center">
                      <div class="btn btn-small">{{entity.id }}</td>
                     <td><img src="{{ asset(entity.foto.webpath) }}" alt="Sin foto" width="140" height="140" class="img-polaroid"></td>

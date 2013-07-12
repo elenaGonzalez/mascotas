@@ -189,7 +189,7 @@ class PublicacionController extends Controller {
         }
 
         if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Publicacion entity.');
+            throw $this->createNotFoundException('No se puede encontrar la Publicacion.');
         }
 
         $deleteForm = $this->createDeleteForm($id);

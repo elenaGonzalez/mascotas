@@ -27,7 +27,7 @@ class SeguridadController extends Controller
         $request = $this->getRequest();
         $session = $request->getSession();
  
-        // get the login error if there is one
+        // Devuelve el error de login si es que hay uno
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
             $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
         } else {
@@ -35,7 +35,7 @@ class SeguridadController extends Controller
         }
  
         return $this->render('MascotasMascotasBundle:Seguridad:login.html.twig', array(
-            // last username entered by the user
+            // ultimo username ingresado por el usuario
             'last_username' => $session->get(SecurityContext::LAST_USERNAME),
             'error'         => $error,
         ));
